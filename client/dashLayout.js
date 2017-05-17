@@ -1,0 +1,3 @@
+Template.dashLayout.onCreated(function() {
+  
+});
