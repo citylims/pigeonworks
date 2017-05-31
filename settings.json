@@ -1,0 +1,7 @@
+{
+ "galaxy.meteor.com": { 
+   "env": { 
+     "ROOT_URL": "http://cyberscenes.meteorapp.com"
+    } 
+  }
+}
