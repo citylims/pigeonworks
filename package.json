@@ -1,5 +1,5 @@
 {
-  "name": "cyber-scene",
+  "name": "pidgeon-works",
   "private": true,
   "scripts": {
     "start": "meteor run"
