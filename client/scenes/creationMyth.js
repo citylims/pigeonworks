@@ -1,4 +1,5 @@
 import THREE from 'three';
+import { Promise } from 'meteor/promise';
 var OrbitControls = require('three-orbit-controls')(THREE)
 
 
@@ -7,7 +8,10 @@ Template.creationMyth.onRendered(function() {
     var mainColor = "#333333";
     var canvasHeight = window.innerHeight;
     var canvasWidth = window.innerWidth;
+    
     var loader = new THREE.TextureLoader();
+    loader.setCrossOrigin("*");
+    var baseUrl = window.location.href;
     var space = "#151718";
     var galaxies = 25;
 
@@ -48,85 +52,112 @@ Template.creationMyth.onRendered(function() {
     }
     
       //particle objects
-      loader.crossOrigin = '';
-      
-      function getRandomColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
-      
-      function Particles(num) {
-        this.particleArray = []
-        for (var i = 0; i < num; i++) {
-          var c = getRandomColor();
-          var o = Math.floor(Math.random() * (100 - 0 + 1)) / 100;
-          var s = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
-          var particleCount = Math.floor(Math.random() * (1000 - 250 + 1)) + 250;
-          var particle = {
-            color: c,
-            opacity: o,
-            size: s,
-            number: particleCount
-          }
-          this.particleArray.push(particle);
-        }
-      }
+      // THREE.ImageUtils.crossOrigin = true;
 
-      function ParticleMaterial(c, s, o) {
-        this.material = new THREE.PointsMaterial({
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF'.split('');
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+    
+    function Particles(num) {
+      this.particleArray = []    
+      for (var i = 0; i < num; i++) {
+        var c = getRandomColor();
+        var o = Math.floor(Math.random() * (100 - 0 + 1)) / 100;
+        var s = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
+        var particleCount = Math.floor(Math.random() * (1000 - 250 + 1)) + 250;
+        var particle = {
           color: c,
-          size: s,
-          transparent: true,
           opacity: o,
-          map: THREE.ImageUtils.loadTexture(
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/61062/gradient.png"
-          )
-        });
-      }
-
-      function ParticleSystem(number) {
-        this.particles = new THREE.Geometry();
-        for (var i = 0; i < number; i++) {
-          var x = (Math.random() - 0.5) * 2000;
-          var y = (Math.random() - 0.5) * 1100;
-          var z = (Math.random() - 0.5) * 2000;
-          this.particles.vertices.push(new THREE.Vector3(x, y, z));
+          size: s,
+          number: particleCount
         }
-      };
+        this.particleArray.push(particle);
+      }
+    }
+    
+    var getTexture = () => {
+      return new Promise((resolve, reject) => {
+        var path = `${baseUrl}gradient.png`
+        loader.load(path, (texture) => {
+          resolve(texture);
+        }, function(a) {
+          reject(a)
+        })
+      });
+    };
 
-      function ParticleUniverse(particles) {
-        this.galaxies = [];
+    function ParticleMaterial(c, s, o, t) {
+      this.material = new THREE.PointsMaterial({
+        color: c,
+        size: s,
+        transparent: true,
+        opacity: o,
+        map: t
+      });
+    }
+
+    function ParticleSystem(number) {
+      this.particles = new THREE.Geometry();
+      for (var i = 0; i < number; i++) {
+        var x = (Math.random() - 0.5) * 2000;
+        var y = (Math.random() - 0.5) * 1100;
+        var z = (Math.random() - 0.5) * 2000;
+        this.particles.vertices.push(new THREE.Vector3(x, y, z));
+      }
+    };
+
+    function ParticleUniverse(particles) {
+      return new Promise((resolve, reject) => {
+        var galaxies = [];
         var pArr = particles.particleArray;
-        for (var i = 0; i < pArr.length; i++) {
-          var customParticle = new ParticleMaterial(pArr[i].color, pArr[i].size, pArr[i].opacity);
-          var pMaterial = customParticle.material;
-          var customSystem = new ParticleSystem(pArr[i].number);
-          var pSystem = customSystem.particles;
-          var pObject = {
-            material: pMaterial,
-            system: pSystem
-          };
-          this.galaxies.push(pObject);
-        }
+        var texture = getTexture();
+        texture.then((res,err) => {
+          if (res) {
+            var texture = res
+            for (var i = 0; i < pArr.length; i++) {
+              var customParticle = new ParticleMaterial(pArr[i].color, pArr[i].size, pArr[i].opacity, texture);
+              var pMaterial = customParticle.material;
+              var customSystem = new ParticleSystem(pArr[i].number);
+              var pSystem = customSystem.particles;
+              var pObject = {
+                material: pMaterial,
+                system: pSystem
+              };
+              galaxies.push(pObject);
+            }
+            if (galaxies.length) {
+              resolve(galaxies);
+            } else {
+              reject('whoops');
+            }
+          }
+        });
+      });
+    }
+
+    function createUniverse(universe) {
+      var galaxies = universe.galaxies;
+      for (var i = 0; i < galaxies.length; i++) {
+        var galaxy = new THREE.Points(galaxies[i].system, galaxies[i].material);
+        scene.add(galaxy);
       }
+    };
 
-      function createUniverse(universe) {
-        var galaxies = universe.galaxies;
-        for (var i = 0; i < galaxies.length; i++) {
-          var galaxy = new THREE.Points(galaxies[i].system, galaxies[i].material);
-          scene.add(galaxy);
-        }
-      };
-
-      var particles = new Particles(galaxies);
-      var universe = new ParticleUniverse(particles);
+    var particles = new Particles(galaxies);
+    ParticleUniverse(particles).then((res,err) => {
+      for (var i = 0; i < res.length; i++) {
+        var galaxy = new THREE.Points(res[i].system, res[i].material);
+        scene.add(galaxy);
+      }
+    });
       
-      createUniverse(universe);
-
+    //* Terrain *//
+      
     function genesisDevice() {
 
       this.geometry =  new THREE.PlaneGeometry(canvasWidth * 2, canvasHeight * 2, 128,128);
@@ -166,23 +197,28 @@ Template.creationMyth.onRendered(function() {
 
       this.inception();
     }
-
-    //sky cube
-    // var skyGeometry = new THREE.CubeGeometry(800, 800, 1200);
-    // var skyArray = [];
-    // for (var i = 0; i < 6; i++) {
-    //   skyArray.push(new THREE.MeshBasicMaterial({
-    //     map: THREE.ImageUtils.loadTexture("images/DeepSpace.png"),
-    //     side: THREE.BackSide
-    //   }));
-    // }
-    // var skyMaterial = new THREE.MeshFaceMaterial(skyArray);
-    // var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-    // scene.add(skyBox)
-
-    //sphere
-    loader.load('https://s3.amazonaws.com/cyber-scenes/plutomap1k+copy.jpg', function (texture) {
-      console.log(texture);
+    
+    var terrain = genesisDevice();
+    
+    /* Sky */
+    var skyPath = `${baseUrl}DeepSpace.png`;
+    loader.load(skyPath, (texture) => {
+       var skyGeometry = new THREE.CubeGeometry(800, 800, 1200);
+      var skyArray = [];
+      for (var i = 0; i < 6; i++) {
+        skyArray.push(new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.BackSide
+        }));
+      }
+      var skyMaterial = new THREE.MeshFaceMaterial(skyArray);
+      var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
+      scene.add(skyBox);
+    });
+    
+    /* Sphere */
+    var spherePath = `${baseUrl}plutomap1k.jpg`;
+    loader.load(spherePath, (texture) => {
       var geometry = new THREE.SphereGeometry(150, 150, 150);
       var material = new THREE.MeshBasicMaterial({
         map: texture,
@@ -192,13 +228,12 @@ Template.creationMyth.onRendered(function() {
       scene.add(sphere);
     });
 
-    var terrain = genesisDevice();
-
+  
+  /* Render Canvas */
     var render = function() {
       requestAnimationFrame(render);
       animation();
       renderer.render(scene, camera);
-    
     }
     //animations
     function animation() {
