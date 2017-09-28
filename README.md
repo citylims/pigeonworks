@@ -1,1 +1,1 @@
-DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy my-meteor-app.meteorapp.com --settings settings.json
+DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy pidgeonworks.meteorapp.com --settings settings.json
