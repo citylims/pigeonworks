@@ -148,13 +148,13 @@ Template.creationMyth.onRendered(function() {
       }
     };
 
-    var particles = new Particles(galaxies);
-    ParticleUniverse(particles).then((res,err) => {
-      for (var i = 0; i < res.length; i++) {
-        var galaxy = new THREE.Points(res[i].system, res[i].material);
-        scene.add(galaxy);
-      }
-    });
+    // var particles = new Particles(galaxies);
+    // ParticleUniverse(particles).then((res,err) => {
+    //   for (var i = 0; i < res.length; i++) {
+    //     var galaxy = new THREE.Points(res[i].system, res[i].material);
+    //     scene.add(galaxy);
+    //   }
+    // });
       
     //* Terrain *//
       
@@ -198,7 +198,7 @@ Template.creationMyth.onRendered(function() {
       this.inception();
     }
     
-    var terrain = genesisDevice();
+    // var terrain = genesisDevice();
     
     /* Sky */
     var skyPath = `${baseUrl}DeepSpace.png`;
@@ -213,7 +213,7 @@ Template.creationMyth.onRendered(function() {
       }
       var skyMaterial = new THREE.MeshFaceMaterial(skyArray);
       var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-      scene.add(skyBox);
+      // scene.add(skyBox);
     });
     
     /* Sphere */
