@@ -1,0 +1,8 @@
+<template name="headerBase">
+	<div class="header" id={{currentHeader}}>
+		<!-- <div class="header-padding"></div> -->
+		{{#with currentHeader}}
+			{{> Template.dynamic template=this }}
+		{{/with}}
+	</div>
+</template>
