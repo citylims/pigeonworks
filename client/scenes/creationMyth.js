@@ -2,7 +2,6 @@ import THREE from 'three';
 import { Promise } from 'meteor/promise';
 var OrbitControls = require('three-orbit-controls')(THREE)
 
-
 Template.creationMyth.onRendered(function() {
   $(document).ready(function($) {
     var mainColor = "#333333";
@@ -198,7 +197,7 @@ Template.creationMyth.onRendered(function() {
       this.inception();
     }
     
-    // var terrain = genesisDevice();
+    var terrain = genesisDevice();
     
     /* Sky */
     var skyPath = `${baseUrl}DeepSpace.png`;
@@ -245,7 +244,6 @@ Template.creationMyth.onRendered(function() {
       //   inc = +inc;
       // }
     }
-
     render();
   });
 
