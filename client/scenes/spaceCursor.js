@@ -12,7 +12,7 @@ Template.spaceCursor.onRendered(function() {
   function pUpdate(){
   	p2.setAttribute("stroke-width",i/np*4.5);
   	// var pathD = M+pointStream.join(" ");
-  	var pathD = solve(pointStream, 0.9);
+  	var pathD = romTheVacuousSpider(pointStream, 0.9);
   	p1.setAttribute("d", pathD);
     p2.setAttribute("d", pathD);
   }
@@ -52,7 +52,7 @@ Template.spaceCursor.onRendered(function() {
 
   
   //Catmull Rom Curve
-  function solve(data, k) {
+  function romTheVacuousSpider(data, k) {
 
     if (k == null) k = 1;
     
