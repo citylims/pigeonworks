@@ -5,6 +5,9 @@ var OrbitControls = require('three-orbit-controls')(THREE)
 
 Template.creationMyth.onRendered(function() {
   this.universe = new ReactiveVar(false);
+  this.getRandomInt = (max) => {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
   
   var mainColor = "#333333";
   var canvasHeight = window.innerHeight;
@@ -14,7 +17,7 @@ Template.creationMyth.onRendered(function() {
   loader.setCrossOrigin("*");
   var baseUrl = window.location.href;
   var space = "#151718";
-  var galaxies = 10;
+  var galaxies = 15;
 
   var scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2("#BABABA", 0.0002);
@@ -106,7 +109,7 @@ Template.creationMyth.onRendered(function() {
     this.particles = new THREE.Geometry();
     for (var i = 0; i < number; i++) {
       var x = (Math.random() - 0.5) * 2000;
-      var y = (Math.random() - 0.5) * 1100;
+      var y = (Math.random() - 0.5) * 2000;
       var z = (Math.random() - 0.5) * 2000;
       this.particles.vertices.push(new THREE.Vector3(x, y, z));
     }
@@ -246,26 +249,51 @@ Template.creationMyth.onRendered(function() {
     scene.rotation.y -= .0005;
     camera.fov = fov * zoom;
     camera.updateProjectionMatrix();
-    // console.log(this.universe.get());
     var universe = this.universe.get();
     for (var i = 0; i < universe.length; i++) {
       var starSystem = universe[i];
       var starCount = starSystem.geometry.vertices.length;
       while (starCount--)
       {
+        // var randX = this.getRandomInt(10);
+        // var randY = this.getRandomInt(15);
+        //hardcode some uglyness per playing with speed an direction.
+        //speed = distance
+        var randX = 1
+        var randY = 1 
         var particle = starSystem.geometry.vertices[starCount]
-        if (particle.y < -100) {
-          particle.y = particle.y + 500;
+        if (particle.y < 5) {
+          // console.log(particle.y)
+          particle.rebound = "up";
+          particle.y = particle.y + randY; 
+        } else if (particle.y > 295) {
+          particle.rebound = "down";
+          particle.y = (particle.y - randY);
+        } else if (particle.rebound === "up") {
+          particle.y = (particle.y + randY);
+        } else if (particle.rebound === "down") {
+          // console.log(particle.y);
+          particle.y = (particle.y - randY);
         } else {
-          particle.y = (particle.y - 1);
+          particle.y = (particle.y - randY);
         }
-        if (particle.x > 500) {//limit
-          particle.x = (particle.x - 1000);//reset
+        ///
+        if (particle.x < -1000) {//limit
+          particle.reboundX = "right";
+          particle.x = (particle.x + randX)
+        } else if ( particle.x > 600) {
+          particle.reboundX = "left";
+          particle.x = (particle.x + -  randX)
+        } else if (particle.reboundX === "right") {
+          particle.x = (particle.x + randX)
+        } else if (particle.reboundX === "left") {
+          particle.x = (particle.x - randX)
         } else {
-          particle.x = (particle.x + 1);
+          particle.x = (particle.x - randX)
         }
         
       }
+      this.universe.set(universe); //reset the universe obj
       starSystem.geometry.verticesNeedUpdate = true;
     }
     //play with camera      
