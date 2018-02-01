@@ -1,6 +1,8 @@
 import THREE from 'three';
 import { Promise } from 'meteor/promise';
+import {TweenMax} from "gsap";
 var OrbitControls = require('three-orbit-controls')(THREE)
+
 
 Template.creationMyth.onRendered(function() {
   $(document).ready(function($) {
@@ -147,13 +149,13 @@ Template.creationMyth.onRendered(function() {
       }
     };
 
-    // var particles = new Particles(galaxies);
-    // ParticleUniverse(particles).then((res,err) => {
-    //   for (var i = 0; i < res.length; i++) {
-    //     var galaxy = new THREE.Points(res[i].system, res[i].material);
-    //     scene.add(galaxy);
-    //   }
-    // });
+    var particles = new Particles(galaxies);
+    ParticleUniverse(particles).then((res,err) => {
+      for (var i = 0; i < res.length; i++) {
+        var galaxy = new THREE.Points(res[i].system, res[i].material);
+        scene.add(galaxy);
+      }
+    });
       
     //* Terrain *//
       
@@ -245,6 +247,18 @@ Template.creationMyth.onRendered(function() {
       // }
     }
     render();
+
+    
   });
+  
+  /* a Pen by DIACO : twitter.com/Diaco_ml || codepen.io/MAW
+powered by GSAP : https://www.greensock.com/
+*/
+
+
+
+// function setLLenght(X){ np=X.value };
+
+// a Pen by DIACO : twitter.com/Diaco_ml || codepen.io/MAW
 
 });
