@@ -5,6 +5,7 @@ var OrbitControls = require('three-orbit-controls')(THREE)
 
 Template.creationMyth.onRendered(function() {
   this.universe = new ReactiveVar(false);
+  
   this.getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -26,7 +27,9 @@ Template.creationMyth.onRendered(function() {
   camera.lookAt(new THREE.Vector3(0,50,0));
   camera.position.set(0,50,400);
 
-  var fov = camera.fov, zoom = 1.0, inc = -1.001;
+  var fov = camera.fov 
+  var zoom = 1.0
+  var inc = -1.001;
 
   var spotLight = new THREE.SpotLight(0xffffff);
   spotLight.position.set(600, 300, 300);
@@ -54,9 +57,6 @@ Template.creationMyth.onRendered(function() {
     var canvasWidth = window.innerWidth;
     camera.aspect = canvasWidth / canvasHeight;
   }
-  
-    //particle objects
-    // THREE.ImageUtils.crossOrigin = true;
 
   function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -144,14 +144,6 @@ Template.creationMyth.onRendered(function() {
     });
   }
 
-  // function createUniverse(universe) {
-  //   var galaxies = universe.galaxies;
-  //   for (var i = 0; i < galaxies.length; i++) {
-  //     var galaxy = new THREE.Points(galaxies[i].system, galaxies[i].material);
-  //     scene.add(galaxy);
-  //   }
-  // };
-
   var particles = new Particles(galaxies);
   // console.log(particles);
   ParticleUniverse(particles).then((res,err) => {
@@ -163,23 +155,18 @@ Template.creationMyth.onRendered(function() {
     }
     this.universe.set(universe);
   });
-    
-  //* Terrain *//
-    
+
+  //* Terrain *//  
   function genesisDevice() {
-
     this.geometry =  new THREE.PlaneGeometry(canvasWidth * 2, canvasHeight * 2, 128,128);
-
     this.material = new THREE.MeshLambertMaterial({
       color: mainColor
     });
-
     this.wireMaterial = new THREE.MeshLambertMaterial({
       color: "#FFFFFF",
       wireframe: true,
       transparent: true
-    })
-
+    });
     this.inception = function() {
       //plot terrain vertices
       for (var i = 0; i < this.geometry.vertices.length; i++) {
@@ -203,10 +190,10 @@ Template.creationMyth.onRendered(function() {
       console.log(this.terrain);
       return this;
     }
-
+    
     this.inception();
   }
-  
+  //generate the terrain obj
   var terrain = genesisDevice();
   
   /* Sky */
@@ -222,7 +209,7 @@ Template.creationMyth.onRendered(function() {
     }
     var skyMaterial = new THREE.MeshFaceMaterial(skyArray);
     var skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-    // scene.add(skyBox);
+    // scene.add(skyBox); //hiding the skyBox ?
   });
   
   /* Sphere */
@@ -237,14 +224,14 @@ Template.creationMyth.onRendered(function() {
     scene.add(sphere);
   });
 
-
-/* Render Canvas */
+  /* Render Canvas */
   var render = () => {
     requestAnimationFrame(render);
     animation();
     renderer.render(scene, camera);
   }
-  //animations
+  
+  /* Animations */
   var animation = () => {
     scene.rotation.y -= .0005;
     camera.fov = fov * zoom;
@@ -283,7 +270,7 @@ Template.creationMyth.onRendered(function() {
           particle.x = (particle.x + randX)
         } else if ( particle.x > 600) {
           particle.reboundX = "left";
-          particle.x = (particle.x + -  randX)
+          particle.x = (particle.x - randX)
         } else if (particle.reboundX === "right") {
           particle.x = (particle.x + randX)
         } else if (particle.reboundX === "left") {
