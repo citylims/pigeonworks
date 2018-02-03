@@ -5,9 +5,8 @@ Template.spaceCursor.onRendered(function() {
   var p1 = document.getElementById("path")
   var p2 = document.getElementById("path2")
   var pointStream = [];
-  var M = 'M' 
   var i = 0 
-  var np = 75;
+  var np = 75; // nodeppoint
 
   function pUpdate(){
   	p2.setAttribute("stroke-width",i/np*4.5);
@@ -48,9 +47,9 @@ Template.spaceCursor.onRendered(function() {
     event.preventDefault(); 
     move(event.targetTouches[0]);
   });
+  
   TweenMax.ticker.addEventListener("tick", removeD, 45);
 
-  
   //Catmull Rom Curve
   function romTheVacuousSpider(data, k) {
 

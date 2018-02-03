@@ -3,7 +3,7 @@ import { Promise } from 'meteor/promise';
 import {TweenMax} from "gsap";
 var OrbitControls = require('three-orbit-controls')(THREE)
 
-Template.creationMyth.onRendered(function() {
+Template.flight.onRendered(function() {
   $('canvas').remove(); // this should be moved to router level.
   this.universe = new ReactiveVar(false);
   
@@ -58,32 +58,6 @@ Template.creationMyth.onRendered(function() {
     var canvasWidth = window.innerWidth;
     camera.aspect = canvasWidth / canvasHeight;
   }
-
-  function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-  
-  function Particles(num) {
-    this.particleArray = []    
-    for (var i = 0; i < num; i++) {
-      var c = getRandomColor();
-      var o = Math.floor(Math.random() * (100 - 0 + 1)) / 100;
-      var s = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
-      var particleCount = Math.floor(Math.random() * (1000 - 250 + 1)) + 250;
-      var particle = {
-        color: c,
-        opacity: o,
-        size: s,
-        number: particleCount
-      }
-      this.particleArray.push(particle);
-    }
-  }
   
   var getTexture = () => {
     return new Promise((resolve, reject) => {
@@ -95,105 +69,6 @@ Template.creationMyth.onRendered(function() {
       })
     });
   };
-
-  function ParticleMaterial(c, s, o, t) {
-    this.material = new THREE.PointsMaterial({
-      color: c,
-      size: s,
-      transparent: true,
-      opacity: o,
-      map: t
-    });
-  }
-
-  function ParticleSystem(number) {
-    this.particles = new THREE.Geometry();
-    for (var i = 0; i < number; i++) {
-      var x = (Math.random() - 0.5) * 2000;
-      var y = (Math.random() - 0.5) * 2000;
-      var z = (Math.random() - 0.5) * 2000;
-      this.particles.vertices.push(new THREE.Vector3(x, y, z));
-    }
-  };
-
-  function ParticleUniverse(particles) {
-    return new Promise((resolve, reject) => {
-      var galaxies = [];
-      var pArr = particles.particleArray;
-      var texture = getTexture();
-      texture.then((res,err) => {
-        if (res) {
-          var texture = res
-          for (var i = 0; i < pArr.length; i++) {
-            var customParticle = new ParticleMaterial(pArr[i].color, pArr[i].size, pArr[i].opacity, texture);
-            var pMaterial = customParticle.material;
-            var customSystem = new ParticleSystem(pArr[i].number);
-            var pSystem = customSystem.particles;
-            var pObject = {
-              material: pMaterial,
-              system: pSystem
-            };
-            galaxies.push(pObject);
-          }
-          if (galaxies.length) {
-            resolve(galaxies);
-          } else {
-            reject('whoops');
-          }
-        }
-      });
-    });
-  }
-
-  var particles = new Particles(galaxies);
-  // console.log(particles);
-  ParticleUniverse(particles).then((res,err) => {
-    var universe = [];
-    for (var i = 0; i < res.length; i++) {
-      var galaxy = new THREE.Points(res[i].system, res[i].material);
-      universe.push(galaxy);
-      scene.add(galaxy);
-    }
-    this.universe.set(universe);
-  });
-
-  //* Terrain *//  
-  function genesisDevice() {
-    this.geometry =  new THREE.PlaneGeometry(canvasWidth * 2, canvasHeight * 2, 128,128);
-    this.material = new THREE.MeshLambertMaterial({
-      color: mainColor
-    });
-    this.wireMaterial = new THREE.MeshLambertMaterial({
-      color: "#FFFFFF",
-      wireframe: true,
-      transparent: true
-    });
-    this.inception = function() {
-      //plot terrain vertices
-      for (var i = 0; i < this.geometry.vertices.length; i++) {
-        if (i % 2 === 0 || i % 3 === 0 || i % 7 === 0) {
-          var num = Math.floor(Math.random() * (30 - 20 + 1)) + 20;
-          this.geometry.vertices[i].z = Math.random() * num;
-        }
-      }
-      //define terrain model
-      this.terrain = new THREE.Mesh(this.geometry, this.material);
-      this.terrain.rotation.x = -Math.PI/2;
-      this.terrain.position.y = -20;
-      this.terrain.recieveShadow = true;
-      this.terrain.castShadow = true;
-      //define wireframe model
-      this.wire = new THREE.Mesh(this.geometry, this.wireMaterial);
-      this.wire.rotation.x = -Math.PI/2;
-      this.wire.position.y = -19.8;
-      scene.add(this.terrain, this.wire);
-      // console.log(this.terrain);
-      return this;
-    }
-    this.inception();
-  }
-  //generate the terrain obj
-  var terrain = genesisDevice(); //adds to scene - weird pattern. 
   
   /* Sky */
   var skyPath = `${baseUrl}DeepSpace.png`;
