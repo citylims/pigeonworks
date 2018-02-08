@@ -97,6 +97,27 @@ Template.flight.onRendered(function() {
     scene.add(sphere);
   });
   
+  var fontLoader = new THREE.FontLoader();
+  fontLoader.load( `${baseUrl}/fonts/Dosis_SemiBold.json`, function ( font ) {
+  console.log(font)
+  	var textGeo = new THREE.TextGeometry( '!!!!!!!!!!!!!!!!!!!!!', {
+  		font: font,
+  		size: 80,
+  		height: 5,
+  		curveSegments: 12,
+  		bevelEnabled: true,
+  		bevelThickness: 10,
+  		bevelSize: 8,
+  		bevelSegments: 5
+  	});
+    var materials = [
+			new THREE.MeshPhongMaterial( { color: 'red', flatShading: true } ), // front
+			new THREE.MeshPhongMaterial( { color: '0xffffff' } ) // side
+		];
+    var textMesh = new THREE.Mesh( textGeo, materials );
+    scene.add(textMesh);
+  });
+  
   this.autorun(() => {
     if (this.trailTarget.get()) {
       var trailHeadGeometry = [];
