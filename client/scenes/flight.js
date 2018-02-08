@@ -7,6 +7,10 @@ Template.flight.onRendered(function() {
   $('canvas').remove(); // this should be moved to router level.
   this.trailTarget = new ReactiveVar(false);
   this.time = new ReactiveVar(0.01);
+  this.sphereFace = new ReactiveVar(false);
+
+  var raycaster = new THREE.Raycaster();
+  var mouse = new THREE.Vector2();
   
   var canvasHeight = window.innerHeight;
   var canvasWidth = window.innerWidth;
@@ -106,9 +110,15 @@ Template.flight.onRendered(function() {
 
   /* Render Canvas */
   var render = () => {
-    requestAnimationFrame(render);
     animation();
+    intersection();
+    requestAnimationFrame(render);
     renderer.render(scene, camera);
+  }
+  
+  var onMouseMove = (event) => {
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
   }
   
   /* Animations */
@@ -127,11 +137,16 @@ Template.flight.onRendered(function() {
       this.time.set(time);
     }
   }
-  //play with camera      
-  // zoom += inc;
-  // if (zoom <= 0.2 || zoom >= 1.0) {
-  //   inc = +inc;
-  // }
+  var intersection = () => {
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( scene.children );
+    if (intersects.length) {
+      this.sphereFace.set(intersects[0])
+      // console.log(intersects[0]);
+      console.log(intersects[0].object);
+    }
+  }
   
+  document.addEventListener( 'mousemove', onMouseMove, false );
   render();
 });
