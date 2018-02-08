@@ -5,21 +5,15 @@ var OrbitControls = require('three-orbit-controls')(THREE)
 
 Template.flight.onRendered(function() {
   $('canvas').remove(); // this should be moved to router level.
-  this.universe = new ReactiveVar(false);
+  this.trailTarget = new ReactiveVar(false);
+  this.time = new ReactiveVar(0.01);
   
-  this.getRandomInt = (max) => {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-  
-  var mainColor = "#333333";
   var canvasHeight = window.innerHeight;
   var canvasWidth = window.innerWidth;
   
   var loader = new THREE.TextureLoader();
   loader.setCrossOrigin("*");
   var baseUrl = window.location.href;
-  var space = "#151718";
-  var galaxies = 8;
 
   var scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2("#BABABA", 0.0002);
@@ -45,7 +39,7 @@ Template.flight.onRendered(function() {
   controls.minPolarAngle = 1;
   controls.minDistance = 300;
   controls.maxDistance = 500;
-
+  
   var renderer = new THREE.WebGLRenderer({ alpha: true});
   renderer.setSize(canvasWidth, canvasHeight);
   renderer.shadowMap.enabled = true;
@@ -58,17 +52,6 @@ Template.flight.onRendered(function() {
     var canvasWidth = window.innerWidth;
     camera.aspect = canvasWidth / canvasHeight;
   }
-  
-  var getTexture = () => {
-    return new Promise((resolve, reject) => {
-      var path = `${baseUrl}gradient.png`
-      loader.load(path, (texture) => {
-        resolve(texture);
-      }, function(a) {
-        reject(a)
-      })
-    });
-  };
   
   /* Sky */
   var skyPath = `${baseUrl}DeepSpace.png`;
@@ -95,8 +78,30 @@ Template.flight.onRendered(function() {
       map: texture,
       overdraw: 0.5
     });
+    var size = 2;
     var sphere = new THREE.Mesh(geometry, material);
+    this.trailTarget.set(sphere);
     scene.add(sphere);
+  });
+  
+  this.autorun(() => {
+    if (this.trailTarget.get()) {
+      console.log('ay');
+      var trailHeadGeometry = [];
+      trailHeadGeometry.push( 
+        new THREE.Vector3( -10.0, 0.0, 0.0 ), 
+        new THREE.Vector3( 0.0, 0.0, 0.0 ), 
+        new THREE.Vector3( 10.0, 0.0, 0.0 ) 
+      );
+      // create the trail renderer object
+      var trail = new THREE.TrailRenderer( scene, false );
+      // create material for the trail renderer
+      var trailMaterial = THREE.TrailRenderer.createBaseMaterial();   
+      // specify length of trail
+      var trailLength = 2000;
+      // initialize the trail
+      trail.initialize( trailMaterial, trailLength, false, 0, trailHeadGeometry, this.trailTarget.get() );
+    }
   });
 
   /* Render Canvas */
@@ -107,61 +112,26 @@ Template.flight.onRendered(function() {
   }
   
   /* Animations */
+  
   var animation = () => {
     scene.rotation.y -= .0005;
     camera.fov = fov * zoom;
     camera.updateProjectionMatrix();
-    var universe = this.universe.get();
-    for (var i = 0; i < universe.length; i++) {
-      var starSystem = universe[i];
-      var starCount = starSystem.geometry.vertices.length;
-      while (starCount--) {
-        // var randX = this.getRandomInt(10);
-        // var randY = this.getRandomInt(15);
-        //hardcode some uglyness per playing with speed an direction.
-        //speed = distance
-        var randX = 1
-        var randY = 1 
-        var particle = starSystem.geometry.vertices[starCount]
-        if (particle.y < 5) {
-          // console.log(particle.y)
-          particle.rebound = "up";
-          particle.y = particle.y + randY; 
-        } else if (particle.y > 295) {
-          particle.rebound = "down";
-          particle.y = (particle.y - randY);
-        } else if (particle.rebound === "up") {
-          particle.y = (particle.y + randY);
-        } else if (particle.rebound === "down") {
-          // console.log(particle.y);
-          particle.y = (particle.y - randY);
-        } else {
-          particle.y = (particle.y - randY);
-        }
-        ///
-        if (particle.x < -1000) {//limit --- need to pull these values dynamically.
-          particle.reboundX = "right";
-          particle.x = (particle.x + randX)
-        } else if ( particle.x > 600) {
-          particle.reboundX = "left";
-          particle.x = (particle.x - randX)
-        } else if (particle.reboundX === "right") {
-          particle.x = (particle.x + randX)
-        } else if (particle.reboundX === "left") {
-          particle.x = (particle.x - randX)
-        } else {
-          particle.x = (particle.x - randX)
-        }    
-      }
-      this.universe.set(universe); //reset the universe obj
-      starSystem.geometry.verticesNeedUpdate = true;
+    var sphere = this.trailTarget.get();
+    if (sphere) {
+      var time = this.time.get();
+      time += 0.01;
+      //small orbit
+      sphere.position.x = 20*Math.cos(time) + 0;
+      sphere.position.z = 20*Math.sin(time) + 0;
+      this.time.set(time);
     }
-    //play with camera      
-    // zoom += inc;
-    // if (zoom <= 0.2 || zoom >= 1.0) {
-    //   inc = +inc;
-    // }
   }
+  //play with camera      
+  // zoom += inc;
+  // if (zoom <= 0.2 || zoom >= 1.0) {
+  //   inc = +inc;
+  // }
   
   render();
 });
