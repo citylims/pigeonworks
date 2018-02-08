@@ -7,7 +7,16 @@ Template.flight.onRendered(function() {
   $('canvas').remove(); // this should be moved to router level.
   this.trailTarget = new ReactiveVar(false);
   this.time = new ReactiveVar(0.01);
-  this.sphereFace = new ReactiveVar(false);
+  this.update = new ReactiveVar(false);
+  this.mouseDown = new ReactiveVar(false);
+  
+  this.autorun(() => {
+    if (this.update.get()) {
+      Meteor.setTimeout(() => {
+        this.update.set(false);
+      }, 300);
+    }
+  });
 
   var raycaster = new THREE.Raycaster();
   var mouse = new THREE.Vector2();
@@ -90,7 +99,6 @@ Template.flight.onRendered(function() {
   
   this.autorun(() => {
     if (this.trailTarget.get()) {
-      console.log('ay');
       var trailHeadGeometry = [];
       trailHeadGeometry.push( 
         new THREE.Vector3( -10.0, 0.0, 0.0 ), 
@@ -138,15 +146,33 @@ Template.flight.onRendered(function() {
     }
   }
   var intersection = () => {
+    if (this.update.get()) return;
+    if (this.mouseDown.get()) return;
     raycaster.setFromCamera( mouse, camera );
     var intersects = raycaster.intersectObjects( scene.children );
     if (intersects.length) {
-      this.sphereFace.set(intersects[0])
       // console.log(intersects[0]);
       console.log(intersects[0].object);
+      intersects[0].object.scale.set(0.7,0.7,0.7,0.7);
+      this.trailTarget.set(intersects[0].object);
+      this.update.set(true)
+    } else {
+      if (this.trailTarget.get()) {
+        var sphere = this.trailTarget.get();
+        sphere.scale.set(1,1,1,1);
+        this.trailTarget.set(sphere);
+        this.update.set(true)
+      }
     }
   }
   
   document.addEventListener( 'mousemove', onMouseMove, false );
+
+  document.body.onmousedown = () => { 
+    this.mouseDown.set(true);
+  }
+  document.body.onmouseup = () => {
+    this.mouseDown.set(false)
+  }
   render();
 });
