@@ -1,23 +1,31 @@
 Template.pygmalion.onRendered(function() {
-   var canvas = document.getElementById("album");
+   var canvas = $('#album').get(0);
   var ctx = canvas.getContext("2d");
-  var layer2 = document.getElementById("topLayer");
+  var layer2 = $('#layer2').get(0);
   var ctx2 = layer2.getContext("2d")
+  var layer3 = $('#layer3').get(0);
+  var ctx3 = layer3.getContext("2d")
+  var layer4 = $('#layer4').get(0);
+  var ctx4 = layer4.getContext("2d")
+  var layer5 = $('#layer5').get(0);
+  var ctx5 = layer5.getContext("2d")
+  var layer6 = $('#layer6').get(0);
+  var ctx6 = layer6.getContext("2d")
   //blur fix
-  ctx.translate(0.5, 0.5);
+  ctx3.translate(0.5, 0.5);
   var green = "#548779";
   var black = "#1D1F21";
 
   function threeGreen(x,y) {
     var pad = 25;
     for (i = 0; i < 3; i++) {
-      ctx.beginPath();
-      ctx.rect(x, y, 16, 16);
-      ctx.fillStyle = green;
-      ctx.fill();
-      ctx.lineWidth = .4;
-      ctx.strokeStyle = 'black';
-      ctx.stroke();
+      ctx3.beginPath();
+      ctx3.rect(x, y, 16, 16);
+      ctx3.fillStyle = green;
+      ctx3.fill();
+      ctx3.lineWidth = .4;
+      ctx3.strokeStyle = 'black';
+      ctx3.stroke();
       y += pad
     }
   }
@@ -51,13 +59,13 @@ Template.pygmalion.onRendered(function() {
   }
 
   function square(size, x, y, color) {
-    ctx.beginPath();
-    ctx.rect(x, y, size, size);
-    ctx.fillStyle = color;
-    ctx.fill();
-    ctx.lineWidth = .4;
-    ctx.strokeStyle = 'black';
-    ctx.stroke();
+    ctx4.beginPath();
+    ctx4.rect(x, y, size, size);
+    ctx4.fillStyle = color;
+    ctx4.fill();
+    ctx4.lineWidth = .4;
+    ctx4.strokeStyle = 'black';
+    ctx4.stroke();
   }
 
   //greenSquares
@@ -76,46 +84,46 @@ Template.pygmalion.onRendered(function() {
   threeBlack(295, 278);
 
   //circle
-  ctx.beginPath();
-    ctx.fillStyle = "#EFF0EB"
-    ctx.arc(480, 207, 90, 0, Math.PI*2, false);
-  ctx.closePath();
-  ctx.fill();
+  ctx5.beginPath();
+    ctx5.fillStyle = "#EFF0EB"
+    ctx5.arc(480, 207, 90, 0, Math.PI*2, false);
+  ctx5.closePath();
+  ctx5.fill();
 
   //doublesquare
-  ctx.beginPath();
+  ctx4.beginPath();
     square(40, 100, 300, black);
     square(40, 100, 360, black);
     square(40, 170, 315, black);
     square(40, 170, 350, black);
-  ctx.closePath();
-  ctx.beginPath();
-    ctx.strokeStyle = black;
-    ctx.lineWidth = 12;
-    ctx.moveTo(140, 321);
-    ctx.lineTo(170, 321);
-    ctx.moveTo(140, 384);
-    ctx.lineTo(200, 384);
-    ctx.moveTo(210, 351);
-    ctx.lineTo(280, 351);
-    ctx.stroke();
-  ctx.closePath();
+  ctx4.closePath();
+  ctx4.beginPath();
+    ctx4.strokeStyle = black;
+    ctx4.lineWidth = 12;
+    ctx4.moveTo(140, 321);
+    ctx4.lineTo(170, 321);
+    ctx4.moveTo(140, 384);
+    ctx4.lineTo(200, 384);
+    ctx4.moveTo(210, 351);
+    ctx4.lineTo(280, 351);
+    ctx4.stroke();
+  ctx4.closePath();
 
   //offset strokes bottom right
   //box
-  ctx.beginPath();
-    ctx.rect(530, 315, 40, 162);
-    ctx.fillStyle = black
-    ctx.fill();
-  ctx.closePath
+  ctx6.beginPath();
+    ctx6.rect(530, 315, 40, 162);
+    ctx6.fillStyle = black
+    ctx6.fill();
+  ctx6.closePath
   //line init
   function liner(x, y) {
-    ctx.beginPath();
-      ctx.lineWidth = 12;
-      ctx.moveTo(531, y);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-    ctx.closePath();
+    ctx6.beginPath();
+      ctx6.lineWidth = 12;
+      ctx6.moveTo(531, y);
+      ctx6.lineTo(x, y);
+      ctx6.stroke();
+    ctx6.closePath();
   }
   liner();
   //draw lines to box
@@ -147,7 +155,19 @@ Template.pygmalion.onRendered(function() {
   insideSquare(433, 189);
   insideSquare(433, 236);
   var scene = Meteor.setTimeout(function() {
-    $('#topLayer').animate({'left': "150"}, 5000, function() {
+    $('#layer2').animate({'left': "150"}, 5000, function() {
+      $('.hymn').addClass('sing');
+    });    
+    $('#layer3').animate({'left': "150"}, 5000, function() {
+      $('.hymn').addClass('sing');
+    });    
+    $('#layer4').animate({'left': "150"}, 5000, function() {
+      $('.hymn').addClass('sing');
+    });    
+    $('#layer5').animate({'left': "150"}, 5000, function() {
+      $('.hymn').addClass('sing');
+    });    
+    $('#layer6').animate({'left': "150"}, 5000, function() {
       $('.hymn').addClass('sing');
     });    
   }, 500);
