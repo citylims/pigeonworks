@@ -9,6 +9,8 @@ Template.flight.onRendered(function() {
   this.time = new ReactiveVar(0.01);
   this.update = new ReactiveVar(false);
   this.mouseDown = new ReactiveVar(false);
+  this.activeFont = new ReactiveVar(false);
+  this.textObj = new ReactiveVar(false);
   
   this.autorun(() => {
     if (this.update.get()) {
@@ -97,25 +99,11 @@ Template.flight.onRendered(function() {
     scene.add(sphere);
   });
   
+  //globalize for better init
   var fontLoader = new THREE.FontLoader();
-  fontLoader.load( `${baseUrl}/fonts/Dosis_SemiBold.json`, function ( font ) {
-  console.log(font)
-  	var textGeo = new THREE.TextGeometry( '!!!!!!!!!!!!!!!!!!!!!', {
-  		font: font,
-  		size: 80,
-  		height: 5,
-  		curveSegments: 12,
-  		bevelEnabled: true,
-  		bevelThickness: 10,
-  		bevelSize: 8,
-  		bevelSegments: 5
-  	});
-    var materials = [
-			new THREE.MeshPhongMaterial( { color: 'red', flatShading: true } ), // front
-			new THREE.MeshPhongMaterial( { color: '0xffffff' } ) // side
-		];
-    var textMesh = new THREE.Mesh( textGeo, materials );
-    scene.add(textMesh);
+  fontLoader.load( `${baseUrl}/fonts/Dosis_SemiBold.typeface.json`,  ( font ) => {
+    // console.log(font)
+    this.activeFont.set(font);
   });
   
   this.autorun(() => {
@@ -166,19 +154,71 @@ Template.flight.onRendered(function() {
       this.time.set(time);
     }
   }
+  
+  
   var intersection = () => {
     if (this.update.get()) return;
     if (this.mouseDown.get()) return;
+    
     raycaster.setFromCamera( mouse, camera );
+    var font = this.activeFont.get();
+    var text = this.textObj.get();
     var intersects = raycaster.intersectObjects( scene.children );
-    if (intersects.length) {
-      // console.log(intersects[0]);
-      console.log(intersects[0].object);
-      intersects[0].object.scale.set(0.7,0.7,0.7,0.7);
-      this.trailTarget.set(intersects[0].object);
-      this.update.set(true)
-    } else {
-      if (this.trailTarget.get()) {
+    
+    if (intersects.length && font) {
+      if (text) {
+        if (text.visible === false) {
+          _.each(scene.children, (child) => {
+            if (child.uuid === text.uuid) {
+              child.visible = true;
+              this.textObj.set(child);
+              this.update.set(true)
+            }
+          });
+        }
+      } else { // create first intance of text -- move this to default visible false and load globally on app load.
+        intersects[0].object.scale.set(0.7,0.7,0.7,0.7);
+        this.trailTarget.set(intersects[0].object);
+        this.update.set(true);
+        	var textGeo = new THREE.TextGeometry( '!!!!!!!!!!!!!!!!!!!!!', {
+        		font: font,
+        		size: 80,
+        		height: 5,
+        		curveSegments: 12,
+        		bevelEnabled: true,
+        		bevelThickness: 10,
+        		bevelSize: 8,
+        		bevelSegments: 5
+        	});
+          var materials = [
+      			new THREE.MeshPhongMaterial( { color: 'red', flatShading: true } ), // front
+      			new THREE.MeshPhongMaterial( { color: '0xffffff' } ) // side
+      		];
+          var textMesh = new THREE.Mesh( textGeo, materials );
+          textMesh.position.set(100, 100, 100);
+          this.textObj.set(textMesh);
+          scene.add(textMesh);
+      }
+    } else { // not hovering
+      if (this.trailTarget.get()) { // need to remove trailtarget unless i can prove that trails exist?
+        console.log('out');
+        var text = this.textObj.get();
+        console.log(text);
+        if (text) {
+          _.each(scene.children, (child) => { //find the correct obj
+            // console.log(child.uuid);
+            if (child.uuid === text.uuid) {
+              child.visible = false; // set invis
+              this.textObj.set(child); // update in template
+              var sphere = this.trailTarget.get();
+              sphere.scale.set(1,1,1,1);
+              this.trailTarget.set(sphere);
+              // this.textObj.set(false);
+              this.update.set(true)
+            }
+          });
+        } 
+        //reset sphere to normal scale.
         var sphere = this.trailTarget.get();
         sphere.scale.set(1,1,1,1);
         this.trailTarget.set(sphere);
@@ -187,7 +227,7 @@ Template.flight.onRendered(function() {
     }
   }
   
-  document.addEventListener( 'mousemove', onMouseMove, false );
+ document.addEventListener( 'mousemove', onMouseMove, false );
 
   document.body.onmousedown = () => { 
     this.mouseDown.set(true);
