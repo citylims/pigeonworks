@@ -124,6 +124,44 @@ Template.flight.onRendered(function() {
       trail.initialize( trailMaterial, trailLength, false, 0, trailHeadGeometry, this.trailTarget.get() );
     }
   });
+  
+  this.whatYouSay = (face, font, child) => {
+    if (face.a < 10000) {
+      var sayin = "top";
+    } else if (face.a >= 10000 && face.a < 12000) {
+      sayin = "north";
+    } else if (face.a >= 12000 && face.a < 14000) {
+      sayin = "south";
+    } else {
+      sayin = "bottom";
+    }
+  
+    if (child) {
+      if (child.geometry.parameters.text === sayin) {
+        console.log('same sayin');
+        return;
+      }
+    }
+    
+    var textGeo = new THREE.TextGeometry( sayin, {
+      font: font,
+      size: 80,
+      height: 5,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: 10,
+      bevelSize: 8,
+      bevelSegments: 5
+    });
+    var materials = [
+      new THREE.MeshPhongMaterial( { color: 'red', flatShading: true } ), // front
+      new THREE.MeshPhongMaterial( { color: '0xffffff' } ) // side
+    ];
+    var textMesh = new THREE.Mesh( textGeo, materials );
+    textMesh.position.set(100, 100, 100);
+    this.textObj.set(textMesh);
+    return textMesh;
+  }
 
   /* Render Canvas */
   var render = () => {
@@ -166,44 +204,34 @@ Template.flight.onRendered(function() {
     var intersects = raycaster.intersectObjects( scene.children );
     
     if (intersects.length && font) {
+      console.log(intersects[0].face.a);
       if (text) {
-        if (text.visible === false) {
-          _.each(scene.children, (child) => {
-            if (child.uuid === text.uuid) {
-              child.visible = true;
-              this.textObj.set(child);
-              this.update.set(true)
+        _.each(scene.children, (child) => {
+          if (child.uuid === text.uuid) {
+            
+            var textMesh = this.whatYouSay(intersects[0].face, font, child);
+            if (textMesh) {
+              scene.remove(child);
+              this.update.set(true);
+              scene.add(textMesh);
+            } else {
+              console.log('abort');
             }
-          });
-        }
+          }
+        });
+          
       } else { // create first intance of text -- move this to default visible false and load globally on app load.
-        intersects[0].object.scale.set(0.7,0.7,0.7,0.7);
+        // intersects[0].object.scale.set(0.7,0.7,0.7,0.7);
         this.trailTarget.set(intersects[0].object);
         this.update.set(true);
-        	var textGeo = new THREE.TextGeometry( '!!!!!!!!!!!!!!!!!!!!!', {
-        		font: font,
-        		size: 80,
-        		height: 5,
-        		curveSegments: 12,
-        		bevelEnabled: true,
-        		bevelThickness: 10,
-        		bevelSize: 8,
-        		bevelSegments: 5
-        	});
-          var materials = [
-      			new THREE.MeshPhongMaterial( { color: 'red', flatShading: true } ), // front
-      			new THREE.MeshPhongMaterial( { color: '0xffffff' } ) // side
-      		];
-          var textMesh = new THREE.Mesh( textGeo, materials );
-          textMesh.position.set(100, 100, 100);
-          this.textObj.set(textMesh);
-          scene.add(textMesh);
+        var textMesh = this.whatYouSay(intersects[0].face, font);
+        scene.add(textMesh);
       }
     } else { // not hovering
       if (this.trailTarget.get()) { // need to remove trailtarget unless i can prove that trails exist?
-        console.log('out');
+        // console.log('out');
         var text = this.textObj.get();
-        console.log(text);
+        // console.log(text);
         if (text) {
           _.each(scene.children, (child) => { //find the correct obj
             // console.log(child.uuid);
@@ -211,7 +239,6 @@ Template.flight.onRendered(function() {
               child.visible = false; // set invis
               this.textObj.set(child); // update in template
               var sphere = this.trailTarget.get();
-              sphere.scale.set(1,1,1,1);
               this.trailTarget.set(sphere);
               // this.textObj.set(false);
               this.update.set(true)
@@ -220,7 +247,6 @@ Template.flight.onRendered(function() {
         } 
         //reset sphere to normal scale.
         var sphere = this.trailTarget.get();
-        sphere.scale.set(1,1,1,1);
         this.trailTarget.set(sphere);
         this.update.set(true)
       }
