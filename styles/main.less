@@ -73,13 +73,19 @@ iframe {
   top: 200px;
   left: 800px;
   max-width: 350px;
-  opacity: 0;
+  // opacity: 0;
   transition: opacity 2s ease-in;
 }
 
 .title {
   text-decoration: underline;
   font-size: 22px;
+  max-width: 350px;
+  margin: 20px 60px;
+  font-size: 18px;
+  font-family: arial;
+  opacity: 0;
+  transition: opacity 2s ease-in;
 }
 
 .lyric {
@@ -87,8 +93,22 @@ iframe {
   margin: 20px 60px;
   font-size: 18px;
   font-family: arial;
+  opacity: 0;
+  transition: opacity 2s ease-in;
 }
 
 .sing {
   opacity: 1
 }
+
+@keyframes jitter { 
+  50% {
+    transform:skewY(0.7deg) 
+    skewX(-0.7deg) 
+    scale(1.006);
+  } 
+}
+.jittery {
+  animation: jitter 200ms linear infinite;
+}
+

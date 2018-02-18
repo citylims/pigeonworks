@@ -1,5 +1,29 @@
+Template.pygmalion.onCreated(function() {
+  this.lyricCount = new ReactiveVar(0);
+  this.lyrics = [
+    "Sits down by the fire", 
+    "Ease his worried mind",
+    "If only I could try",
+    "Reach the light inside",
+    "Feels so hard to say",
+    "Chase his fears away",
+    "Know that I won't try",
+    "Catch his dreams today"  
+  ];
+});
+
+Template.pygmalion.helpers({
+  'lyrics': function() {
+    return Template.instance().lyrics;
+  },
+  // isShown: function(lyric) {
+  //   _e
+  // }
+});
+
 Template.pygmalion.onRendered(function() {
-   var canvas = $('#album').get(0);
+  var inst = Template.instance();
+  var canvas = $('#album').get(0);
   var ctx = canvas.getContext("2d");
   var layer2 = $('#layer2').get(0);
   var ctx2 = layer2.getContext("2d")
@@ -156,6 +180,7 @@ Template.pygmalion.onRendered(function() {
   insideSquare(433, 236);
   Meteor.setTimeout(function() {
     $('#layer2').animate({'left': "150"}, 5000) 
+    $('.hymn').addClass('sing');
   }, 500)
   Meteor.setTimeout(function() {
     $('#layer3').animate({'left': "150"}, 5000) 
@@ -168,8 +193,41 @@ Template.pygmalion.onRendered(function() {
   }, 15500)
   Meteor.setTimeout(function() {
     $('#layer6').animate({'left': "150"}, 5000)   
-  }, 20500);
+    $('.title').addClass('sing');
+  }, 16500);
   Meteor.setTimeout(function() {
-    $('.hymn').addClass('sing');
-  }, 22500);
+    // $('.hymn').addClass('sing');
+    choir();
+  }, 17500);
+  
+  var choir = () => {
+    var count = this.lyricCount.get();
+    if (count === this.lyrics.length) return;
+    if (count === 4) {
+      console.log('4 wait')
+      pause(count);
+    } else {
+      updateLyrics(count);
+    };
+  };
+  
+  var pause = (count) => {
+    Meteor.setTimeout(() => {
+      // this.lyricCount.set(count + 1);
+      $('.lyric').eq(count).addClass('sing');
+      this.lyricCount.set(count + 1);
+      choir();
+    }, 28500);
+  }
+  
+  var updateLyrics = (count) => {
+    console.log('ay')
+    Meteor.setTimeout(() => {
+      // console.log('sining')
+      $('.lyric').eq(count).addClass('sing');
+      this.lyricCount.set(count + 1);
+      choir();
+    }, 5500);
+  }
+
 });
