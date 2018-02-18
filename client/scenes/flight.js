@@ -101,7 +101,7 @@ Template.flight.onRendered(function() {
   
   //globalize for better init
   var fontLoader = new THREE.FontLoader();
-  fontLoader.load( `${baseUrl}/fonts/Dosis_SemiBold.typeface.json`,  ( font ) => {
+  fontLoader.load( `${baseUrl}/fonts/Bellefair_Regular.typeface.json`,  ( font ) => {
     // console.log(font)
     this.activeFont.set(font);
   });
@@ -126,6 +126,7 @@ Template.flight.onRendered(function() {
   });
   
   this.whatYouSay = (face, font, child) => {
+    // http://jsfiddle.net/9XGuK/4/
     if (face.a < 10000) {
       var sayin = "top";
     } else if (face.a >= 10000 && face.a < 12000) {
@@ -145,17 +146,18 @@ Template.flight.onRendered(function() {
     
     var textGeo = new THREE.TextGeometry( sayin, {
       font: font,
-      size: 80,
+      size: 50,
       height: 5,
-      curveSegments: 12,
+      curveSegments: 2,
       bevelEnabled: true,
-      bevelThickness: 10,
-      bevelSize: 8,
-      bevelSegments: 5
+      bevelThickness: 3,
+      bevelSize: 2,
+      bevelSegments: 2
     });
+
     var materials = [
-      new THREE.MeshPhongMaterial( { color: 'red', flatShading: true } ), // front
-      new THREE.MeshPhongMaterial( { color: '0xffffff' } ) // side
+      new THREE.MeshPhongMaterial( { color: 'rgb(255, 179, 61)', flatShading: false } ), // front
+      new THREE.MeshPhongMaterial( { color: 'rgb(255, 179, 61)' } ) // side
     ];
     var textMesh = new THREE.Mesh( textGeo, materials );
     textMesh.position.set(100, 100, 100);
@@ -197,7 +199,7 @@ Template.flight.onRendered(function() {
   var intersection = () => {
     if (this.update.get()) return;
     if (this.mouseDown.get()) return;
-    
+    // 
     raycaster.setFromCamera( mouse, camera );
     var font = this.activeFont.get();
     var text = this.textObj.get();
