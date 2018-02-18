@@ -154,22 +154,22 @@ Template.pygmalion.onRendered(function() {
   insideSquare(433, 141);
   insideSquare(433, 189);
   insideSquare(433, 236);
-  var scene = Meteor.setTimeout(function() {
-    $('#layer2').animate({'left': "150"}, 5000, function() {
-      $('.hymn').addClass('sing');
-    });    
-    $('#layer3').animate({'left': "150"}, 5000, function() {
-      $('.hymn').addClass('sing');
-    });    
-    $('#layer4').animate({'left': "150"}, 5000, function() {
-      $('.hymn').addClass('sing');
-    });    
-    $('#layer5').animate({'left': "150"}, 5000, function() {
-      $('.hymn').addClass('sing');
-    });    
-    $('#layer6').animate({'left': "150"}, 5000, function() {
-      $('.hymn').addClass('sing');
-    });    
-  }, 500);
-  
+  Meteor.setTimeout(function() {
+    $('#layer2').animate({'left': "150"}, 5000) 
+  }, 500)
+  Meteor.setTimeout(function() {
+    $('#layer3').animate({'left': "150"}, 5000) 
+  }, 5500)
+  Meteor.setTimeout(function() {
+    $('#layer4').animate({'left': "150"}, 5000)
+  }, 10500)
+  Meteor.setTimeout(function() {
+    $('#layer5').animate({'left': "150"}, 5000)
+  }, 15500)
+  Meteor.setTimeout(function() {
+    $('#layer6').animate({'left': "150"}, 5000)   
+  }, 20500);
+  Meteor.setTimeout(function() {
+    $('.hymn').addClass('sing');
+  }, 22500);
 });
