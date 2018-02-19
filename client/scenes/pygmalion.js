@@ -173,7 +173,7 @@ Template.pygmalion.onRendered(function() {
   offsetLines();
   //draw text
   ctx.font = "28px Arial";
-  ctx.fillText("slowdive", 100, 480);
+  
   //layer2 draw
   insideSquare(433, 141);
   insideSquare(433, 189);
@@ -183,20 +183,21 @@ Template.pygmalion.onRendered(function() {
     $('.hymn').addClass('sing');
   }, 500)
   Meteor.setTimeout(function() {
-    $('#layer3').animate({'left': "150"}, 5000) 
+    $('#layer3').animate({'top': "50"}, 5000) 
   }, 5500)
   Meteor.setTimeout(function() {
-    $('#layer4').animate({'left': "150"}, 5000)
+    $('#layer4').animate({'top': "50"}, 5000)
   }, 10500)
   Meteor.setTimeout(function() {
     $('#layer5').animate({'left': "150"}, 5000)
   }, 15500)
   Meteor.setTimeout(function() {
-    $('#layer6').animate({'left': "150"}, 5000)   
-    $('.title').addClass('sing');
+    $('#layer6').animate({'top': "50"}, 5000, function() {
+      $('.title').addClass('sing');
+      ctx.fillText("slowdive", 100, 480);
+    });
   }, 16500);
   Meteor.setTimeout(function() {
-    // $('.hymn').addClass('sing');
     choir();
   }, 17500);
   
@@ -222,9 +223,15 @@ Template.pygmalion.onRendered(function() {
   
   var updateLyrics = (count) => {
     console.log('ay')
+    // $('.lyric').eq(count - 1).removeClass('jittery');
     Meteor.setTimeout(() => {
+      // $('.lyric').eq(count - 1).removeClass('jittery');
       // console.log('sining')
       $('.lyric').eq(count).addClass('sing');
+      $('.lyric').eq(count).addClass('jittery')
+      Meteor.setTimeout(() => {
+        $('.lyric').eq(count).removeClass('jittery');
+      }, 3000);
       this.lyricCount.set(count + 1);
       choir();
     }, 5500);
