@@ -8,6 +8,11 @@
   left: 150px;
   border: 1px solid black;
   z-index: 1;
+  background: white;
+  animation-direction: normal;
+	animation-duration: 126s;
+	animation-name: albumColors;
+	animation-timing-function: ease;
 }
 
 #layer2 {
@@ -39,6 +44,13 @@
 }
 
 #layer6 {
+  position: absolute;
+  left: 150px;
+  top: 700px;
+  z-index: 10;
+}
+
+#layer7 {
   position: absolute;
   left: 150px;
   top: 700px;
@@ -91,4 +103,29 @@ iframe {
 }
 .jittery {
   animation: jitter 200ms linear infinite;
+}
+
+
+@-webkit-keyframes backColors {
+    0% {background-color: white;}
+   30% {background-color: #FCF3FF;}
+	 60% {background-color: #E2DAE5;}
+	100% {background-color: black;}
+}
+
+@-webkit-keyframes albumColors {
+    0% {background-color: white;}
+   30% {background-color: #FCF3FF;}
+	 60% {background-color: #E2DAE5;}
+	100% {background-color: #afafaf;}
+}
+
+#pygmalion   {    
+  background-color: white !important;
+  animation-direction: normal;
+	animation-duration: 126s;
+	animation-name: backColors;
+	animation-timing-function: ease;
+// body {background-color: #39f !important;}
+
 }

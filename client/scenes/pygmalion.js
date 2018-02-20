@@ -1,5 +1,6 @@
 Template.pygmalion.onCreated(function() {
   this.lyricCount = new ReactiveVar(0);
+  this.windowHeight = new ReactiveVar(window.innerHeight);
   this.lyrics = [
     "Sits down by the fire", 
     "Ease his worried mind",
@@ -16,12 +17,24 @@ Template.pygmalion.helpers({
   'lyrics': function() {
     return Template.instance().lyrics;
   },
+  height: function() {
+    return Template.instance().windowHeight.get();
+  }
   // isShown: function(lyric) {
   //   _e
   // }
 });
 
 Template.pygmalion.onRendered(function() {
+  var inst = Template.instance();
+  window.onresize = function() {
+    inst.windowHeight.set(window.innerHeight);
+    // var canvasHeight = window.innerHeight;
+    // var canvasWidth = window.innerWidth;
+    // camera.aspect = canvasWidth / canvasHeight;
+  }
+  
+  
   var inst = Template.instance();
   var canvas = $('#album').get(0);
   var ctx = canvas.getContext("2d");
@@ -34,7 +47,9 @@ Template.pygmalion.onRendered(function() {
   var layer5 = $('#layer5').get(0);
   var ctx5 = layer5.getContext("2d")
   var layer6 = $('#layer6').get(0);
-  var ctx6 = layer6.getContext("2d")
+  var ctx6 = layer6.getContext("2d");
+  var layer7 = $('#layer7').get(0);
+  var ctx7 = layer7.getContext("2d");
   //blur fix
   ctx3.translate(0.5, 0.5);
   var green = "#548779";
@@ -91,6 +106,16 @@ Template.pygmalion.onRendered(function() {
     ctx4.strokeStyle = 'black';
     ctx4.stroke();
   }
+  
+  function square7(size, x, y, color) {
+    ctx7.beginPath();
+    ctx7.rect(x, y, size, size);
+    ctx7.fillStyle = color;
+    ctx7.fill();
+    ctx7.lineWidth = .4;
+    ctx7.strokeStyle = 'black';
+    ctx7.stroke();
+  }
 
   //greenSquares
   threeGreen(80, 110);
@@ -115,23 +140,23 @@ Template.pygmalion.onRendered(function() {
   ctx5.fill();
 
   //doublesquare
-  ctx4.beginPath();
-    square(40, 100, 300, black);
-    square(40, 100, 360, black);
-    square(40, 170, 315, black);
-    square(40, 170, 350, black);
-  ctx4.closePath();
-  ctx4.beginPath();
-    ctx4.strokeStyle = black;
-    ctx4.lineWidth = 12;
-    ctx4.moveTo(140, 321);
-    ctx4.lineTo(170, 321);
-    ctx4.moveTo(140, 384);
-    ctx4.lineTo(200, 384);
-    ctx4.moveTo(210, 351);
-    ctx4.lineTo(280, 351);
-    ctx4.stroke();
-  ctx4.closePath();
+  ctx7.beginPath();
+    square7(40, 100, 300, black);
+    square7(40, 100, 360, black);
+    square7(40, 170, 315, black);
+    square7(40, 170, 350, black);
+  ctx7.closePath();
+  ctx7.beginPath();
+    ctx7.strokeStyle = black;
+    ctx7.lineWidth = 12;
+    ctx7.moveTo(140, 321);
+    ctx7.lineTo(170, 321);
+    ctx7.moveTo(140, 384);
+    ctx7.lineTo(200, 384);
+    ctx7.moveTo(210, 351);
+    ctx7.lineTo(280, 351);
+    ctx7.stroke();
+  ctx7.closePath();
 
   //offset strokes bottom right
   //box
@@ -171,8 +196,6 @@ Template.pygmalion.onRendered(function() {
     }
   }
   offsetLines();
-  //draw text
-  ctx.font = "28px Arial";
   
   //layer2 draw
   insideSquare(433, 141);
@@ -189,11 +212,17 @@ Template.pygmalion.onRendered(function() {
     $('#layer4').animate({'top': "50"}, 5000)
   }, 10500)
   Meteor.setTimeout(function() {
+    $('#layer7').animate({'top': "50"}, 5000) 
+    // $('.hymn').addClass('sing');
+  }, 12500)
+  Meteor.setTimeout(function() {
     $('#layer5').animate({'left': "150"}, 5000)
   }, 15500)
   Meteor.setTimeout(function() {
     $('#layer6').animate({'top': "50"}, 5000, function() {
       $('.title').addClass('sing');
+      //draw text
+      ctx.font = "28px Arial";
       ctx.fillText("slowdive", 100, 480);
     });
   }, 16500);
@@ -214,7 +243,6 @@ Template.pygmalion.onRendered(function() {
   
   var pause = (count) => {
     Meteor.setTimeout(() => {
-      // this.lyricCount.set(count + 1);
       $('.lyric').eq(count).addClass('sing');
       this.lyricCount.set(count + 1);
       choir();
@@ -222,11 +250,7 @@ Template.pygmalion.onRendered(function() {
   }
   
   var updateLyrics = (count) => {
-    console.log('ay')
-    // $('.lyric').eq(count - 1).removeClass('jittery');
     Meteor.setTimeout(() => {
-      // $('.lyric').eq(count - 1).removeClass('jittery');
-      // console.log('sining')
       $('.lyric').eq(count).addClass('sing');
       $('.lyric').eq(count).addClass('jittery')
       Meteor.setTimeout(() => {
