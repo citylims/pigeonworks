@@ -3,7 +3,7 @@ FlowRouter.route('/', {
     BlazeLayout.render('dashLayout', { scene: "creationMyth"});
   },
   triggersExit: function() {
-    $('canvas').remove(); // this should be moved to router level.
+    $('canvas').remove(); 
   }
 });
 
@@ -12,7 +12,7 @@ FlowRouter.route('/flight', {
     BlazeLayout.render('dashLayout', { scene: "flight"});
   },
   triggersExit: function() {
-      $('canvas').remove(); // this should be moved to router level.
+    $('canvas').remove(); 
   }
 });
 
@@ -21,6 +21,15 @@ FlowRouter.route('/pygmalion', {
     BlazeLayout.render('dashLayout', { scene: "pygmalion"});
   },
   triggersExit: function() {
-      $('canvas').remove(); // this should be moved to router level.
+    $('canvas').remove(); 
+  }
+});
+
+FlowRouter.route('/fader', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "food"});
+  },
+  triggersExit: function() {
+    $('canvas').remove(); 
   }
 });
