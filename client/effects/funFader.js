@@ -1,9 +1,13 @@
+Session.setDefault('funFadersActive', 0); //count nodes;
+
 Template.funFader.onCreated(function() {
   this.faderColor = new ReactiveVar(['magenta','orange','yellow','#21EB95','#00B1FC']);
   this.faderY = new ReactiveVar(5);
   this.faderDurationColor = new ReactiveVar(1500);
   this.faderDurationTransform = new ReactiveVar(500);
   this.faderDelayTransform = new ReactiveVar(250);
+  
+  Session.set('funFadersActive', Session.get('funFadersActive') + 1);
 });
 
 Template.funFader.helpers({
@@ -36,14 +40,15 @@ Template.funFader.onRendered(function() {
     document.body.appendChild(styleTag);
     var CLASS_NAME = 'fun-fader';
     var nodes = document.querySelectorAll('.fun-fader');
-    // console.log(nodes);
-    var fadersCreated = 0;
+    // 
+    console.log(nodes);
+    // var fadersCreated = 0;
 
     for (var i = 0; i < nodes.length; i++) {
 
       var n = nodes.item(i);
 
-      var className = CLASS_NAME+'-'+fadersCreated;
+      var className = CLASS_NAME+'-'+ (i + 1);
 
       var when = n.getAttribute(CLASS_NAME+'-on');
       var scope = n.getAttribute(CLASS_NAME+'-scope') || '';
@@ -61,7 +66,7 @@ Template.funFader.onRendered(function() {
 
       var delayAttr = n.getAttribute(CLASS_NAME + '-delay');
       delayAttr = parseFloat(delayAttr);
-      if (delayAttr === delayAttr) {
+      if (delayAttr === delayAttr) { // assign condition
         delayColor = delayAttr;
         delayTransform = delayAttr;
       }
@@ -113,7 +118,7 @@ Template.funFader.onRendered(function() {
       if (yAttr === yAttr) {
         y = yAttr;
       }
-      console.log(n);
+      // console.log(n);
       var t = n.textContent;
       var spans = [];
       for (var j = 0; j < t.length; j++) {
@@ -124,6 +129,7 @@ Template.funFader.onRendered(function() {
         } else { 
           span.innerHTML = ch;
         }
+        spans.push(span);
         span.setAttribute('style', 'animation-delay: '+-delayColor*(t.length-j)+'ms, '+-delayTransform*(t.length-j)+'ms; ' +
                                    '-webkit-animation-delay: '+-delayColor*(t.length-j)+'ms, '+-delayTransform*(t.length-j)+'ms;');
       }
@@ -173,15 +179,17 @@ Template.funFader.onRendered(function() {
         style += '\n\t'+prefix+'animation-iteration-count: infinite;';
         style += '\n\t'+prefix+'animation-direction: alternate;';
         style += ' }';
-        console.log(style);
+        // console.log(style);
       }
 
       addStyle('');
       addStyle('-webkit-');
-      
-      styleTag.appendChild(document.createTextNode(style));
 
-      fadersCreated++;
+      styleTag.appendChild(document.createTextNode(style));
     }
+});
+
+Template.alien.onDestroyed(function() {
+  Session.set('funFadersActive', Session.get('funFadersActive') - 1);
 });
 
