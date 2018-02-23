@@ -1,12 +1,10 @@
-Template.ayyLmao.helpers({
+Template.alien.helpers({
   height: function() {
     return `${window.innerHeight}px` ;
   }
 });
-Template.ayyLmao.onRendered(function() {
+Template.alien.onRendered(function() {
   function funFader() {
-    console.log('!!!')
-
     var styleTag = document.createElement('style');
     styleTag.type = 'text/css';
     document.body.appendChild(styleTag);
