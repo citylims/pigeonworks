@@ -34,6 +34,15 @@ FlowRouter.route('/alien', {
   }
 });
 
+FlowRouter.route('/food', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "food"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();
