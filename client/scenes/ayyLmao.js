@@ -1,18 +1,18 @@
-Template.food.helpers({
+Template.ayyLmao.helpers({
   height: function() {
     return `${window.innerHeight}px` ;
   }
 });
-Template.food.onRendered(function() {
-  function gnjfader() {
+Template.ayyLmao.onRendered(function() {
+  function funFader() {
     console.log('!!!')
 
     var styleTag = document.createElement('style');
     styleTag.type = 'text/css';
     document.body.appendChild(styleTag);
 
-    var CLASS_NAME = 'gnj-fader';
-    var nodes = document.querySelectorAll('.gnj-fader');
+    var CLASS_NAME = 'fun-fader';
+    var nodes = document.querySelectorAll('.fun-fader');
     console.log(nodes);
     var fadersCreated = 0;
 
@@ -164,7 +164,7 @@ Template.food.onRendered(function() {
 
   }
 
-  gnjfader();
+  funFader();
 });
 
 

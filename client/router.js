@@ -25,9 +25,9 @@ FlowRouter.route('/pygmalion', {
   }
 });
 
-FlowRouter.route('/fader', {
+FlowRouter.route('/ayylmao', {
   action: function(params, queryParams) {
-    BlazeLayout.render('dashLayout', { scene: "food"});
+    BlazeLayout.render('dashLayout', { scene: "ayylmao"});
   },
   triggersExit: function() {
     $('canvas').remove(); 
