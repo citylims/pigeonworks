@@ -3,7 +3,7 @@ FlowRouter.route('/', {
     BlazeLayout.render('dashLayout', { scene: "creationMyth"});
   },
   triggersExit: function() {
-    $('canvas').remove(); 
+    exitRefresh(); 
   }
 });
 
@@ -12,7 +12,7 @@ FlowRouter.route('/flight', {
     BlazeLayout.render('dashLayout', { scene: "flight"});
   },
   triggersExit: function() {
-    $('canvas').remove(); 
+    exitRefresh();
   }
 });
 
@@ -21,7 +21,7 @@ FlowRouter.route('/pygmalion', {
     BlazeLayout.render('dashLayout', { scene: "pygmalion"});
   },
   triggersExit: function() {
-    $('canvas').remove(); 
+    exitRefresh();
   }
 });
 
@@ -30,6 +30,11 @@ FlowRouter.route('/alien', {
     BlazeLayout.render('dashLayout', { scene: "alien"});
   },
   triggersExit: function() {
-    $('canvas').remove(); 
+    exitRefresh();
   }
 });
+
+function exitRefresh() {
+  $('style').remove();
+  $('canvas').remove();
+}
