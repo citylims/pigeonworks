@@ -1,99 +1,3 @@
-// canvas {
-//   top: 100px;
-// }
-
-#album {
-  position: absolute;
-  top: 50px;
-  left: 150px;
-  border: 1px solid black;
-  z-index: 1;
-  background: white;
-  animation-direction: normal;
-	animation-duration: 126s;
-	animation-name: albumColors;
-	animation-timing-function: ease;
-}
-
-#layer2 {
-  position: absolute;
-  right: -400px;
-  top: 50px;
-  z-index: 10;
-}
-
-#layer3 {
-  position: absolute;
-  left: 150px;
-  top: -400px;
-  z-index: 10;
-}
-
-#layer4 {
-  position: absolute;
-  left: 150px;
-  top: 700px;
-  z-index: 10;
-}
-
-#layer5 {
-  position: absolute;
-  top:50px;
-  left: -600px;
-  z-index: 2;
-}
-
-#layer6 {
-  position: absolute;
-  left: 150px;
-  top: 700px;
-  z-index: 10;
-}
-
-#layer7 {
-  position: absolute;
-  left: 150px;
-  top: 700px;
-  z-index: 10;
-}
-
-iframe {
-  display: none;
-}
-
-.hymn {
-  position: absolute;
-  top: 125px;
-  left: 800px;
-  max-width: 350px;
-  // opacity: 0;
-  transition: opacity 2s ease-in;
-}
-
-.title {
-  text-decoration: underline;
-  font-size: 22px;
-  max-width: 350px;
-  margin: 20px 60px;
-  font-size: 18px;
-  font-family: arial;
-  opacity: 0;
-  transition: opacity 2s ease-in;
-}
-
-.lyric {
-  max-width: 350px;
-  margin: 20px 60px;
-  font-size: 18px;
-  font-family: arial;
-  opacity: 0;
-  transition: opacity 2s ease-in;
-}
-
-.sing {
-  opacity: 1
-}
-
 @keyframes jitter { 
   50% {
     transform:skewY(0.7deg) 
@@ -101,10 +5,6 @@ iframe {
     scale(1.006);
   } 
 }
-.jittery {
-  animation: jitter 200ms linear infinite;
-}
-
 
 @-webkit-keyframes backColors {
     0% {background-color: white;}
@@ -121,12 +21,107 @@ iframe {
 	100% {background-color: white;}
 }
 
-#pygmalion   {    
+#pygmalion {    
   background-color: white !important;
   animation-direction: normal;
 	animation-duration: 118s;
 	animation-name: backColors;
 	animation-timing-function: ease;
 // body {background-color: #39f !important;}
+  #album {
+    position: absolute;
+    top: 50px;
+    left: 150px;
+    border: 1px solid black;
+    z-index: 1;
+    background: white;
+    animation-direction: normal;
+  	animation-duration: 126s;
+  	animation-name: albumColors;
+  	animation-timing-function: ease;
+  }
+
+  #layer2 {
+    position: absolute;
+    right: -400px;
+    top: 50px;
+    z-index: 10;
+  }
+
+  #layer3 {
+    position: absolute;
+    left: 150px;
+    top: -400px;
+    z-index: 10;
+  }
+
+  #layer4 {
+    position: absolute;
+    left: 150px;
+    top: 700px;
+    z-index: 10;
+  }
+
+  #layer5 {
+    position: absolute;
+    top:50px;
+    left: -600px;
+    z-index: 2;
+  }
+
+  #layer6 {
+    position: absolute;
+    left: 150px;
+    top: 700px;
+    z-index: 10;
+  }
+
+  #layer7 {
+    position: absolute;
+    left: 150px;
+    top: 700px;
+    z-index: 10;
+  }
+
+  iframe {
+    display: none;
+  }
+  
+  .jittery {
+    animation: jitter 200ms linear infinite;
+  }
+
+  .hymn {
+    position: absolute;
+    top: 125px;
+    left: 800px;
+    max-width: 350px;
+    // opacity: 0;
+    transition: opacity 2s ease-in;
+  }
+
+  .title {
+    text-decoration: underline;
+    font-size: 22px;
+    max-width: 350px;
+    margin: 20px 60px;
+    font-size: 18px;
+    font-family: arial;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+  }
+
+  .lyric {
+    max-width: 350px;
+    margin: 20px 60px;
+    font-size: 18px;
+    font-family: arial;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+  }
+
+  .sing {
+    opacity: 1
+  }
 
 }
