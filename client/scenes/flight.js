@@ -5,7 +5,7 @@ var OrbitControls = require('three-orbit-controls')(THREE)
 
 Template.flight.onRendered(function() {
   $('canvas').remove(); // this should be moved to router level.
-  this.trailTarget = new ReactiveVar(false);
+  this.planet = new ReactiveVar(false);
   this.time = new ReactiveVar(0.01);
   this.update = new ReactiveVar(false);
   this.mouseDown = new ReactiveVar(false);
@@ -95,7 +95,7 @@ Template.flight.onRendered(function() {
     });
     var size = 2;
     var sphere = new THREE.Mesh(geometry, material);
-    this.trailTarget.set(sphere);
+    this.planet.set(sphere);
     scene.add(sphere);
   });
   
@@ -104,25 +104,6 @@ Template.flight.onRendered(function() {
   fontLoader.load( `${baseUrl}/fonts/Bellefair_Regular.typeface.json`,  ( font ) => {
     // console.log(font)
     this.activeFont.set(font);
-  });
-  
-  this.autorun(() => {
-    if (this.trailTarget.get()) {
-      var trailHeadGeometry = [];
-      trailHeadGeometry.push( 
-        new THREE.Vector3( -10.0, 0.0, 0.0 ), 
-        new THREE.Vector3( 0.0, 0.0, 0.0 ), 
-        new THREE.Vector3( 10.0, 0.0, 0.0 ) 
-      );
-      // create the trail renderer object
-      var trail = new THREE.TrailRenderer( scene, false );
-      // create material for the trail renderer
-      var trailMaterial = THREE.TrailRenderer.createBaseMaterial();   
-      // specify length of trail
-      var trailLength = 2000;
-      // initialize the trail
-      trail.initialize( trailMaterial, trailLength, false, 0, trailHeadGeometry, this.trailTarget.get() );
-    }
   });
   
   this.whatYouSay = (face, font, child) => {
@@ -184,7 +165,7 @@ Template.flight.onRendered(function() {
     scene.rotation.y -= .0005;
     camera.fov = fov * zoom;
     camera.updateProjectionMatrix();
-    var sphere = this.trailTarget.get();
+    var sphere = this.planet.get();
     if (sphere) {
       var time = this.time.get();
       time += 0.01;
@@ -224,13 +205,13 @@ Template.flight.onRendered(function() {
           
       } else { // create first intance of text -- move this to default visible false and load globally on app load.
         // intersects[0].object.scale.set(0.7,0.7,0.7,0.7);
-        this.trailTarget.set(intersects[0].object);
+        this.planet.set(intersects[0].object);
         this.update.set(true);
         var textMesh = this.whatYouSay(intersects[0].face, font);
         scene.add(textMesh);
       }
     } else { // not hovering
-      if (this.trailTarget.get()) { // need to remove trailtarget unless i can prove that trails exist?
+      if (this.planet.get()) { // need to remove trailtarget unless i can prove that trails exist?
         // console.log('out');
         var text = this.textObj.get();
         // console.log(text);
@@ -240,16 +221,16 @@ Template.flight.onRendered(function() {
             if (child.uuid === text.uuid) {
               child.visible = false; // set invis
               this.textObj.set(child); // update in template
-              var sphere = this.trailTarget.get();
-              this.trailTarget.set(sphere);
+              var sphere = this.planet.get();
+              this.planet.set(sphere);
               // this.textObj.set(false);
               this.update.set(true)
             }
           });
         } 
         //reset sphere to normal scale.
-        var sphere = this.trailTarget.get();
-        this.trailTarget.set(sphere);
+        var sphere = this.planet.get();
+        this.planet.set(sphere);
         this.update.set(true)
       }
     }
