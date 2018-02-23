@@ -1,12 +1,42 @@
+Template.funFader.onCreated(function() {
+  this.faderColor = new ReactiveVar(['magenta','orange','yellow','#21EB95','#00B1FC']);
+  this.faderY = new ReactiveVar(5);
+  this.faderDurationColor = new ReactiveVar(1500);
+  this.faderDurationTransform = new ReactiveVar(500);
+  this.faderDelayTransform = new ReactiveVar(250);
+});
+
+Template.funFader.helpers({
+  faderColor: function() {
+    return Template.instance().faderColor.get().join(';');
+  },
+  faderY: function() {
+    return Template.instance().faderY.get();
+  },
+  faderDurationColor: function() {
+    return Template.instance().faderDurationColor.get();
+  },
+  faderDurationTransform: function() {
+    return Template.instance().faderDurationTransform.get();
+  },
+  faderDelayTransform: function() {
+    return Template.instance().faderDelayTransform.get();
+  },
+  text: function() {
+    return Template.instance().data.text;
+  }
+});
+
+
 Template.funFader.onRendered(function() {
-  function funFader() {
+    var inst = Template.instance();
+    
     var styleTag = document.createElement('style');
     styleTag.type = 'text/css';
     document.body.appendChild(styleTag);
-
     var CLASS_NAME = 'fun-fader';
     var nodes = document.querySelectorAll('.fun-fader');
-    console.log(nodes);
+    // console.log(nodes);
     var fadersCreated = 0;
 
     for (var i = 0; i < nodes.length; i++) {
@@ -18,15 +48,16 @@ Template.funFader.onRendered(function() {
       var when = n.getAttribute(CLASS_NAME+'-on');
       var scope = n.getAttribute(CLASS_NAME+'-scope') || '';
       
-      var durationColor = 1000;
-      var durationTransform = 1000;
+      var durationColor = inst.faderDurationColor.get();
+      var durationTransform = inst.faderDurationTransform.get();
 
-      var delayColor = 100;
-      var delayTransform = 100;
+      var delayColor = 100;//make reactive set?
+      var delayTransform = inst.faderDelayTransform.get();
 
-      var color = ['magenta','orange','yellow','#21EB95','#00B1FC'];
+      var color = inst.faderColor.get();
+      
       var x = 0;
-      var y = 0;
+      var y = inst.faderY.get();
 
       var delayAttr = n.getAttribute(CLASS_NAME + '-delay');
       delayAttr = parseFloat(delayAttr);
@@ -93,8 +124,6 @@ Template.funFader.onRendered(function() {
         } else { 
           span.innerHTML = ch;
         }
-        spans.push(span);
-        console.log(span)
         span.setAttribute('style', 'animation-delay: '+-delayColor*(t.length-j)+'ms, '+-delayTransform*(t.length-j)+'ms; ' +
                                    '-webkit-animation-delay: '+-delayColor*(t.length-j)+'ms, '+-delayTransform*(t.length-j)+'ms;');
       }
@@ -104,8 +133,7 @@ Template.funFader.onRendered(function() {
 
       n.innerHTML = '';
       spans.forEach(function(s) {
-          n.appendChild(s);
-
+        n.appendChild(s);
       });
 
       var style = '';
@@ -119,12 +147,13 @@ Template.funFader.onRendered(function() {
       if (when === 'off') selectors = [FADER_TRUE];
       if (when === 'hover') selectors = [HOVER, FADER_TRUE];
 
-      function addStyle(prefix) {
+      function addStyle(prefix) { //generate style sheet
         style += '\n\n@'+prefix+'keyframes '+className+'-color {';
         color.forEach(function(c, i) {
-            var percent = Math.round(i / (color.length-1) * 100) + '%';
-            style += '\n\t'+percent+' { color: ' + c + '; }';
+          var percent = Math.round(i / (color.length-1) * 100) + '%';
+          style += '\n\t'+percent+' { color: ' + c + '; }';
         });
+        
         style += ' }';
 
         style += '\n\n@'+prefix+'keyframes '+className+'-transform {';
@@ -144,19 +173,15 @@ Template.funFader.onRendered(function() {
         style += '\n\t'+prefix+'animation-iteration-count: infinite;';
         style += '\n\t'+prefix+'animation-direction: alternate;';
         style += ' }';
+        console.log(style);
       }
 
       addStyle('');
       addStyle('-webkit-');
-
+      
       styleTag.appendChild(document.createTextNode(style));
 
       fadersCreated++;
-
     }
-
-  }
-
-  funFader();
 });
 
