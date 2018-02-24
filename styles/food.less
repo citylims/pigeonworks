@@ -6,6 +6,37 @@
   color: #fff;
   font: bold 48px 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
-  span {}
+}
+
+span {
+  color: white;
+  &.food {
+    transform: scale(2) !important;
+    width:100px !important;
+    height:100px !important;
+    // width:64px !important;
+    // height:64px !important;
+    &.donut {
+      background: url('foods/donut.png') no-repeat center;
+    }
+    &.cupcake {
+      background: url('foods/cupcake.png') no-repeat center;
+    }
+    &.hotdog {
+      background: url('foods/hotdog.png') no-repeat center;
+    }
+    &.pancake {
+      background: url('foods/pancake.png') no-repeat center;
+    }
+    &.pizza {
+      background: url('foods/pizza.png') no-repeat center;
+    }
+    &.sushi {
+      background: url('foods/sushi.png') no-repeat center;
+    }
+    &.taco {
+      background: url('foods/taco.png') no-repeat center;
+    }
+  }
 }
 
