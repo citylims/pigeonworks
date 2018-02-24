@@ -30,33 +30,43 @@ Template.food.onCreated(function() {
     },
   ];
   
+  var i = 0
   this.addFood = (key) => {
+    //ugly hardcode to avoid limit bug
+    if (i === 31) {
+      console.log("NOPE");
+      $('.grav').css('');
+      $('.grav').removeClass('grav');
+      return
+    } 
+    i++
+    
     var el = document.createElement('span');
     var item = this.foodTypes[Math.floor(Math.random() * this.foodTypes.length)];
-    console.log(item.name);
+    // console.log(item.name);
     $(el).addClass(`food grav ${item.name}`);
     $(el).css('position', "absolute");
     
     var width = window.innerWidth;
     var rando = Math.floor(Math.random() * width) + 1;
     $(el).css('left', `${rando}px`);
-    
-    $('#food').append(el);
+    $('body').prepend(el) //dont matter cuz plugin moves to body level no matter what
     
     var gr_x = 0;
   	var gr_y = 1;
     
     $(el).throwable({
+      containment:[0,0,window.innerWidth,(window.innerHeight - 30)],
       drag: true,
       gravity: {x: gr_x, y: gr_y},
       impulse: {
         f: 100,
-        p: {x: 0, y: 1.5}
+        p: {x: 0, y: 0.5}
       },
-      shape: "box",
+      shape: "circle",
       autostart: true,
-      bounce: 0.8,
-      damping: 9
+      bounce: 0.2,
+      damping: 0
     });
   }
 });
@@ -84,7 +94,7 @@ Template.food.onRendered(function() {
       f: 152,
       p: {x: 0, y: 1.5}
     },
-    shape: "box",
+    shape: "circle",
     autostart: true,
     bounce: 0.8,
     damping: 9
