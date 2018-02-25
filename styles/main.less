@@ -11,13 +11,22 @@ body {
   background: #85909D;
   opacity: 0.6;
   z-index: 2;
+  transition:.5s;
+  &:hover {
+    opacity: 1;
+  }
   nav {
     padding: 5px;
     cursor: pointer !important;
     .nav-item {
+      font-family: monospace;
       float: left;
       color: white;
       padding: 0 20px;
+      transition:.5s;
+      &:hover {
+        color: yellow;
+      }
       &.pidgeon-icon {
         background: url(pigeon.svg) no-repeat center;
         height: 30px !important;
