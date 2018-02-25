@@ -100,6 +100,9 @@ Template.food.events({
   'click .fun-fader': function() {
     Template.instance().addFood();
   },
+  'click [data-action="restart"]': function(e,t) {
+    $('.food').remove();
+  }
 });
 
 Template.food.onRendered(function() {
