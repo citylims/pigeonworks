@@ -11,5 +11,11 @@ Template.headerDash.events({
   },
   'click [data-action="pygmalion"]': function() {
     FlowRouter.go('/pygmalion');
+  },
+  'click [data-action="alien"]': function() {
+    FlowRouter.go('/alien');
+  },
+  'click [data-action="food"]': function() {
+    FlowRouter.go('/food');
   }
 });
