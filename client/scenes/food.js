@@ -35,8 +35,7 @@ Template.food.onCreated(function() {
     //ugly hardcode to avoid limit bug
     if (i === 31) {
       console.log("NOPE");
-      $('.grav').css('');
-      $('.grav').removeClass('grav');
+      console.log($('.grav'))
       return
     } 
     i++
@@ -53,15 +52,15 @@ Template.food.onCreated(function() {
     $('body').prepend(el) //dont matter cuz plugin moves to body level no matter what
     
     var gr_x = 0;
-  	var gr_y = 1;
+  	var gr_y = 0; //zero grav
     
     $(el).throwable({
       containment:[0,0,window.innerWidth,(window.innerHeight - 30)],
       drag: true,
       gravity: {x: gr_x, y: gr_y},
       impulse: {
-        f: 100,
-        p: {x: 0, y: 0.5}
+        f: 300,
+        p: {x: 0, y: 2}
       },
       shape: "circle",
       autostart: true,
@@ -73,30 +72,15 @@ Template.food.onCreated(function() {
 
 Template.food.helpers({
   height: function() {
-    return `${window.innerHeight}` ;
+    return `${window.innerHeight}`;
   }
 });
 
 Template.food.events({
   'click .fun-fader': function() {
     Template.instance().addFood();
-  }
+  },
 });
 
 Template.food.onRendered(function() {
-  var gr_x = 0;
-	var gr_y = 1;
-  $(".food").addClass("grav");
-  $(".grav").throwable({
-    drag: true,
-    gravity: {x: gr_x, y: gr_y},
-    impulse: {
-      f: 152,
-      p: {x: 0, y: 1.5}
-    },
-    shape: "circle",
-    autostart: true,
-    bounce: 0.8,
-    damping: 9
-  });
 });
