@@ -9,6 +9,10 @@ Template.food.onCreated(function() {
   this.damping = new ReactiveVar(0);
   this.bounce = new ReactiveVar(0.4);
   
+  this.messenger = new ReactiveVar(false);
+  this.foodMessages = ["IT'S OK", "TO PLAY", "WITH YOUR"];
+  this.msgCount = new ReactiveVar(0);
+  
   this.foodTypes = [
     {
       name: "donut",
@@ -40,13 +44,36 @@ Template.food.onCreated(function() {
     },
   ];
   
+  this.autorun(() => {
+    console.log(this.msgCount.get());
+    if (this.msgCount.get() === this.foodMessages.length) {
+      var messenger = this.messenger.get();
+      Meteor.clearInterval(messenger);
+      this.scaleTitle();
+      //trigger final phase;
+    }
+  });
+  
+  this.scaleTitle = () => {
+    var heightOffset = $('.food-title').height() / 2;
+    var windowHeight = window.innerHeight;
+    var draw = ((windowHeight / 2) + heightOffset) / 2 - 100;
+    $('.food-title').animate({
+      "font-size": "400px",
+      "margin-top": `${draw}px`,
+      "margin-left": '-450px'
+    }, 15000, function() {
+      // console.log(complete);
+    });
+  }
+   
 
   this.addFood = (key) => {
     if (this.foodCount.get() === this.foodMax.get()) {
       console.log("NOPE");
       console.log($('.grav'));
       return;
-    }
+    };
      
     this.foodCount.set(this.foodCount.get() + 1);
     
@@ -93,6 +120,9 @@ Template.food.onCreated(function() {
 Template.food.helpers({
   height: function() {
     return `${window.innerHeight}`;
+  },
+  foodMessage: function() {
+    return Template.instance().foodMessages[Template.instance().msgCount.get()];
   }
 });
 
@@ -107,5 +137,17 @@ Template.food.events({
 
 Template.food.onRendered(function() {
   var inst = Template.instance();
+  
+  var messenger = Meteor.setInterval(() => {
+    $('.food-message').animate({"opacity": "1"}, 8000, () => {
+      $('.food-message').animate({"opacity": "0"}, 8000, () => {
+        this.msgCount.set(this.msgCount.get() + 1);
+      });
+    });
+  }, 18000);
+  
+  inst.messenger.set(messenger);
+  
   inst.autoAdd();
+
 });
