@@ -28,6 +28,9 @@ Template.funFader.helpers({
   },
   text: function() {
     return Template.instance().data.text;
+  },
+  className: function() {
+    return Template.instance().data.className;
   }
 });
 
