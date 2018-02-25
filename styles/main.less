@@ -1,31 +1,35 @@
-.header {
+body {
+  &.no-flow {
+    overflow: hidden;  
+  }
+}
+
+#headerDash {
   width: 100%;
   height: 25px;
   position: fixed;
-  background: #afafaf;
-  opacity: 0.3;
+  background: #85909D;
+  opacity: 0.6;
   z-index: 2;
   nav {
     padding: 5px;
     cursor: pointer !important;
+    .nav-item {
+      float: left;
+      color: white;
+      padding: 0 20px;
+      &.pidgeon-icon {
+        background: url(pigeon.svg) no-repeat center;
+        height: 30px !important;
+        width: 45px;
+        background-size: 28px;
+        float: left;
+        margin-top: -3px;
+      }
+    }
   }
-}
-
-.pidgeon-icon {
-	background:url('pigeon.svg') no-repeat center;
-	height: 25px !important;
-  width: 45px; 
-	background-size: 28px;
-  float: left;
 }
 
 #creationMyth, #flight {
   cursor: none;
 }
-
-
-
-body {
-  max-height: 500px !important;
-}
-

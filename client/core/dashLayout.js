@@ -1,3 +1,11 @@
+Session.setDefault('funFadersActive', 0);
+Session.setDefault('overflow', false);
 Template.dashLayout.onCreated(function() {
-  Session.set('funFadersActive', 0);
+  this.autorun(() => {
+    if (Session.get('overflow')) {
+      $('body').removeClass('no-flow');
+    } else {
+      $('body').addClass('no-flow');
+    }
+  });
 });
