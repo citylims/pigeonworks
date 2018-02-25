@@ -46,4 +46,5 @@ FlowRouter.route('/food', {
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();
+  $('.food').remove();
 }
