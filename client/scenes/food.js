@@ -1,7 +1,7 @@
 Template.food.onCreated(function() {
   //defaults
   this.foodCount = new ReactiveVar(0);
-  this.foodMax = new ReactiveVar(31); 
+  this.foodMax = new ReactiveVar(21); 
   this.gravX = new ReactiveVar(0); 
   this.gravY = new ReactiveVar(0);
   this.impulseForce = new ReactiveVar(180); 
@@ -138,6 +138,11 @@ Template.food.events({
   },
   'click [data-action="restart"]': function(e,t) {
     $('.food').remove();
+    Template.instance().foodCount.set(0);
+    Meteor.clearInterval(Template.instance().foodFeeder.get());
+    Template.instance().autoAdd();
+    s
+    
   }
 });
 
