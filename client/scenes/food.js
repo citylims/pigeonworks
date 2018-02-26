@@ -1,22 +1,26 @@
 Template.food.onCreated(function() {
+  //defaults
   this.foodCount = new ReactiveVar(0);
-  this.foodMax = new ReactiveVar(31);
-  this.gravX = new ReactiveVar(0);
+  this.foodMax = new ReactiveVar(31); 
+  this.gravX = new ReactiveVar(0); 
   this.gravY = new ReactiveVar(0);
-  this.impulseForce = new ReactiveVar(180);
+  this.impulseForce = new ReactiveVar(180); 
   this.impulseX = new ReactiveVar(0);
   this.impulseY = new ReactiveVar(2);
-  this.damping = new ReactiveVar(0);
+  this.damping = new ReactiveVar(0.2);
   this.bounce = new ReactiveVar(0.4);
   
   this.messenger = new ReactiveVar(false);
+  this.foodFeeder = new ReactiveVar(false)
+  
   this.foodMessages = ["IT'S OK", "TO PLAY", "WITH YOUR"];
   this.msgCount = new ReactiveVar(0);
-  
+  this.finishedScene = new ReactiveVar(false);
+
   this.foodTypes = [
     {
       name: "donut",
-      palette: false
+      palette: false // pass pallet to fun-filter
     },
     {
       name: "cupcake",
@@ -45,12 +49,10 @@ Template.food.onCreated(function() {
   ];
   
   this.autorun(() => {
-    console.log(this.msgCount.get());
     if (this.msgCount.get() === this.foodMessages.length) {
       var messenger = this.messenger.get();
       Meteor.clearInterval(messenger);
       this.scaleTitle();
-      //trigger final phase;
     }
   });
   
@@ -62,8 +64,8 @@ Template.food.onCreated(function() {
       "font-size": "400px",
       "margin-top": `${draw}px`,
       "margin-left": '-450px'
-    }, 15000, function() {
-      // console.log(complete);
+    }, 15000, () => {
+      this.finishedScene.set(true);
     });
   }
    
@@ -113,6 +115,7 @@ Template.food.onCreated(function() {
     var adding = Meteor.setInterval(() => {
       this.addFood();
     }, 5000);
+    this.foodFeeder.set(adding);
   };
   
 });
@@ -123,6 +126,9 @@ Template.food.helpers({
   },
   foodMessage: function() {
     return Template.instance().foodMessages[Template.instance().msgCount.get()];
+  },
+  finishedScene: function() {
+    return Template.instance().finishedScene.get();
   }
 });
 
@@ -144,10 +150,14 @@ Template.food.onRendered(function() {
         this.msgCount.set(this.msgCount.get() + 1);
       });
     });
-  }, 18000);
+  }, 16000);
   
   inst.messenger.set(messenger);
   
   inst.autoAdd();
 
 });
+
+Template.food.onDestroyed(function() {
+  Meteor.clearInterval(this.foodFeeder.get());
+}); 

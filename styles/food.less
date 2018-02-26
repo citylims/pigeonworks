@@ -19,9 +19,12 @@
   .food-title {
     white-space: nowrap;
     cursor: pointer;
+    font-size: 0px;
+    margin-top: 200px;
+    margin-left: 150px;
   }
   .food-message {
-    margin-top: 150px;
+    // margin-top: 150px;
     opacity: 0;
     color: white;
   }
@@ -33,6 +36,9 @@ span {
     width:100px !important;
     height:100px !important;
     cursor: -webkit-grab;
+    &::selection {
+      background: black;
+    }
     &.grabbing {
       cursor: -webkit-grabbing;
     }
