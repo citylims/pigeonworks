@@ -1,7 +1,45 @@
 import THREE from 'three';
 import { Promise } from 'meteor/promise';
 import {TweenMax} from "gsap";
+import Pizzicato from 'pizzicato';
 var OrbitControls = require('three-orbit-controls')(THREE)
+
+Template.flight.onCreated(function() {
+  this.playSound = new ReactiveVar(false);
+  this.audio = new ReactiveVar(false);
+  this.frequency = new ReactiveVar(200);
+  
+  var sineWave = new Pizzicato.Sound({ 
+    source: 'wave',
+    options: {
+      type: 'sine',
+      frequency: this.frequency.get(),
+      volume: 0.1,
+      attack: 0.5,
+      release: 1
+    }
+  });
+  
+  this.audio.set(sineWave);
+  
+  this.autorun(() => {
+    if (this.playSound.get()) {
+      sineWave.play();
+    } else {
+      sineWave.pause()
+    }
+  });
+  
+  this.autorun(() => {
+    if (this.frequency.get()) {
+      console.log(this.frequency.get());
+      var calc = this.frequency.get().toString().substr(0,3);
+      sineWave.frequency = calc;
+      this.audio.set(sineWave);
+    };
+  });
+  
+});
 
 Template.flight.onRendered(function() {
   $('canvas').remove(); // this should be moved to router level.
@@ -187,7 +225,9 @@ Template.flight.onRendered(function() {
     var intersects = raycaster.intersectObjects( scene.children );
     
     if (intersects.length && font) {
-      console.log(intersects[0].face.a);
+      this.playSound.set(true);
+      // console.log(intersects[0].face.a);
+      this.frequency.set(intersects[0].face.a);
       if (text) {
         _.each(scene.children, (child) => {
           if (child.uuid === text.uuid) {
@@ -211,6 +251,7 @@ Template.flight.onRendered(function() {
         scene.add(textMesh);
       }
     } else { // not hovering
+      this.playSound.set(false);
       if (this.planet.get()) { // need to remove trailtarget unless i can prove that trails exist?
         // console.log('out');
         var text = this.textObj.get();
