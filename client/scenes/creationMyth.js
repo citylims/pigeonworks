@@ -37,6 +37,8 @@ Template.creationMyth.onRendered(function() {
   spotLight.intensity = .5;
   spotLight.castShadow = true;
   scene.add(spotLight);
+  var light = new THREE.AmbientLight( 0x111111 );
+	scene.add( light );
 
   var controls = new OrbitControls(camera);
   controls.damping = 0.2;
