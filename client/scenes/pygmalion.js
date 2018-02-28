@@ -234,7 +234,6 @@ Template.pygmalion.onRendered(function() {
     var count = this.lyricCount.get();
     if (count === this.lyrics.length) return;
     if (count === 4) {
-      console.log('4 wait')
       pause(count);
     } else {
       updateLyrics(count);
@@ -252,9 +251,9 @@ Template.pygmalion.onRendered(function() {
   var updateLyrics = (count) => {
     Meteor.setTimeout(() => {
       $('.lyric').eq(count).addClass('sing');
-      $('.lyric').eq(count).addClass('jittery')
+      // $('.lyric').eq(count).addClass('jittery')
       Meteor.setTimeout(() => {
-        $('.lyric').eq(count).removeClass('jittery');
+        // $('.lyric').eq(count).removeClass('jittery');
       }, 3000);
       this.lyricCount.set(count + 1);
       choir();
