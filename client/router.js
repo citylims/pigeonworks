@@ -43,6 +43,15 @@ FlowRouter.route('/food', {
   }
 });
 
+FlowRouter.route('/glitchy', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "glitchy"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();

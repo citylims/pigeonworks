@@ -17,5 +17,8 @@ Template.headerDash.events({
   },
   'click [data-action="food"]': function() {
     FlowRouter.go('/food');
+  },
+  'click [data-action="glitchy"]': function() {
+    FlowRouter.go('/glitchy');
   }
 });
