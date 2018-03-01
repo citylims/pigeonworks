@@ -1,5 +1,19 @@
-// Write your package code here!
+function debounce(callback, duration) {
+  var timer;
+  return function(event) {
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      callback(event);
+    }, duration);
+  };
+}
 
-// Variables exported by this module can be imported by other packages and
-// applications. See glitchy-tests.js for an example of importing.
-export const name = 'glitchy';
+function normalizeVector2(vector) {
+  vector.x = (vector.x / document.body.clientWidth) * 2 - 1;
+  vector.y = - (vector.y / window.innerHeight) * 2 + 1;
+};
+
+GlitchyApi = {
+  debounce,
+  normalizeVector2
+}

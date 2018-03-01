@@ -8,6 +8,7 @@ Package.describe({
 
 Npm.depends({
   glslify: '6.1.1',
+  three: '0.90.0'
 });
 
 Package.onUse(function(api) {
@@ -18,17 +19,19 @@ Package.onUse(function(api) {
   api.mainModule('glitchy.js');
   api.addFiles([
     'client/glitchy.html',
-    'client/glitchy.js'
+    'client/glitchy.js',
+    'client/glitchImage.js',
+    'client/glitchEffect.js'
   ], 'client');
   api.addAssets([
-    'glsl/glitchEffect.fs',  
-    'glsl/glitchEffect.vs', 
-    'glsl/glitchImage.fs',  
-    'glsl/glitchImage.vs'  
+    'private/glsl/glitchEffect.fs',  
+    'private/glsl/glitchEffect.vs', 
+    'private/glsl/glitchImage.fs',  
+    'private/glsl/glitchImage.vs',
+    'img/DeepSpace.png'  
   ], ['client', 'server']);
   api.addFiles([
-    'server/glitchImage.js',
-    'server/glitchEffect.js'
+    'server/shaders.js',
   ], 'server');
 });
 
