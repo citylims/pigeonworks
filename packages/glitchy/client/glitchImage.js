@@ -82,7 +82,7 @@ export default class BackgroundImage {
     return new Promise((resolve, reject) => { 
       Meteor.call('readGlsl', 'glitchImage.vs', (err, imageShader) => {
         if (err) reject(err);
-        // console.log(imageShader);
+        console.log(imageShader);
         Meteor.call('readGlsl', 'glitchImage.fs', (err, imageFrag) => {
           if (err) reject(err);
           var mesh = new THREE.Mesh(
