@@ -1,5 +1,10 @@
 <template name='food'>
   <div id="food" style="height:{{windowHeight}}px;">
+    
+    <audio controls autoplay>
+      <source src="/audio/The-Little-Light-Fades.mp3" type="audio/mpeg">
+    </audio>
+    
     {{> funFader text="FOOD" className="food-title"}}
     
     {{#if finishedScene}}
@@ -13,6 +18,5 @@
       {{foodMessage}}
     </div>
     
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/HuNgBZCreeE?autoplay=1" frameborder="0" allowfullscreen></iframe>
   </div>
 </template>
