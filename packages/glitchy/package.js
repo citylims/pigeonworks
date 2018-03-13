@@ -30,8 +30,7 @@ Package.onUse(function(api) {
     'private/glsl/glitchImage.vs',
   ], ['client', 'server']);
   api.addFiles([
-    'server/shaders.js',
-    'server/methods.js',
+    'server/shaders.js'
   ], 'server');
 });
 
