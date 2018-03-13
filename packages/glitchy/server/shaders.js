@@ -8,7 +8,7 @@ Meteor.methods({
     var future = new Future();
     fs.readFile(process.env.PWD + '/packages/glitchy/private/glsl/' + fileName, 'utf8', function (err, data) {
       if (err) {
-        future.return(error)
+        future.return(err)
       } else{
         var shader = glslify(`${data}`);
         future.return(shader);
