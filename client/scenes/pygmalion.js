@@ -203,7 +203,7 @@ Template.pygmalion.onRendered(function() {
   insideSquare(433, 236);
   Meteor.setTimeout(function() {
     $('audio').get(0).play()
-  }, 1200);
+  }, 1400);
   Meteor.setTimeout(function() {
     $('#layer2').animate({'left': "150"}, 5000) 
     $('.hymn').addClass('sing');
