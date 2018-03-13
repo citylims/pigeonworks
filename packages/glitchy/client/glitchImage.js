@@ -19,6 +19,7 @@ export const createImage = function() {
       }
     };
     const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin("*");
     Meteor.call('listS3Images', function(err, images) {
       var image = images[Math.floor(Math.random()*images.length)];
       loader.load(`${image}`, (texture) => {
