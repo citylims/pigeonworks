@@ -28,10 +28,10 @@ Package.onUse(function(api) {
     'private/glsl/glitchEffect.vs', 
     'private/glsl/glitchImage.fs',  
     'private/glsl/glitchImage.vs',
-    'img/DeepSpace.png'  
   ], ['client', 'server']);
   api.addFiles([
     'server/shaders.js',
+    'server/methods.js',
   ], 'server');
 });
 

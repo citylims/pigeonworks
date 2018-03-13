@@ -19,19 +19,23 @@ export const createImage = function() {
       }
     };
     const loader = new THREE.TextureLoader();
-    loader.load('DeepSpace.png', (texture) => {
-      img.uniforms.texture.value = texture;
-      Meteor.call('fetchGlsl', 'glitchImage.vs', (errV, imageShader) => {
-        Meteor.call('fetchGlsl', 'glitchImage.fs', (errF, imageFrag) => {
-          img.mesh = new THREE.Mesh(
-            new THREE.PlaneBufferGeometry(2, 2),
-            new THREE.RawShaderMaterial({
-              uniforms: img.uniforms,
-              vertexShader: imageShader,
-              fragmentShader: imageFrag
-            })
-          );
-          resolve(img);
+    Meteor.call('listImages', function(err, images) {
+      console.log(images);
+      var image = images[Math.floor(Math.random()*images.length)];
+      loader.load(`./glitchy/${image}`, (texture) => {
+        img.uniforms.texture.value = texture;
+        Meteor.call('fetchGlsl', 'glitchImage.vs', (errV, imageShader) => {
+          Meteor.call('fetchGlsl', 'glitchImage.fs', (errF, imageFrag) => {
+            img.mesh = new THREE.Mesh(
+              new THREE.PlaneBufferGeometry(2, 2),
+              new THREE.RawShaderMaterial({
+                uniforms: img.uniforms,
+                vertexShader: imageShader,
+                fragmentShader: imageFrag
+              })
+            );
+            resolve(img);
+          });
         });
       });
     });
