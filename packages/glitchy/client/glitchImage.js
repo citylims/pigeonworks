@@ -19,10 +19,9 @@ export const createImage = function() {
       }
     };
     const loader = new THREE.TextureLoader();
-    Meteor.call('listImages', function(err, images) {
-      console.log(images);
+    Meteor.call('listS3Images', function(err, images) {
       var image = images[Math.floor(Math.random()*images.length)];
-      loader.load(`./glitchy/${image}`, (texture) => {
+      loader.load(`${image}`, (texture) => {
         img.uniforms.texture.value = texture;
         Meteor.call('fetchGlsl', 'glitchImage.vs', (errV, imageShader) => {
           Meteor.call('fetchGlsl', 'glitchImage.fs', (errF, imageFrag) => {
