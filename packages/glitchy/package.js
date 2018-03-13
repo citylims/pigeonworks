@@ -16,7 +16,7 @@ Package.onUse(function(api) {
   api.use('ecmascript');
   api.use('tracker');
   api.use('templating', 'client');
-  api.mainModule('glitchy.js');
+  api.mainModule('glitchyApi.js');
   api.addFiles([
     'client/glitchy.html',
     'client/glitchy.js',
