@@ -1,0 +1,54 @@
+{
+  "dependencies": {
+    "aws-sdk": {
+      "version": "2.4.9",
+      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.4.9.tgz",
+      "from": "aws-sdk@2.4.9"
+    },
+    "jmespath": {
+      "version": "0.15.0",
+      "resolved": "https://registry.npmjs.org/jmespath/-/jmespath-0.15.0.tgz",
+      "from": "jmespath@0.15.0"
+    },
+    "lodash": {
+      "version": "3.5.0",
+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.5.0.tgz",
+      "from": "lodash@>=3.5.0 <3.6.0"
+    },
+    "lodash.map": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/lodash.map/-/lodash.map-4.6.0.tgz",
+      "from": "lodash.map@>=4.6.0 <5.0.0"
+    },
+    "lodash.trimend": {
+      "version": "4.5.1",
+      "resolved": "https://registry.npmjs.org/lodash.trimend/-/lodash.trimend-4.5.1.tgz",
+      "from": "lodash.trimend@>=4.5.1 <5.0.0"
+    },
+    "lodash.trimstart": {
+      "version": "4.5.1",
+      "resolved": "https://registry.npmjs.org/lodash.trimstart/-/lodash.trimstart-4.5.1.tgz",
+      "from": "lodash.trimstart@>=4.5.1 <5.0.0"
+    },
+    "s3-ls": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/s3-ls/-/s3-ls-2.0.1.tgz",
+      "from": "s3-ls@2.0.1"
+    },
+    "sax": {
+      "version": "1.1.5",
+      "resolved": "https://registry.npmjs.org/sax/-/sax-1.1.5.tgz",
+      "from": "sax@1.1.5"
+    },
+    "xml2js": {
+      "version": "0.4.15",
+      "resolved": "https://registry.npmjs.org/xml2js/-/xml2js-0.4.15.tgz",
+      "from": "xml2js@0.4.15"
+    },
+    "xmlbuilder": {
+      "version": "2.6.2",
+      "resolved": "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-2.6.2.tgz",
+      "from": "xmlbuilder@2.6.2"
+    }
+  }
+}
