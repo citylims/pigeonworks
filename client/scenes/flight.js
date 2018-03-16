@@ -138,11 +138,11 @@ Template.flight.onRendered(function() {
   });
   
   //globalize for better init
-  var fontLoader = new THREE.FontLoader();
-  fontLoader.load( `${baseUrl}/fonts/Bellefair_Regular.typeface.json`,  ( font ) => {
-    // console.log(font)
-    this.activeFont.set(font);
-  });
+  // var fontLoader = new THREE.FontLoader();
+  // fontLoader.load( `${baseUrl}/fonts/Bellefair_Regular.typeface.json`,  ( font ) => {
+  //   // console.log(font)
+  //   this.activeFont.set(font);
+  // });
   
   this.whatYouSay = (face, font, child) => {
     // http://jsfiddle.net/9XGuK/4/
