@@ -59,6 +59,8 @@ Template.glitchy.onRendered(function() {
       cameraBack.lookAt(new THREE.Vector3());
       var img = this.loadedImage.get()
       var effect = this.loadedEffect.get()
+      // console.log(img)
+      // console.log(effect)
       sceneBack.add(img.mesh);
       scene.add(effect.mesh);
       // on();

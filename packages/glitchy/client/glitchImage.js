@@ -25,7 +25,9 @@ export const createImage = function() {
       loader.load(`${image}`, (texture) => {
         img.uniforms.texture.value = texture;
         Meteor.call('fetchGlsl', 'glitchImage.vs', (errV, imageShader) => {
+          console.log(imageShader);
           Meteor.call('fetchGlsl', 'glitchImage.fs', (errF, imageFrag) => {
+            console.log(imageFrag);
             img.mesh = new THREE.Mesh(
               new THREE.PlaneBufferGeometry(2, 2),
               new THREE.RawShaderMaterial({

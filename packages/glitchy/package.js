@@ -24,10 +24,10 @@ Package.onUse(function(api) {
     'client/glitchEffect.js'
   ], 'client');
   api.addAssets([
-    'private/glsl/glitchEffect.fs',  
-    'private/glsl/glitchEffect.vs', 
-    'private/glsl/glitchImage.fs',  
-    'private/glsl/glitchImage.vs',
+    'private/glitchEffect.fs',  
+    'private/glitchEffect.vs', 
+    'private/glitchImage.fs',  
+    'private/glitchImage.vs',
   ], ['client', 'server']);
   api.addFiles([
     'server/shaders.js'
