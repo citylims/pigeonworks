@@ -3,3 +3,4 @@ packages/glitchy/.npm
 packages/s3/.npm
 settings-s3.json
 pigeonworks.pem
+.DS_Store
