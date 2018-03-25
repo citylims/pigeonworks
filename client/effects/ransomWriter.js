@@ -1,4 +1,5 @@
 Template.ransomWriter.onCreated(function() {
+  //hover listener
   this.matchChar = new ReactiveVar(this.data.character);
   this.ransomChar = new ReactiveVar('');
   this.ransomColor = new ReactiveVar('');
@@ -13,9 +14,10 @@ Template.ransomWriter.onCreated(function() {
     '#ff5722','#795548','#9e9e9e',
     '#607d8b'
   ]);
-  this.alphaChars = new ReactiveVar([
-    'x', 'y', "i"
-  ]);
+  this.alphaChars = new ReactiveVar(['a',
+  'b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+  'p','q','r','s','t','u','v','w','x','y',
+  'z']);
   this.specialChars = new ReactiveVar([
     '!','§','$','%',
     '&','/','(',')',
