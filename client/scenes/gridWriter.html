@@ -1,0 +1,31 @@
+<template name="gridWriter">
+  <div id="gridWriter">
+    <!-- <p id="ransomHolder" style="color:white;">
+      {{#each writeChar}}
+        {{> ransomWriter character=this}}
+      {{/each}}
+    </p> -->
+    {{#each rowChar}}
+      <p id="ransomHolder">
+        {{#each this.row}}
+          {{> ransomWriter character=this}}
+        {{/each}}
+      </p>
+    {{/each}}
+    <!-- ==/           i     i           \== -->
+    <p id="ascii" style="display:none;font-family:monospace;white-space:pre;color:white;font-size:2em;">
+      /XX/            |\___/|            \XX\
+   /XXXX\            |XXXXX|            /XXXX\
+  |XXXXXX\_         _XXXXXXX_         _/XXXXXX|
+ XXXXXXXXXXXxxxxxxxXXXXXXXXXXXxxxxxxxXXXXXXXXXXX
+|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|
+ XXXXXX/^^^^^\XXXXXXXXXXXXXXXXXXXXX/^^^^^\XXXXXX
+  |XXX|       \XXX/^^\XXXXX/^^\XXX/       |XXX|
+    \XX\       \X/    \XXX/    \X/       /XX/
+       "\       "      \X/      "      /"
+    </p>
+  </div>  
+</template>
+
