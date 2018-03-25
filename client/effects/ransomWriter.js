@@ -31,11 +31,11 @@ Template.ransomWriter.helpers({
   displayCharacter: function() {
     return Template.instance().ransomChar.get();
   },
-  validClass: function(char) {
-    if (Template.instance().data.character === ' ') {
-      return 'space-padding';
-    }
-  },
+  // validClass: function(char) {
+    // if (Template.instance().data.character === ' ') {
+    //   return 'space-padding';
+    // }
+  // },
   color: function() {
     return `color:${Template.instance().ransomColor.get()};`
   }
