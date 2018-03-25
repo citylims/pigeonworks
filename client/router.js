@@ -52,6 +52,15 @@ FlowRouter.route('/glitchy', {
   }
 });
 
+FlowRouter.route('/gridWriter', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "gridWriter"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();

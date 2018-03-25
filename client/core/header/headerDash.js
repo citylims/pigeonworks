@@ -20,5 +20,8 @@ Template.headerDash.events({
   },
   'click [data-action="glitchy"]': function() {
     FlowRouter.go('/glitchy');
+  },
+  'click [data-action="gridWriter"]': function() {
+    FlowRouter.go('/gridWriter');
   }
 });
