@@ -1,5 +1,9 @@
 Template.ransomWriter.onCreated(function() {
   //hover listener
+  this.isHover = new ReactiveVar(false);
+  this.initialCycle = new ReactiveVar(false);
+  this.cycle = new ReactiveVar(false);
+  this.hoverDelay = new ReactiveVar(false);
   this.matchChar = new ReactiveVar(this.data.character);
   this.ransomChar = new ReactiveVar('');
   this.ransomColor = new ReactiveVar('');
@@ -25,7 +29,29 @@ Template.ransomWriter.onCreated(function() {
     '6','7','8','9','0'
   ]);
   this.fps = new ReactiveVar(20);
-  this.timeOffset = new ReactiveVar(2)
+  this.timeOffset = new ReactiveVar(2);
+  
+  this.autorun(() => {
+    if (this.isHover.get() && !this.needUpdate.get() && this.initialCycle.get()) {
+      // console.log('set hover');
+      if (this.hoverDelay.get()) {
+        //clear timer;
+        Meteor.clearTimeout(this.hoverDelay.get());
+      }
+      this.cycle.set(true);
+      this.restart();
+    }
+  });
+  
+  this.autorun(() => {
+    if (!this.isHover.get() && this.needUpdate.get() && this.initialCycle.get()) {
+      // console.log('leave hover');
+      var timer = Meteor.setTimeout(() => {
+        this.setOriginChar()
+      }, 2000);
+      this.hoverDelay.set(timer);
+    }
+  });
 });
 
 Template.ransomWriter.helpers({
@@ -42,6 +68,19 @@ Template.ransomWriter.helpers({
   }
 });
 
+Template.ransomWriter.events({
+  'mouseover #ransomChar': function(e,t) {
+    if (!t.isHover.get()) {
+      t.isHover.set(true);
+    }
+  },
+  'mouseleave #ransomChar': function(e,t) {
+    if (t.isHover.get()) {
+      t.isHover.set(false);
+    }
+  },
+});
+
 Template.ransomWriter.onRendered(function() {
   var time = 0;
   this.now;
@@ -50,6 +89,13 @@ Template.ransomWriter.onRendered(function() {
   this.currentTimeOffset = 0;
   this.interval = this.timeOffset.get()/this.fps.get();
   this.chars = this.alphaChars.get().concat(this.specialChars.get());
+  
+  this.setOriginChar = () => {
+    this.initialCycle.set(true);
+    this.needUpdate.set(false);
+    this.ransomChar.set(this.data.character);
+    this.ransomColor.set(this.defaultColor);
+  }
 
   this.getRandomColor = () => {
     var colors = this.colors.get();
@@ -66,6 +112,7 @@ Template.ransomWriter.onRendered(function() {
   
   this.restart =  () => {
     this.needUpdate.set(true);
+    this.update();
   }
   
   
@@ -82,10 +129,8 @@ Template.ransomWriter.onRendered(function() {
       var randomChar = this.getRandCharacter();
       if (randomChar) {
         var color = this.getRandomColor();
-        if (randomChar === this.data.character) {
-          this.needUpdate.set(false);
-          this.ransomChar.set(this.data.character);
-          this.ransomColor.set(this.defaultColor);
+        if (randomChar === this.data.character && !this.cycle.get()) {
+          this.setOriginChar()
         } else {
           this.generateSingleCharacter(color, randomChar);
         }
@@ -94,15 +139,16 @@ Template.ransomWriter.onRendered(function() {
     }
   }
   
-  var update = (time) => {
+  this.update = (time) => {
+    // console.log('call')
     time++;
     if(this.needUpdate.get()){
       this.updateCharacter(time);
-      requestAnimationFrame(update);
+      requestAnimationFrame(this.update);
     }
   }
   if (this.data.character !== ' ') {
-    update(time);
+    this.update(time);
   } else {
     this.ransomChar.set(' ');
   }
