@@ -7,10 +7,37 @@ import GlitchEffect from './glitchEffect.js';
 Template.glitchy.onCreated(function() {
   this.loadedImage = new ReactiveVar(false)
   this.loadedEffect = new ReactiveVar(false)
+  this.activeScene = new ReactiveVar(false);
+});
+
+Template.glitchy.events({
+  'click [data-action="restart"]': function(e,t) {
+    console.log(e);
+    t.loadedImage.set(false);
+    t.loadedEffect.set(false);
+    if (t.activeScene.get()) {
+      let scene = t.activeScene.get();
+      while(scene.children.length > 0){ 
+        scene.remove(scene.children[0]); 
+      }
+    }
+    t.createGlitch();
+  }
 });
 
 Template.glitchy.onRendered(function() {
   var inst = Template.instance();
+  
+  this.createGlitch = () => {
+    GlitchImage.createImage().then(function(res) {
+      inst.loadedImage.set(res);
+    });
+
+    GlitchEffect.createEffect(renderBack1.texture).then(function(res) {
+      inst.loadedEffect.set(res);
+    });
+  }
+
   const canvas = document.getElementById('glitchyCanvas');
   const renderer = new THREE.WebGLRenderer({
     antialias: false,
@@ -52,30 +79,22 @@ Template.glitchy.onRendered(function() {
   // let isDrag = false;
   
   inst.autorun(() => {
-    if (this.loadedImage.get() && this.loadedEffect.get()) {
+    if (inst.loadedImage.get() && inst.loadedEffect.get()) {
       renderer.setSize(document.body.clientWidth, window.innerHeight);
       renderer.setClearColor(0x555555, 1.0);
       cameraBack.position.set(1000, 1000, 1000);
       cameraBack.lookAt(new THREE.Vector3());
       var img = this.loadedImage.get()
       var effect = this.loadedEffect.get()
-      // console.log(img)
-      // console.log(effect)
       sceneBack.add(img.mesh);
       scene.add(effect.mesh);
+      inst.activeScene.set(scene);
       // on();
       renderLoop();
     }
   });
-  
-  GlitchImage.createImage().then(function(res) {
-    inst.loadedImage.set(res);
-  });
-
-  GlitchEffect.createEffect(renderBack1.texture).then(function(res) {
-    inst.loadedEffect.set(res);
-  });
-  
+  //call inital glitch
+  this.createGlitch();
 });
 
 
