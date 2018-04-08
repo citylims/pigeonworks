@@ -8,6 +8,7 @@ Template.glitchy.onCreated(function() {
   this.loadedImage = new ReactiveVar(false)
   this.loadedEffect = new ReactiveVar(false)
   this.activeScene = new ReactiveVar(false);
+  this.mousePosition = new ReactiveVar(false);
 });
 
 Template.glitchy.events({
@@ -21,7 +22,14 @@ Template.glitchy.events({
         scene.remove(scene.children[0]); 
       }
     }
-    t.createGlitch();
+    // t.createGlitch();
+  },
+  'mousemove': function(e,t) {
+    t.mousePosition.set({
+      pageX: e.pageX,
+      pageY: e.pageY
+    });
+    // console.log(e.pageX);
   }
 });
 

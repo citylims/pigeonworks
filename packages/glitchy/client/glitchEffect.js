@@ -9,6 +9,10 @@ export const createEffect = function(texture) {
         type: 'f',
         value: 0
       },
+      mousePosition: {
+        type: 'f',
+        value: 0
+      },
       resolution: {
         type: 'v2',
         value: new THREE.Vector2(document.body.clientWidth, window.innerHeight)
@@ -18,9 +22,18 @@ export const createEffect = function(texture) {
         value: texture,
       },
     };
-    effect.render = (time) => {
+    effect.render = (time, pos) => {
       if (effect.uniforms) {
         effect.uniforms.time.value += time;
+        if (pos) {
+          var calc = pos.pageX / pos.pageY
+          if (pos.pageX < 200) {
+            // console.log(calc);
+            // return 
+          } else {
+            effect.uniforms.mousePosition.value = calc;
+          }
+        }
       }
     }
     effect.resize = () => {

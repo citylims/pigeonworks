@@ -87,17 +87,18 @@ const effectFrag = function() {
     p2 *= norm.z;
     p3 *= norm.w;
 
-    float rest = 42.0; //default noise factor (re is dynamic noise factor)
+    float deFactor = 42.0; //default noise factor (re is dynamic noise factor)
     
   // Mix final noise value
     vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
     m = m * m;
     
-    return rest * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
+    return deFactor * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
                                   dot(p2,x2), dot(p3,x3) ) );
     }
 
   uniform float time;
+  uniform float mousePosition;
   uniform vec2 resolution;
   uniform sampler2D texture;
 
