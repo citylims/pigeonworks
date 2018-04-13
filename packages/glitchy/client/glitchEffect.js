@@ -26,13 +26,7 @@ export const createEffect = function(texture) {
       if (effect.uniforms) {
         effect.uniforms.time.value += time;
         if (pos) {
-          var calc = pos.pageX / pos.pageY
-          if (pos.pageX < 200) {
-            // console.log(calc);
-            // return 
-          } else {
-            effect.uniforms.mousePosition.value = calc;
-          }
+          effect.uniforms.mousePosition.value = pos;
         }
       }
     }

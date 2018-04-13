@@ -8,8 +8,7 @@ Template.glitchy.onCreated(function() {
   this.loadedImage = new ReactiveVar(false)
   this.loadedEffect = new ReactiveVar(false)
   this.activeScene = new ReactiveVar(false);
-  this.mousePosition = new ReactiveVar(false);
-});
+ });
 
 Template.glitchy.events({
   'click [data-action="restart"]': function(e,t) {
@@ -22,15 +21,7 @@ Template.glitchy.events({
         scene.remove(scene.children[0]); 
       }
     }
-    // t.createGlitch();
   },
-  'mousemove': function(e,t) {
-    t.mousePosition.set({
-      pageX: e.pageX,
-      pageY: e.pageY
-    });
-    // console.log(e.pageX);
-  }
 });
 
 Template.glitchy.onRendered(function() {
@@ -57,6 +48,19 @@ Template.glitchy.onRendered(function() {
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const cameraBack = new THREE.PerspectiveCamera(45, document.body.clientWidth / window.innerHeight, 1, 10000);
   const clock = new THREE.Clock();
+  var raycaster = new THREE.Raycaster();
+  var mouse = new THREE.Vector2();
+  document.addEventListener( 'mousemove', onMouseMove, false );
+
+  function onMouseMove( event ) {
+    var rangeX = parseInt($('body').width());
+    var glitchScale = 100.0;
+    var xFactor = (event.clientX / rangeX) * 100;
+    var glitchFactorX = parseFloat(glitchScale * (xFactor * 0.01));
+    mouse.x = glitchFactorX;
+  	// mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  }
+  
   const resizeWindow = () => {
     canvas.width = document.body.clientWidth;
     canvas.height = window.innerHeight;
@@ -68,11 +72,11 @@ Template.glitchy.onRendered(function() {
     renderer.setSize(document.body.clientWidth, window.innerHeight);
   }
   const render = () => {
-    const time = clock.getDelta();
+    var time = clock.getDelta();
     renderer.render(sceneBack, cameraBack, renderBack1);
     var effect = inst.loadedEffect.get();
     if (effect) {
-      effect.render(time);
+      effect.render(time, mouse.x);
     }
     renderer.render(scene, camera);
   }
