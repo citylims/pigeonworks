@@ -1,10 +1,13 @@
 <template name="glitchy">
   <div id="glitchy">
     Glitchy
-      <div class="restart" data-action="restart">
-        Restart
-      <!-- {{> funFader text="Restart"}} -->
+      <div class="gui">
+        <div class="readout">{{glitchFactor}}</div>
+        <!-- <div class="restart" data-action="restart">
+          Restart
+        </div>   -->
       </div>
+      
     <canvas id="glitchyCanvas">
     </canvas>
   </div>

@@ -8,7 +8,14 @@ Template.glitchy.onCreated(function() {
   this.loadedImage = new ReactiveVar(false)
   this.loadedEffect = new ReactiveVar(false)
   this.activeScene = new ReactiveVar(false);
+  this.glitchFactor = new ReactiveVar(0);
  });
+ 
+ Template.glitchy.helpers({
+   glitchFactor: function() {
+     return `${Template.instance().glitchFactor.get().toFixed(2)}%`
+   }
+ })
 
 Template.glitchy.events({
   'click [data-action="restart"]': function(e,t) {
@@ -21,6 +28,7 @@ Template.glitchy.events({
         scene.remove(scene.children[0]); 
       }
     }
+    // this.createGlitch();
   },
 });
 
@@ -55,6 +63,7 @@ Template.glitchy.onRendered(function() {
   
   function onMouseDown(e) {
     //freeze frame
+    inst.glitchFactor.set(0.01);
     mouse.x = 0.01;
   }
 
@@ -64,6 +73,7 @@ Template.glitchy.onRendered(function() {
     var xFactor = (e.clientX / rangeX) * 100;
     var glitchFactorX = parseFloat(glitchScale * (xFactor * 0.01));
     mouse.x = glitchFactorX;
+    inst.glitchFactor.set(glitchFactorX);
   	// mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
   }
   
