@@ -50,12 +50,18 @@ Template.glitchy.onRendered(function() {
   const clock = new THREE.Clock();
   var raycaster = new THREE.Raycaster();
   var mouse = new THREE.Vector2();
-  document.addEventListener( 'mousemove', onMouseMove, false );
+  document.addEventListener('mousemove', onMouseMove, false );
+  document.addEventListener('mousedown', onMouseDown, false );
+  
+  function onMouseDown(e) {
+    //freeze frame
+    mouse.x = 0.01;
+  }
 
-  function onMouseMove( event ) {
+  function onMouseMove(e) {
     var rangeX = parseInt($('body').width());
     var glitchScale = 100.0;
-    var xFactor = (event.clientX / rangeX) * 100;
+    var xFactor = (e.clientX / rangeX) * 100;
     var glitchFactorX = parseFloat(glitchScale * (xFactor * 0.01));
     mouse.x = glitchFactorX;
   	// mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
