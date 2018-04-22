@@ -61,6 +61,15 @@ FlowRouter.route('/gridWriter', {
   }
 });
 
+FlowRouter.route('/spider', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "spider"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();
