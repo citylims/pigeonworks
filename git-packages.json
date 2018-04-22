@@ -1,5 +1,5 @@
 {
-  "blazingGLSL": {
-    "git": "git@github.com:citylims/blazing-glsl.git",
+  "pigeonworks:blazing-glsl": {
+    "git": "git@github.com:citylims/blazing-glsl.git"
   }
 }
