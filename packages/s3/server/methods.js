@@ -10,10 +10,11 @@ AWS.config.update({
 const s3Route = 'https://s3.amazonaws.com/pigeon-works/'
 
 Meteor.methods({
-  listS3Images() {
+  listS3Images(dir) {
     var fut = new Future();
     var list = s3ls({bucket: 'pigeon-works'});
-    list.ls('/glitchy').then((data) => {
+    var path = `/glitchy${dir}`;
+    list.ls(path).then((data) => {
       var links = _.map(data.files, (f) => {
         return `${s3Route}${f}`;
       });
