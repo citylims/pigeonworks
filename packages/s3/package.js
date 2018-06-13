@@ -18,6 +18,7 @@ Npm.depends({
 Package.onUse(function(api) {
   api.versionsFrom('1.4.4.1');
   api.use('ecmascript');
+  api.use('edgee:slingshot')
   api.mainModule('s3.js');
   api.addFiles([
     'server/methods.js',
