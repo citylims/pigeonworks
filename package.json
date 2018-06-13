@@ -12,6 +12,7 @@
     "glslify": "^6.1.1",
     "gsap": "^1.20.2",
     "meteor-node-stubs": "~0.2.4",
+    "moment": "^2.22.2",
     "pizzicato": "^0.6.3",
     "three": "^0.85.2",
     "three-orbit-controls": "^82.1.0"
