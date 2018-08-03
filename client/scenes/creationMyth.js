@@ -53,7 +53,7 @@ Template.creationMyth.onRendered(function() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setClearColor("black", 1);
-  $('body').append(renderer.domElement);
+  $('#creationMyth').append(renderer.domElement);
 
   window.onresize = function() {
     var canvasHeight = window.innerHeight;
