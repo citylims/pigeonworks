@@ -70,6 +70,15 @@ FlowRouter.route('/spider', {
   }
 });
 
+FlowRouter.route('/audioFreeze', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "audioFreeze"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();

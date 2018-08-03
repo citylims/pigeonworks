@@ -23,5 +23,8 @@ Template.headerDash.events({
   },
   'click [data-action="gridWriter"]': function() {
     FlowRouter.go('/gridWriter');
+  },
+  'click [data-action="audioFreeze"]': function() {
+    FlowRouter.go('/audioFreeze');
   }
 });
