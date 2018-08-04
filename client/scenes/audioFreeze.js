@@ -6,6 +6,10 @@ Template.audioFreeze.onCreated(function() {
   this.audioSketch = new ReactiveVar(false);  
   this.randColor = new ReactiveVar(255);
   this.drawSize = new ReactiveVar(20);
+  this.manipulateRate = new ReactiveVar(false);
+  this.saveRate = new ReactiveVar(false);
+  this.savePos = new ReactiveVar(false);
+  this.startingRate = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
     var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
@@ -25,11 +29,41 @@ Template.audioFreeze.onCreated(function() {
     p.line(len,0,len-arrowsize,-arrowsize/2);
     p.pop();
   }
+  
+  this.checkSpeed = (song, p) => {
+    if (!this.startingRate.get()) {
+      var speed = p.map(p.width /2 , 0.1, p.width, 0, 2);
+      console.log('set');
+    } else {
+      speed = p.map(p.mouseX, 0.1, p.width, 0, 2);
+    }
+    return p.constrain(speed, 0.6, 1.3);
+  }
+  
+  this.applyPlaybackRate = (song, p) => {
+    if (this.manipulateRate.get() && !this.saveRate.get()) {
+      var speed = this.checkSpeed(song, p)
+      song.rate(speed);
+    } else if (this.manipulateRate.get() && this.saveRate.get()) {
+      song.rate(this.saveRate.get());
+    }  
+    else if (!this.manipulateRate.get() && this.startingRate.get()) {
+      // song.rate(this.startingRate.get())
+    }
+  }
 });
 
-Template.audioFreeze.helpers({});
+Template.audioFreeze.helpers({
+  manipulateRate() {
+    return Template.instance().manipulateRate.get();
+  }
+});
 
-Template.audioFreeze.events({});
+Template.audioFreeze.events({
+  'click [data-action="manipulateRate"]': function() {
+    Template.instance().manipulateRate.set(!Template.instance().manipulateRate.get());
+  },
+});
 
 Template.audioFreeze.onRendered(function() {
   var inst = Template.instance();
@@ -52,22 +86,27 @@ Template.audioFreeze.onRendered(function() {
       amp = new p5.Amplitude;
       if (!song.isPlaying()) {
         song.play();
+        var speed = inst.checkSpeed(song, p);
+        inst.startingRate.set(speed);
       }
-      cnv.mouseClicked(function() {
-        song.isPlaying() ? song.stop() : song.play();
+      cnv.mouseClicked(function(e) {
+        if (inst.saveRate.get()) {
+          inst.saveRate.set(false);
+        } else {
+          var speed = inst.checkSpeed(song, p);
+          inst.saveRate.set(speed);
+        }
       });
     }
     p.draw = function() {
       p.background(0);
-      // if (!ps) {
-      //   ps = new SmokeSystem(0,p.createVector(p.width / 2, p.height / 2), smokeTexture);
-      //   console.log("rtes")
-      // }
-      // if (inst.drawSize.get() !== smokeTexture.height) {
-      //   console.log("no mathc")
-      // }
+      inst.applyPlaybackRate(song, p);
       //smoke
-      var dx = p.map(p.mouseX,0,p.width,-0.2,0.2);
+      if (inst.manipulateRate.get()) {
+        var dx = p.map(p.mouseX,0,p.width,-0.2,0.2);
+      } else {
+        dx = p.map(p.width/2,0,p.width,-0.2,0.2);
+      }
       var wind = p.createVector(dx,0);
       ps.applyForce(wind);
       ps.run();
@@ -75,7 +114,9 @@ Template.audioFreeze.onRendered(function() {
         ps.addParticle();
       }
       // Draw an arrow representing the wind force
-      inst.drawArrowVector(wind, p.createVector(p.width/2,50,0),window.innerWidth, p);
+      if (!inst.saveRate.get()) {
+        inst.drawArrowVector(wind, p.createVector(p.width/2,50,0),window.innerWidth, p);
+      }
 
       var randColor = inst.randColor.get();      
       p.fill(randColor);
@@ -101,25 +142,23 @@ Template.audioFreeze.onRendered(function() {
     }
     //========= PARTICLE SYSTEM ===========
     var SmokeSystem = function(num,v,img_) {
-        this.particles = [];
-        this.origin = v.copy(); // we make sure to copy the vector value in case we accidentally mutate the original by accident
-        this.img = img_
-        for(var i = 0; i < num; ++i){
-          this.particles.push(new Particle(this.origin,this.img));
-        }
+      this.particles = [];
+      this.origin = v.copy(); // we make sure to copy the vector value in case we accidentally mutate the original by accident
+      this.img = img_
+      for(var i = 0; i < num; ++i){
+        this.particles.push(new Particle(this.origin,this.img));
+      }
     };
 
     SmokeSystem.prototype.run = function() {
-        var len = this.particles.length;
-        //loop through and run particles
-        for (var i = len - 1; i >= 0; i--) {
-            var particle = this.particles[i];
-            particle.run();
-            // if the particle is dead, we remove it.
-            if (particle.isDead()) {
-                this.particles.splice(i,1);
-            }
+      var len = this.particles.length;
+      for (var i = len - 1; i >= 0; i--) {
+        var particle = this.particles[i];
+        particle.run();
+        if (particle.isDead()) {
+          this.particles.splice(i,1);
         }
+      }
     }
 
     SmokeSystem.prototype.applyForce = function(dir) {
@@ -129,19 +168,16 @@ Template.audioFreeze.onRendered(function() {
       }
     }
 
-    
-      // Adds a new particle to the system at the origin of the system and with
-      // the originally set texture.
+    // Adds a new particle to the system at the origin of the system and with
+    // the originally set texture.
     SmokeSystem.prototype.addParticle = function() {
       this.particles.push(new Particle(this.origin,this.img));
     }
 
     var Particle = function (pos, img_) {
       this.loc = pos.copy();
-
       var vx = p.randomGaussian() * 0.3;
       var vy = p.randomGaussian() * 0.3 - 1.0;
-
       this.vel = p.createVector(vx,vy);
       this.acc = p.createVector();
       this.lifespan = 100.0;
@@ -175,7 +211,7 @@ Template.audioFreeze.onRendered(function() {
       this.vel.add(this.acc);
       this.loc.add(this.vel);
       this.lifespan -= 2.5;
-        // this.acc.mult(0);
+      this.acc.mult(0);
     }  
   }
   var sketch = new p5(s, 'audioFreeze');
