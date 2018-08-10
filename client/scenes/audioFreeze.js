@@ -26,6 +26,7 @@ Template.audioFreeze.onCreated(function() {
   this.pInst =new ReactiveVar(false);
   this.isDancing = new ReactiveVar(false);
   this.danceStep = new ReactiveVar(false);
+  this.enableDancing = new ReactiveVar(true);
 
   Meteor.setInterval(() => {
     var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
@@ -151,25 +152,25 @@ Template.audioFreeze.onRendered(function() {
       var compX = p.width;
       var compY = p.height;
       var dance = {
-        cX: inst.randomInt(10, compX),
-        cY: inst.randomInt(10, compY)
+        x: inst.randomInt(10, compX),
+        y: inst.randomInt(10, compY)
       }
-      if (!inst.isDancing.get()) {
-        inst.isDancing.set(true);
-        inst.danceStep.set(dance);
-        Meteor.setTimeout(() => {
-          p.ellipse(dance.cX, dance.cY, size, size);
-          inst.isDancing.set(false);
-        }, 1000);
+      if (inst.enableDancing.get()) {
+        if (!inst.isDancing.get()) {
+          inst.isDancing.set(true);
+          inst.danceStep.set(dance);
+          Meteor.setTimeout(() => {
+            p.ellipse(dance.x, dance.y, size, size);
+            inst.isDancing.set(false);
+          }, 1000);
+        } else {
+          console.log('static step')
+          p.ellipse(inst.danceStep.get().x, inst.danceStep.get().y, size, size);
+        }
       } else {
-        console.log('static step')
-        p.ellipse(inst.danceStep.get().cX, inst.danceStep.get().cY, size, size);
+        p.ellipse(p.mouseX, p.mouseY, size, size); //follow
+        p.ellipse(p.width/2, p.height/2, size, size);//center
       }
-      
-      // console.log(randCoord)
-      
-      // p.ellipse(p.mouseX, p.mouseY, size, size); //follow
-      // p.ellipse(p.width/2, p.height/2, size, size);//center
       
       //graph
       history.push(level);
@@ -224,7 +225,16 @@ Template.audioFreeze.onRendered(function() {
       // static initial pos 
       // this.loc = pos.copy();
       //follow mouse
-      this.loc = p.createVector(p.mouseX, p.mouseY)
+      if (inst.isDancing.get()) {
+        if (inst.danceStep.get()) {
+          this.loc = p.createVector(inst.danceStep.get().x, inst.danceStep.get().y)
+        } else {
+          this.loc = p.createVector(p.mouseX, p.mouseY)
+        }
+      } else {
+        this.loc = p.createVector(p.mouseX, p.mouseY)
+      }
+      
       var vx = p.randomGaussian() * 0.3;
       var vy = p.randomGaussian() * 0.3 - 1.0;
       this.vel = p.createVector(vx,vy);
