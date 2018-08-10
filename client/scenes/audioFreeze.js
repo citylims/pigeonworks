@@ -1,6 +1,19 @@
 import THREE from 'three';
 import p5 from 'p5';
 import "p5/lib/addons/p5.sound";
+/*
+TODO
+Add WASD controls for circleboi
+Add Circle dance beat.
+Add flying toaster boxes?
+Make things get progressively loco crazy.
+Pre-analyze audio for bpm/peak.
+Endless sidescroll background.
+Set loop/delay.
+Waveform navigation.
+Smoke rise out of frame instead of lifespan, lifespan can control alpha?
+gutter options
+*/
 
 Template.audioFreeze.onCreated(function() {
   this.audioSketch = new ReactiveVar(false);  
@@ -10,6 +23,9 @@ Template.audioFreeze.onCreated(function() {
   this.saveRate = new ReactiveVar(false);
   this.savePos = new ReactiveVar(false);
   this.startingRate = new ReactiveVar(false);
+  this.pInst =new ReactiveVar(false);
+  this.isDancing = new ReactiveVar(false);
+  this.danceStep = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
     var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
@@ -51,6 +67,10 @@ Template.audioFreeze.onCreated(function() {
       // song.rate(this.startingRate.get())
     }
   }
+  
+  this.randomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 });
 
 Template.audioFreeze.helpers({
@@ -69,12 +89,14 @@ Template.audioFreeze.onRendered(function() {
   var inst = Template.instance();
   
   var s = function(p) {
-
-    var song, cnv, amp, smokeTexture,  ps; 
+    inst.pInst.set(p);
+    var song, cnv, amp, smokeTexture, y, ps; 
     var history = [];
+    y = 100;
     
     p.preload = function() {
       song = p.loadSound('/audio/Poisonous-Gas.mp3')
+      // song = p.loadSound('/audio/Li-Lo.mp3')
       smokeTexture = p.loadImage("/Smoke.png");
     }
     
@@ -101,12 +123,13 @@ Template.audioFreeze.onRendered(function() {
     p.draw = function() {
       p.background(0);
       inst.applyPlaybackRate(song, p);
-      //smoke
+      
+      //smoke  
       if (inst.manipulateRate.get()) {
         var dx = p.map(p.mouseX,0,p.width,-0.2,0.2);
       } else {
         dx = p.map(p.width/2,0,p.width,-0.2,0.2);
-      }
+      }      
       var wind = p.createVector(dx,0);
       ps.applyForce(wind);
       ps.run();
@@ -117,15 +140,37 @@ Template.audioFreeze.onRendered(function() {
       if (!inst.saveRate.get()) {
         inst.drawArrowVector(wind, p.createVector(p.width/2,50,0),window.innerWidth, p);
       }
-
+      
+      //pulse
       var randColor = inst.randColor.get();      
       p.fill(randColor);
       var level = amp.getLevel();
-      //pulse
       var size = p.map(level, 0, 1, 0, 200);
-      // console.log(size);
       inst.drawSize.set(size);
-      p.ellipse(p.width/2, p.height/2, size, size);
+      //dance
+      var compX = p.width;
+      var compY = p.height;
+      var dance = {
+        cX: inst.randomInt(10, compX),
+        cY: inst.randomInt(10, compY)
+      }
+      if (!inst.isDancing.get()) {
+        inst.isDancing.set(true);
+        inst.danceStep.set(dance);
+        Meteor.setTimeout(() => {
+          p.ellipse(dance.cX, dance.cY, size, size);
+          inst.isDancing.set(false);
+        }, 1000);
+      } else {
+        console.log('static step')
+        p.ellipse(inst.danceStep.get().cX, inst.danceStep.get().cY, size, size);
+      }
+      
+      // console.log(randCoord)
+      
+      // p.ellipse(p.mouseX, p.mouseY, size, size); //follow
+      // p.ellipse(p.width/2, p.height/2, size, size);//center
+      
       //graph
       history.push(level);
       p.stroke(randColor);
@@ -143,9 +188,10 @@ Template.audioFreeze.onRendered(function() {
     //========= PARTICLE SYSTEM ===========
     var SmokeSystem = function(num,v,img_) {
       this.particles = [];
-      this.origin = v.copy(); // we make sure to copy the vector value in case we accidentally mutate the original by accident
+      this.origin = v.copy();
       this.img = img_
       for(var i = 0; i < num; ++i){
+        var creatP = new Particle(this.origin,this.img);
         this.particles.push(new Particle(this.origin,this.img));
       }
     };
@@ -175,7 +221,10 @@ Template.audioFreeze.onRendered(function() {
     }
 
     var Particle = function (pos, img_) {
-      this.loc = pos.copy();
+      // static initial pos 
+      // this.loc = pos.copy();
+      //follow mouse
+      this.loc = p.createVector(p.mouseX, p.mouseY)
       var vx = p.randomGaussian() * 0.3;
       var vy = p.randomGaussian() * 0.3 - 1.0;
       this.vel = p.createVector(vx,vy);
@@ -190,8 +239,11 @@ Template.audioFreeze.onRendered(function() {
     }
     
     Particle.prototype.render = function() {
+      //Epilepsy
+      // var randy = p.color(p.random(255), p.random(255), p.random(255)); = Epilepsy
+      var randy = p.color(inst.randColor.get()); //match with template level random color
       p.imageMode(p.CENTER);
-      p.tint(255,this.lifespan);
+      p.tint(randy,this.lifespan);
       p.image(this.texture,this.loc.x,this.loc.y);
     }
 
@@ -216,4 +268,12 @@ Template.audioFreeze.onRendered(function() {
   }
   var sketch = new p5(s, 'audioFreeze');
   inst.audioSketch.set(sketch);
+});
+
+Template.audioFreeze.onDestroyed(function() {
+  //bye now
+  if (this.audioSketch.get() && this.pInst.get()) {
+    var pInst = this.pInst.get();
+    pInst.remove();
+  }
 });
