@@ -27,11 +27,26 @@ Template.audioFreeze.onCreated(function() {
   this.isDancing = new ReactiveVar(false);
   this.danceStep = new ReactiveVar(false);
   this.enableDancing = new ReactiveVar(true);
+  this.expandGutter = new ReactiveVar(false);
+  this.song = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
     var color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
     this.randColor.set(color)
   }, 1000);
+  
+  this.autorun(() => {
+    if (!this.expandGutter.get()) {
+      console.log('close');
+      // $('#gutter').removeClass('expand');
+      // $('#gutter').velocity('transition.bounceDownOut', {duration: 500});
+    	$('#gutter').animate({height: '20px'}, {duration: 250});
+          // transform: rotate(180deg) scale(0.4);
+    } else {
+      console.log('open');
+      $('#gutter').animate({height: '70px'}, {duration: 250,});
+    }
+  });
   
   this.drawArrowVector = (v, loc, scale, p) => {
     p.push();
@@ -49,6 +64,7 @@ Template.audioFreeze.onCreated(function() {
   
   this.checkSpeed = (song, p) => {
     if (!this.startingRate.get()) {
+      
       var speed = p.map(p.width /2 , 0.1, p.width, 0, 2);
       console.log('set');
     } else {
@@ -58,14 +74,19 @@ Template.audioFreeze.onCreated(function() {
   }
   
   this.applyPlaybackRate = (song, p) => {
+    // console.log($(":hover"));
     if (this.manipulateRate.get() && !this.saveRate.get()) {
+      if ($(':hover').attr('id') === 'gutter') {
+        console.log('hovering');
+      }
       var speed = this.checkSpeed(song, p)
       song.rate(speed);
     } else if (this.manipulateRate.get() && this.saveRate.get()) {
       song.rate(this.saveRate.get());
     }  
     else if (!this.manipulateRate.get() && this.startingRate.get()) {
-      // song.rate(this.startingRate.get())
+      // console.log('ay');
+      song.rate(this.startingRate.get())
     }
   }
   
@@ -77,18 +98,38 @@ Template.audioFreeze.onCreated(function() {
 Template.audioFreeze.helpers({
   manipulateRate() {
     return Template.instance().manipulateRate.get();
+  },
+  gutterExpand() {
+    return Template.instance().expandGutter.get();
+  },
+  saveRate() {
+    return Template.instance().saveRate.get();
   }
 });
 
 Template.audioFreeze.events({
   'click [data-action="manipulateRate"]': function() {
+    Template.instance().saveRate.set(false);
     Template.instance().manipulateRate.set(!Template.instance().manipulateRate.get());
   },
+  'click [data-action="expandGutter"]': function() {
+    Template.instance().expandGutter.set(!Template.instance().expandGutter.get());
+  },
+  
+  'click [data-action="saveRate"]': function(e,t) {
+    if (t.saveRate.get()) {
+      t.saveRate.set(false);
+    } else {
+      var p = t.pInst.get();
+      var song = t.song.get()
+      var speed = t.checkSpeed(song, p);
+      t.saveRate.set(speed);
+    }
+  }
 });
 
 Template.audioFreeze.onRendered(function() {
   var inst = Template.instance();
-  
   var s = function(p) {
     inst.pInst.set(p);
     var song, cnv, amp, smokeTexture, y, ps; 
@@ -102,6 +143,7 @@ Template.audioFreeze.onRendered(function() {
     }
     
     p.setup = function() {  
+      inst.song.set(song);
       cnv = p.createCanvas(window.innerWidth, window.innerHeight);
       smokeTexture.resize(inst.drawSize.get(), inst.drawSize.get());
       // p.resize(smokeTexture)
@@ -112,14 +154,14 @@ Template.audioFreeze.onRendered(function() {
         var speed = inst.checkSpeed(song, p);
         inst.startingRate.set(speed);
       }
-      cnv.mouseClicked(function(e) {
-        if (inst.saveRate.get()) {
-          inst.saveRate.set(false);
-        } else {
-          var speed = inst.checkSpeed(song, p);
-          inst.saveRate.set(speed);
-        }
-      });
+      // cnv.mouseClicked(function(e) {
+      //   if (inst.saveRate.get()) {
+      //     inst.saveRate.set(false);
+      //   } else {
+      //     var speed = inst.checkSpeed(song, p);
+      //     inst.saveRate.set(speed);
+      //   }
+      // });
     }
     p.draw = function() {
       p.background(0);
@@ -164,7 +206,7 @@ Template.audioFreeze.onRendered(function() {
             inst.isDancing.set(false);
           }, 1000);
         } else {
-          console.log('static step')
+          // console.log('static step')
           p.ellipse(inst.danceStep.get().x, inst.danceStep.get().y, size, size);
         }
       } else {

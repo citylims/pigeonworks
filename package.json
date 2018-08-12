@@ -16,6 +16,7 @@
     "p5": "^0.6.1",
     "pizzicato": "^0.6.3",
     "three": "^0.85.2",
-    "three-orbit-controls": "^82.1.0"
+    "three-orbit-controls": "^82.1.0",
+    "velocity-animate": "^1.5.2"
   }
 }

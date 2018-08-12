@@ -1,7 +1,26 @@
 <template name="audioFreeze">
   <div id="audioFreeze">
     <div class="menu" style="color:white;position:absolute;top:40px;">
-      <div data-action="manipulateRate" style="{{#if manipulateRate}}color:red;{{/if}}}}">Rate</div>
+      <!-- <div data-action="manipulateRate" style="{{#if manipulateRate}}color:red;{{/if}}}}">Rate</div> -->
+    </div>
+  </div>
+  <div id="gutter" class="{{#if gutterExpand}}expand{{/if}}">
+    <div class="gutter-row">
+      <div class="g-r-header">
+        <div class="carrot-icon" data-action="expandGutter"></div>
+      </div>
+      {{#if gutterExpand}}
+      <div class="g-r-options">
+        <div class="option-btn {{#if manipulateRate}}active{{/if}}" data-action="manipulateRate">
+          <div>Rate</div>
+        </div>
+        {{#if manipulateRate}}
+          <div class="option-btn {{#if saveRate}}active{{/if}}" data-action="saveRate">
+            <div>Save</div>
+          </div>
+        {{/if}}
+      </div>
+      {{/if}}
     </div>
   </div>
 </template>

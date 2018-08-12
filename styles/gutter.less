@@ -1,0 +1,53 @@
+@active:  yellow;
+@inactive:  white;
+
+#gutter {
+  cursor: pointer;
+  height: 20px;
+  width: 100%;
+  background: rgba(79, 13, 120, 0.11);
+  position: absolute;
+  bottom: 0px;
+  color: @inactive;
+  .g-r-header {
+    width: 100%;
+    float:left;
+    position: absolute;
+    .carrot-icon {
+      background: url(nav-arrow.svg) no-repeat center;
+      width: 28px;
+      height: 28px;
+      float: right;
+      transform: scale(0.4);
+      margin-top: -5px;
+      margin-right: 8px;
+      cursor: pointer;
+    }  
+  }
+  .g-r-options {
+    width: 100%;
+    height: 60px;
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    padding-top: 8px;
+    .option-btn {
+      padding: 16px;
+      margin: 0px 8px;
+      border: 1px dashed @inactive;
+      &.active {
+        border: 1px solid @active;
+        color: @active;
+      }
+    }
+  }
+  &.expand {
+    height: 75px;
+    background: rgba(79, 13, 120, 0.33);
+    .carrot-icon {
+      transform: rotate(180deg) scale(0.4);
+    }
+  }
+
+}
