@@ -29,6 +29,7 @@ Template.audioFreeze.onCreated(function() {
   this.enableDance = new ReactiveVar(false);
   this.expandGutter = new ReactiveVar(false);
   this.enableFollow = new ReactiveVar(false);
+  this.enableDelay = new ReactiveVar(false);
   this.song = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
@@ -81,7 +82,9 @@ Template.audioFreeze.onCreated(function() {
         console.log('hovering');
       }
       var speed = this.checkSpeed(song, p)
-      song.rate(speed);
+      this.manipulateRate.set(speed);
+      // song.rate(speed);
+      
     } else if (this.manipulateRate.get() && this.saveRate.get()) {
       song.rate(this.saveRate.get());
     }  
@@ -89,6 +92,10 @@ Template.audioFreeze.onCreated(function() {
       // console.log('ay');
       song.rate(this.startingRate.get())
     }
+  }
+  
+  this.applyDelay = (song, delay, p ) => {
+    delay.process(song, .12, .2, 400);
   }
   
   this.randomInt = (min, max) => {
@@ -111,6 +118,9 @@ Template.audioFreeze.helpers({
   },
   enableFollow() {
     return Template.instance().enableFollow.get();
+  },
+  enableDelay() {
+    return Template.instance().enableDelay.get();
   }
 });
 
@@ -127,6 +137,9 @@ Template.audioFreeze.events({
   },
   'click [data-action="follow"]': function() {
     Template.instance().enableFollow.set(!Template.instance().enableFollow.get());
+  },
+  'click [data-action="delay"]': function() {
+    Template.instance().enableDelay.set(!Template.instance().enableDelay.get());
   },
   
   'click [data-action="saveRate"]': function(e,t) {
@@ -148,10 +161,11 @@ Template.audioFreeze.onRendered(function() {
     var song, cnv, amp, smokeTexture, y, ps; 
     var history = [];
     y = 100;
+    delay = new p5.Delay();
     
     p.preload = function() {
-      song = p.loadSound('/audio/Poisonous-Gas.mp3')
-      // song = p.loadSound('/audio/Li-Lo.mp3')
+      // song = p.loadSound('/audio/Poisonous-Gas.mp3')
+      song = p.loadSound('/audio/Li-Lo.mp3')
       smokeTexture = p.loadImage("/Smoke.png");
     }
     
@@ -179,7 +193,10 @@ Template.audioFreeze.onRendered(function() {
     p.draw = function() {
       p.background(0);
       inst.applyPlaybackRate(song, p);
-      
+      if (inst.enableDelay.get()) {
+        inst.applyDelay(song, delay, p);      
+      }
+      // if delayrate
       //smoke  
       if (inst.manipulateRate.get()) {
         var dx = p.map(p.mouseX,0,p.width,-0.2,0.2);
