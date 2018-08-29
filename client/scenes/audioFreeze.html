@@ -11,12 +11,22 @@
       </div>
       {{#if gutterExpand}}
       <div class="g-r-options">
+        <div class="option-btn {{#if enableDance}}active{{/if}}" data-action="dance">
+          <div>Dance</div>
+        </div>
+        <div class="option-btn {{#if enableFollow}}active{{/if}}" data-action="follow">
+          <div>Follow</div>
+        </div>
         <div class="option-btn {{#if manipulateRate}}active{{/if}}" data-action="manipulateRate">
           <div>Rate</div>
         </div>
         {{#if manipulateRate}}
-          <div class="option-btn {{#if saveRate}}active{{/if}}" data-action="saveRate">
-            <div>Save</div>
+          <div class="option-btn {{#if saveRate}}active{{/if}}">
+            {{#if saveRate}}
+              <div >{{saveRate}}</div>
+            {{else}}
+              <div >{{manipulateRate}}</div>
+            {{/if}}
           </div>
         {{/if}}
       </div>

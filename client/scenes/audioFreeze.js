@@ -26,8 +26,9 @@ Template.audioFreeze.onCreated(function() {
   this.pInst =new ReactiveVar(false);
   this.isDancing = new ReactiveVar(false);
   this.danceStep = new ReactiveVar(false);
-  this.enableDancing = new ReactiveVar(true);
+  this.enableDance = new ReactiveVar(false);
   this.expandGutter = new ReactiveVar(false);
+  this.enableFollow = new ReactiveVar(false);
   this.song = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
@@ -104,6 +105,12 @@ Template.audioFreeze.helpers({
   },
   saveRate() {
     return Template.instance().saveRate.get();
+  },
+  enableDance() {
+    return Template.instance().enableDance.get();
+  },
+  enableFollow() {
+    return Template.instance().enableFollow.get();
   }
 });
 
@@ -114,6 +121,12 @@ Template.audioFreeze.events({
   },
   'click [data-action="expandGutter"]': function() {
     Template.instance().expandGutter.set(!Template.instance().expandGutter.get());
+  },
+  'click [data-action="dance"]': function() {
+    Template.instance().enableDance.set(!Template.instance().enableDance.get());
+  },
+  'click [data-action="follow"]': function() {
+    Template.instance().enableFollow.set(!Template.instance().enableFollow.get());
   },
   
   'click [data-action="saveRate"]': function(e,t) {
@@ -154,14 +167,14 @@ Template.audioFreeze.onRendered(function() {
         var speed = inst.checkSpeed(song, p);
         inst.startingRate.set(speed);
       }
-      // cnv.mouseClicked(function(e) {
-      //   if (inst.saveRate.get()) {
-      //     inst.saveRate.set(false);
-      //   } else {
-      //     var speed = inst.checkSpeed(song, p);
-      //     inst.saveRate.set(speed);
-      //   }
-      // });
+      cnv.mouseClicked(function(e) {
+        if (inst.saveRate.get()) {
+          inst.saveRate.set(false);
+        } else {
+          var speed = inst.checkSpeed(song, p);
+          inst.saveRate.set(speed);
+        }
+      });
     }
     p.draw = function() {
       p.background(0);
@@ -197,7 +210,7 @@ Template.audioFreeze.onRendered(function() {
         x: inst.randomInt(10, compX),
         y: inst.randomInt(10, compY)
       }
-      if (inst.enableDancing.get()) {
+      if (inst.enableDance.get()) {
         if (!inst.isDancing.get()) {
           inst.isDancing.set(true);
           inst.danceStep.set(dance);
@@ -210,8 +223,11 @@ Template.audioFreeze.onRendered(function() {
           p.ellipse(inst.danceStep.get().x, inst.danceStep.get().y, size, size);
         }
       } else {
-        p.ellipse(p.mouseX, p.mouseY, size, size); //follow
         p.ellipse(p.width/2, p.height/2, size, size);//center
+      }
+      
+      if (inst.enableFollow.get()) {
+        p.ellipse(p.mouseX, p.mouseY, size, size); //follow
       }
       
       //graph
