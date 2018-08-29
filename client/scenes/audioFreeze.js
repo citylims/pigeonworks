@@ -97,6 +97,9 @@ Template.audioFreeze.onCreated(function() {
   this.applyDelay = (song, delay, p ) => {
     delay.process(song, .12, .2, 400);
   }
+  this.stopDelay = (song, delay, p ) => {
+    delay.process(song, 0, 0, 0);
+  }
   
   this.randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -195,6 +198,8 @@ Template.audioFreeze.onRendered(function() {
       inst.applyPlaybackRate(song, p);
       if (inst.enableDelay.get()) {
         inst.applyDelay(song, delay, p);      
+      } else {
+        inst.stopDelay(song, delay);
       }
       // if delayrate
       //smoke  
