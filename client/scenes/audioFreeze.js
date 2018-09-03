@@ -30,6 +30,7 @@ Template.audioFreeze.onCreated(function() {
   this.expandGutter = new ReactiveVar(false);
   this.enableFollow = new ReactiveVar(false);
   this.enableDelay = new ReactiveVar(false);
+  this.playlist = new ReactiveVar(['/audio/Li-Lo.mp3', '/audio/Poisonous-Gas.mp3'])
   this.song = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
@@ -167,8 +168,9 @@ Template.audioFreeze.onRendered(function() {
     delay = new p5.Delay();
     
     p.preload = function() {
+      var songFile = inst.playlist.get()[Math.floor(Math.random()*inst.playlist.get().length)];
       // song = p.loadSound('/audio/Poisonous-Gas.mp3')
-      song = p.loadSound('/audio/Li-Lo.mp3')
+      song = p.loadSound(songFile)
       smokeTexture = p.loadImage("/Smoke.png");
     }
     
@@ -203,8 +205,9 @@ Template.audioFreeze.onRendered(function() {
       }
       // if delayrate
       //smoke  
+      var dx
       if (inst.manipulateRate.get()) {
-        var dx = p.map(p.mouseX,0,p.width,-0.2,0.2);
+        // var dx = p.map(p.mouseX,0,p.width,-0.2,0.2);
       } else {
         dx = p.map(p.width/2,0,p.width,-0.2,0.2);
       }      
@@ -244,12 +247,12 @@ Template.audioFreeze.onRendered(function() {
           // console.log('static step')
           p.ellipse(inst.danceStep.get().x, inst.danceStep.get().y, size, size);
         }
-      } else {
-        p.ellipse(p.width/2, p.height/2, size, size);//center
       }
       
       if (inst.enableFollow.get()) {
         p.ellipse(p.mouseX, p.mouseY, size, size); //follow
+      } else {
+        p.ellipse(p.width/2, p.height/2, size, size);//center
       }
       
       //graph
