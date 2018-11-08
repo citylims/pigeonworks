@@ -79,6 +79,15 @@ FlowRouter.route('/audioFreeze', {
   }
 });
 
+FlowRouter.route('/outerverse', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "outerverse"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();
