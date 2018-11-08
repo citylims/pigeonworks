@@ -1,6 +1,7 @@
 node_modules/
 packages/glitchy/.npm
 packages/s3/.npm
+public/audio
 settings-s3.json
 pigeonworks.pem
 .DS_Store
