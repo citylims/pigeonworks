@@ -18,8 +18,8 @@ Template.creationMyth.onRendered(function() {
   var loader = new THREE.TextureLoader();
   loader.setCrossOrigin("*");
   var baseUrl = window.location.href;
-  // var space = "#151718";
-  var galaxies = 2;
+  var space = "#151718";
+  var galaxies = 8;
 
   var scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2("#BABABA", 0.0002);
@@ -37,8 +37,6 @@ Template.creationMyth.onRendered(function() {
   spotLight.intensity = .5;
   spotLight.castShadow = true;
   scene.add(spotLight);
-  var light = new THREE.AmbientLight( 0x111111 );
-	scene.add( light );
 
   var controls = new OrbitControls(camera);
   controls.damping = 0.2;
@@ -53,7 +51,7 @@ Template.creationMyth.onRendered(function() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setClearColor("black", 1);
-  $('#creationMyth').append(renderer.domElement);
+  $('body').append(renderer.domElement);
 
   window.onresize = function() {
     var canvasHeight = window.innerHeight;
@@ -164,7 +162,6 @@ Template.creationMyth.onRendered(function() {
     this.geometry =  new THREE.PlaneGeometry(canvasWidth * 2, canvasHeight * 2, 128,128);
     this.material = new THREE.MeshLambertMaterial({
       color: mainColor
-      // color: "#01B9D1" 
     });
     this.wireMaterial = new THREE.MeshLambertMaterial({
       color: "#FFFFFF",
