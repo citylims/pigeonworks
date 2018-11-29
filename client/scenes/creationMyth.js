@@ -20,6 +20,9 @@ Template.creationMyth.onRendered(function() {
   var baseUrl = window.location.href;
   var space = "#151718";
   var galaxies = 8;
+  var time = 0;
+  var direction = false;
+  var sphere;
 
   var scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2("#BABABA", 0.0002);
@@ -220,7 +223,7 @@ Template.creationMyth.onRendered(function() {
       map: texture,
       overdraw: 0.5
     });
-    var sphere = new THREE.Mesh(geometry, material);
+    sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
   });
 
@@ -232,7 +235,27 @@ Template.creationMyth.onRendered(function() {
   }
   
   /* Animations */
+  
+  var liftOff = (sphere) => {
+    if (!sphere) return;
+    var limit = 200;
+    var floor = 25
+    sphere.rotation.y += 0.003;
+    if (sphere.position.y >= limit) {
+      direction = false;
+    } else if (sphere.position.y < floor) {
+      direction = true;
+    }
+    if (direction) {
+      sphere.position.y += 1
+    } else {
+      sphere.position.y -= 1
+    }
+    time += Math.PI / 180 * 2;
+  }
+  
   var animation = () => {
+    liftOff(sphere);
     scene.rotation.y -= .0005;
     camera.fov = fov * zoom;
     camera.updateProjectionMatrix();
