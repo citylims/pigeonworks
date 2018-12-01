@@ -1,6 +1,8 @@
-if (Moods.find().count() === 0) {
-  Moods.insert({
+if (Glitches.find().count() === 0) {
+  Glitches.insert({
     moodName: 'Winter',
+    title: 'Winter',
+    author: 'Winter',
     audio: [
       {
         fileName:'Merry Xmas',
@@ -9,7 +11,17 @@ if (Moods.find().count() === 0) {
       },
       {
         fileName:'The Little Light Fades',
-        fileLocation: 'audio/meow.mp3',
+        fileLocation: 'audio/TheLittleLightFades.mp3',
+        fileType:'mp3'
+      },
+      {
+        fileName:'Mystic',
+        fileLocation: 'audio/Mystic.mp3',
+        fileType:'mp3'
+      },
+      {
+        fileName:'The Station',
+        fileLocation: 'audio/TheStation.mp3',
         fileType:'mp3'
       },
     ],
@@ -51,7 +63,7 @@ if (Moods.find().count() === 0) {
       {
         audio: {
           fileName:'Merry Xmas',
-          fileLocation: 'audio/MerryXmas.mp3',
+          fileLocation: 'audio/TheStation.mp3',
           fileType:'mp3'
         },
         visual: {
@@ -63,7 +75,7 @@ if (Moods.find().count() === 0) {
       {
         audio: {
           fileName:'The Little Light Fades',
-          fileLocation: 'audio/meow.mp3',
+          fileLocation: 'audio/TheLittleLightFades.mp3',
           fileType:'mp3'
         },
         visual: {
@@ -75,7 +87,7 @@ if (Moods.find().count() === 0) {
       {
         audio: {
           fileName:'The Little Light Fades',
-          fileLocation: 'audio/meow.mp3',
+          fileLocation: 'audio/Mystic.mp3',
           fileType:'mp3'
         },
         visual: {
@@ -86,7 +98,7 @@ if (Moods.find().count() === 0) {
       }
     ]      
   });
-  Moods.insert({
+  Glitches.insert({
     moodName: 'Core'
   });
 }
