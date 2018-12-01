@@ -138,11 +138,11 @@ Template.flight.onRendered(function() {
   });
   
   //globalize for better init
-  // var fontLoader = new THREE.FontLoader();
-  // fontLoader.load( `${baseUrl}/fonts/Bellefair_Regular.typeface.json`,  ( font ) => {
-  //   // console.log(font)
-  //   this.activeFont.set(font);
-  // });
+  var fontLoader = new THREE.FontLoader();
+  fontLoader.load( `${baseUrl}/fonts/Bellefair_Regular.typeface.json`,  ( font ) => {
+    // console.log(font)
+    this.activeFont.set(font);
+  });
   
   this.whatYouSay = (face, font, child) => {
     // http://jsfiddle.net/9XGuK/4/
@@ -216,17 +216,16 @@ Template.flight.onRendered(function() {
   
   
   var intersection = () => {
-    if (this.update.get()) return;
-    if (this.mouseDown.get()) return;
+    // console.log('callin intersection')
+    // if (this.update.get()) return;
+    // if (this.mouseDown.get()) return;
     // 
     raycaster.setFromCamera( mouse, camera );
     var font = this.activeFont.get();
     var text = this.textObj.get();
     var intersects = raycaster.intersectObjects( scene.children );
-    
     if (intersects.length && font) {
       this.playSound.set(true);
-      // console.log(intersects[0].face.a);
       this.frequency.set(intersects[0].face.a);
       if (text) {
         _.each(scene.children, (child) => {
