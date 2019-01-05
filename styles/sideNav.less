@@ -1,0 +1,62 @@
+#sideNav {
+  .drawer {
+        
+    position: fixed;
+    background: rgb(79, 13, 120);
+    opacity: .3;
+    width: 2%;
+    // height: 200px;
+    z-index: 10000;
+    .carrot-icon {
+      background: url(nav-arrow.svg) no-repeat center;
+      width: 28px;
+      height: 28px;
+      position: absolute;
+      top: 48%;
+      right: 1px;
+      transform: scale(0.8) rotate(270deg);
+      cursor: pointer;
+      opacity: 1;
+    }  
+    &:hover {
+      cursor: pointer;
+      opacity: .8 !important;
+    }
+    &.expand {
+      background: rgb(79, 13, 120);
+      opacity: 0.95;
+      overflow: hidden;
+      overflow-y: scroll;
+      cursor: default;
+      &:hover {
+        // background: red !important;
+        opacity: 0.95 !important;
+      }
+      .carrot-icon {
+        right: 18px;
+        transform: scale(0.8) rotate(90deg);
+      }  
+    }
+    
+    .nav-blocks-container {
+      margin-left:2%;
+      margin-top:3%;
+      position: relative;
+    }
+    #navBlock {
+      width: 44%;
+      height: 500px;
+      margin: 25px;
+      background:red;
+      border: 1px dashed yellow;
+      float:left;
+      cursor: pointer;
+    }
+  }
+  .card {
+    opacity: 0;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important; 
+  }
+}

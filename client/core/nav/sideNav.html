@@ -1,0 +1,17 @@
+<template name="sideNav">
+  <div id="sideNav">
+    <div class="drawer {{#if expanded}}expand{{/if}}" style="height:{{windowHeight}}px;">
+      <div class="carrot-icon"></div>
+      {{#if expanded}}
+      <div class="nav-blocks-container" style="">
+        {{#each feats}}
+          {{#if completed}}
+            {{> navBlock feat=this}}
+          {{/if}}
+          <!-- {{this.path}} -->
+        {{/each}}
+      </div>
+      {{/if}}
+    </div> 
+  </div>
+</template>
