@@ -54,7 +54,7 @@ Template.creationMyth.onRendered(function() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setClearColor("black", 1);
-  $('body').append(renderer.domElement);
+  $('#creationMyth').append(renderer.domElement);
 
   window.onresize = function() {
     var canvasHeight = window.innerHeight;
@@ -231,6 +231,12 @@ Template.creationMyth.onRendered(function() {
   var render = () => {
     requestAnimationFrame(render);
     animation();
+    if (Session.get('expandSideNav')) {
+      controls.enabled = false;
+      // console.log('drawer expanded');
+    } else {
+      controls.enabled = true;
+    }
     renderer.render(scene, camera);
   }
   

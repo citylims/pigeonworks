@@ -42,7 +42,7 @@ Template.flight.onCreated(function() {
 });
 
 Template.flight.onRendered(function() {
-  $('canvas').remove(); // this should be moved to router level.
+  // $('canvas').remove(); // this should be moved to router level.
   this.planet = new ReactiveVar(false);
   this.time = new ReactiveVar(0.01);
   this.update = new ReactiveVar(false);
@@ -98,7 +98,7 @@ Template.flight.onRendered(function() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setClearColor("black", 1);
-  $('body').append(renderer.domElement);
+  $('#flight').append(renderer.domElement);
 
   window.onresize = function() {
     var canvasHeight = window.innerHeight;
@@ -189,6 +189,11 @@ Template.flight.onRendered(function() {
     animation();
     intersection();
     requestAnimationFrame(render);
+    if (Session.get('expandSideNav')) {
+      controls.enabled = false;
+    } else {
+      controls.emabled = true;
+    }
     renderer.render(scene, camera);
   }
   
