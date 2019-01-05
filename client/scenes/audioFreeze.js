@@ -30,7 +30,7 @@ Template.audioFreeze.onCreated(function() {
   this.expandGutter = new ReactiveVar(false);
   this.enableFollow = new ReactiveVar(false);
   this.enableDelay = new ReactiveVar(false);
-  this.playlist = new ReactiveVar(['/audio/Li-Lo.mp3', '/audio/Poisonous-Gas.mp3'])
+  this.playlist = new ReactiveVar(['/audio/glitchy/Core/LiLo.mp3', '/audio/glitchy/Core/PoisonousGas.mp3'])
   this.song = new ReactiveVar(false);
 
   Meteor.setInterval(() => {
@@ -169,7 +169,6 @@ Template.audioFreeze.onRendered(function() {
     
     p.preload = function() {
       var songFile = inst.playlist.get()[Math.floor(Math.random()*inst.playlist.get().length)];
-      // song = p.loadSound('/audio/Poisonous-Gas.mp3')
       song = p.loadSound(songFile)
       smokeTexture = p.loadImage("/Smoke.png");
     }
