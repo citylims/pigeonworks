@@ -5,3 +5,4 @@ settings-s3.json
 pigeonworks.pem
 public/audio
 .DS_Store
+.notes
