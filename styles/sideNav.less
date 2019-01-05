@@ -1,6 +1,6 @@
 #sideNav {
+  font-family: "PT Mono";
   .drawer {
-        
     position: fixed;
     background: rgb(79, 13, 120);
     opacity: .3;
@@ -43,20 +43,38 @@
       margin-top:3%;
       position: relative;
     }
-    #navBlock {
-      width: 44%;
-      height: 500px;
-      margin: 25px;
-      background:red;
-      border: 1px dashed yellow;
-      float:left;
-      cursor: pointer;
-    }
   }
   .card {
     opacity: 0;
     background-size: cover !important;
     background-repeat: no-repeat !important;
     background-position: center center !important; 
+  }
+}
+
+#navBlock {
+  width: 44%;
+  height: 500px;
+  margin: 25px;
+  background:red;
+  border: 1px dashed yellow;
+  float:left;
+  cursor: pointer;
+  .caption-block {
+    position:absolute;
+    bottom: 0;
+    height: 18%;
+    width:100%;
+    background: green;
+    opacity: 0.9;
+    display:none;
+    background: rgb(79, 13, 120);
+    color: yellow;
+    .block-title {
+      display:none;
+      text-align:center;
+      font-size: 38px;
+      padding-top:15px;
+    }
   }
 }

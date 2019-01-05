@@ -1,5 +1,7 @@
 <template name="navBlock">
-  <div id="navBlock" data-action="goNavBlock" class="card" style="background: url('{{feat.img}}');">
-    
+  <div id="navBlock" nav-block="{{feat.title}}" data-action="goNavBlock" class="card" style="background: url('{{feat.img}}');">
+    <div class="caption-block">
+      <div class="block-title">{{feat.title}}</div>
+    </div>
   </div>
 </template>

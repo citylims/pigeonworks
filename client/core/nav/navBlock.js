@@ -1,5 +1,5 @@
 Template.navBlock.onCreated(function(){
-  // console.log(this.data.feat);
+  this.showCaption = new ReactiveVar(false);
 });
 
 Template.navBlock.helpers({
@@ -10,8 +10,41 @@ Template.navBlock.helpers({
 
 Template.navBlock.events({
   'click [data-action="goNavBlock"]': function(e,t) {
-    console.log(t.data.feat.path)
     FlowRouter.go(t.data.feat.path);
+  },
+  'mouseenter .card': function(e,t) { 
+    var block = $(e.currentTarget).attr('nav-block');
+    if (block === t.data.feat.title) {
+      if (t.showCaption.get() || $(e.currentTarget).hasClass('velocity-animating')) {
+        console.log("cant run again already")
+      }  else {
+        var caption = $(e.currentTarget).children('.caption-block');
+        t.showCaption.set(true);
+        $(caption).velocity('transition.bounceUpIn', { 
+          duration: 600, 
+          complete: () => {
+           $(caption).children('.block-title').velocity('transition.fadeIn', {duration: 500});
+          }
+        });
+      }     
+    }
+  },
+  'mouseleave .card': function(e,t) {
+    var block = $(e.currentTarget).attr('nav-block');
+    if (block === t.data.feat.title) {
+      if (!t.showCaption.get() || $(e.currentTarget).hasClass('velocity-animating')) {
+        console.log("cant run again already")
+      }  else {
+        var caption = $(e.currentTarget).children('.caption-block');
+        t.showCaption.set(false);
+        $(caption).children('.block-title').velocity('transition.fadeOut', { 
+          duration: 500, 
+          complete: () => {
+           $(caption).velocity('transition.bounceDownOut', {duration: 600});
+          }
+        });
+      }     
+    }
   }
 });
 
