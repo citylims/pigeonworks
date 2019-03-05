@@ -180,11 +180,6 @@ Template.audioFreeze.onRendered(function() {
       // p.resize(smokeTexture)
       ps = new SmokeSystem(0,p.createVector(p.width / 2, p.height / 2), smokeTexture);
       amp = new p5.Amplitude;
-      if (!song.isPlaying()) {
-        song.play();
-        var speed = inst.checkSpeed(song, p);
-        inst.startingRate.set(speed);
-      }
       cnv.mouseClicked(function(e) {
         if (inst.saveRate.get()) {
           inst.saveRate.set(false);
@@ -195,6 +190,19 @@ Template.audioFreeze.onRendered(function() {
       });
     }
     p.draw = function() {
+      var song = inst.song.get();
+        if (!song.isPlaying()) {
+          console.log("PRESS PLAY")
+          song.play();
+        //  setTimeout(() => {song._playing = true}, 1);
+          song.setVolume(0.05)
+          var speed = inst.checkSpeed(song, p);
+          inst.startingRate.set(speed);
+        } else {
+          // song.setVolume(0);
+          console.log('logpay');
+          
+        }
       p.background(0);
       inst.applyPlaybackRate(song, p);
       if (inst.enableDelay.get()) {
@@ -224,7 +232,7 @@ Template.audioFreeze.onRendered(function() {
       //pulse
       var randColor = inst.randColor.get();      
       p.fill(randColor);
-      var level = amp.getLevel();
+      var level = amp.getLevel() * (12);
       var size = p.map(level, 0, 1, 0, 200);
       inst.drawSize.set(size);
       //dance
@@ -367,5 +375,11 @@ Template.audioFreeze.onDestroyed(function() {
   if (this.audioSketch.get() && this.pInst.get()) {
     var pInst = this.pInst.get();
     pInst.remove();
+  }
+  
+  if (this.song.get()) {
+    var song = this.song.get();
+    song.stop();
+    this.song.set(false);
   }
 });
