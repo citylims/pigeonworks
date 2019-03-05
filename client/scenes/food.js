@@ -1,5 +1,8 @@
+import p5 from 'p5'
+
 Template.food.onCreated(function() {
   //defaults
+  this.song = new ReactiveVar(false);
   this.foodCount = new ReactiveVar(0);
   this.foodMax = new ReactiveVar(21); 
   this.gravX = new ReactiveVar(0); 
@@ -148,6 +151,7 @@ Template.food.events({
 
 Template.food.onRendered(function() {
   var inst = Template.instance();
+  var song;
   
   var messenger = Meteor.setInterval(() => {
     $('.food-message').animate({"opacity": "1"}, 8000, () => {
@@ -160,6 +164,22 @@ Template.food.onRendered(function() {
   inst.messenger.set(messenger);
   
   inst.autoAdd();
+  var s = function(p) {
+    p.preload = function() {
+      // var songFile
+      song = p.loadSound('/audio/glitchy/Core/TheLittleLightFades.mp3');
+      inst.song.set(song)
+    }
+    
+    p.draw = function() {
+      if (!song.isPlaying()) {
+        song.setVolume(0.05);
+        song.play();
+      }
+    }
+  }
+
+  var sketch = new p5(s, 'food');
 
 });
 
