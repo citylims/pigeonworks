@@ -1,0 +1,45 @@
+<template name="overlayers">
+  <div id="overlayers">
+    <!-- <nav>
+      <button id="hide">Show/Hide</button>
+      <button class="controls" id="generate">Generate</button>
+      <button class="controls" id="flip">Flip</button>
+      <input class="controls" id="points" type="range"  min="0" max="100"/>
+      <span class="controls"><p>Left & Right Arrows - Cycle</p></span>
+      <span class="controls"><p>Up & Down Arrows - Flip</p></span>
+    </nav> -->
+    <div class='option'>
+      <img class="top" src=''>
+      <img class="bottom" src=''>
+    </div>  
+      <div id="gutter" class="{{#if gutterExpand}}expand{{/if}}">
+        <div class="gutter-row">
+          <div class="g-r-header">
+            <div class="carrot-icon" data-action="expandGutter"></div>
+          </div>
+          {{#if gutterExpand}}
+            <div class="g-r-options">
+              <!-- <div class="option-btn" id="generate">
+                <div>Generate</div>
+              </div>
+              <div class="option-btn" id="flip">
+                <div>Flip</div>
+              </div> -->
+              <div class="option-btn">
+                <div>Up & Down Arrows - Flip</div>
+              </div>
+              <div class="option-btn" id="flip">
+                <div>Left & Right Arrows - Cycle</div>
+              </div> 
+              <div class="option-btn">
+                <div class="blend-title">BLEND</div>
+                <input class="controls blend-controls" id="points" data-action="points" type="range"  min="0" max="100"/>
+              </div>
+            </div>
+            
+          {{/if}}
+        </div>
+      </div>
+  </div>
+  
+</template>

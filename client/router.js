@@ -88,6 +88,15 @@ FlowRouter.route('/outerverse', {
   }
 });
 
+FlowRouter.route('/overlayers', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "overlayers"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();

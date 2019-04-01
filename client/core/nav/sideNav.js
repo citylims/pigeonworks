@@ -63,7 +63,12 @@ Template.sideNav.onCreated(function(){
     {
       title: 'Outer Verse',
       path: '/outerverse',
-      img: 'nav-blocks/CreationMyth.png'
+      img: 'nav-blocks/Outerverse.png'
+    },
+    {
+      title: 'Overlayers',
+      path: '/overlayers',
+      img: 'nav-blocks/Overlayers.png'
     }
   ])
 });

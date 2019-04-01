@@ -26,5 +26,11 @@ Template.headerDash.events({
   },
   'click [data-action="audioFreeze"]': function() {
     FlowRouter.go('/audioFreeze');
+  },
+  'click [data-action="outerverse"]': function() {
+    FlowRouter.go('/outerverse');
+  },
+  'click [data-action="overlayers"]': function() {
+    FlowRouter.go('/overlayers');
   }
 });
