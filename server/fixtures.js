@@ -8,7 +8,8 @@ if (Glitches.find().count() === 0) {
     ],
     visual: [
       {fileName:'BathMeow',  fileType:'jpg'},
-      {fileName:'KittenFight', fileType:'png'}
+      {fileName:'KittenFight', fileType:'png'},
+      {fileName:'StandingUp',  fileType:'jpg'}
     ],
     pairs: [
       {
@@ -19,6 +20,10 @@ if (Glitches.find().count() === 0) {
         audio: {fileName:'Meow', fileType:'mp3'},
         visual: {fileName:'KittenFight', fileType:'png'}
       },
+      {
+        audio: {fileName:'Meow', fileType:'mp3'},
+        visual: {fileName:'StandingUp', fileType:'jpg'}
+      }
     ]
   });
   Glitches.insert({
