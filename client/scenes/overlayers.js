@@ -66,7 +66,7 @@ Template.overlayers.onRendered(function() {
       $(".top").attr("src", combos[0].top);
       $(".bottom").attr("src", combos[0].bottom);
     }
-
+    //I wrote this code in 2014 when i had no idea what i was doing so i will preserve it for science.
     function movement(direction) {
       var topImg = $('.top').attr('src');
       var bottomImg = $('.bottom').attr('src');
@@ -78,12 +78,22 @@ Template.overlayers.onRendered(function() {
           if (combos[i].top === topImg &&
             combos[i].bottom === bottomImg) {
             if (direction === "forward") {
-              $(".top").attr("src", combos[i + 1].top);
-              $(".bottom").attr("src", combos[i + 1].bottom);
+              if (!combos[i + 1]) {
+                $(".top").attr("src", combos[0].top);
+                $(".bottom").attr("src", combos[0].bottom);
+              } else {
+                $(".top").attr("src", combos[i + 1].top);
+                $(".bottom").attr("src", combos[i + 1].bottom);
+              }
             }
             else if(direction === "backward") {
-              $(".top").attr("src", combos[i - 1].top);
-              $(".bottom").attr("src", combos[i - 1].bottom);
+              if (!combos[i -1]) {
+                $(".top").attr("src", combos[combos.length - 1].top);
+                $(".bottom").attr("src", combos[combos.length - 1].bottom);
+              } else {
+                $(".top").attr("src", combos[i - 1].top);
+                $(".bottom").attr("src", combos[i - 1].bottom);
+              }
             }
           }
         }
@@ -104,7 +114,6 @@ Template.overlayers.onRendered(function() {
     });
 
     // $("#points").on("change", function(e) {
-    //   console.log('yip')
     //   e.preventDefault;
     //   var opacity = $("#points").val();
     //   $(".top").css("opacity", opacity / 100);
@@ -134,43 +143,6 @@ Template.overlayers.onRendered(function() {
   }//overlayers
   //combo array 
   //need to data model
-  var arr = [
-  'http://i.imgur.com/gvtGp3r.jpg',
-  'http://i.imgur.com/JHsYx38.jpg',
-  'http://i.imgur.com/APXnuX9.jpg',
-  'http://i.imgur.com/tWggUi2.jpg',
-  'http://i.imgur.com/Sm7CLsX.jpg',
-  'http://i.imgur.com/hwqjycB.jpg',
-  'http://i.imgur.com/uToSGD6.jpg',
-  'http://i.imgur.com/MhdxcD1.jpg',
-  'http://i.imgur.com/cFGDHj4.jpg',
-  'http://i.imgur.com/TfGeK3v.jpg',
-  'http://i.imgur.com/O3cWx3f.jpg',
-  'http://i.imgur.com/AFDWvN7.jpg',
-  'http://i.imgur.com/RRZK4jz.jpg',
-  'http://i.imgur.com/hjqzNNh.jpg',
-  'http://i.imgur.com/udJX6v3.jpg',
-  'http://i.imgur.com/3GnMhSx.png',
-  'http://i.imgur.com/JuDTTz0.jpg',
-  'http://i.imgur.com/aa5L9Q3.jpg',
-  'http://i.imgur.com/Rq548Ux.jpg',
-  'http://i.imgur.com/0iVpzaa.jpg',
-  'http://i.imgur.com/beqlTTZ.jpg',
-  'http://i.imgur.com/n70PleR.jpg',
-  'http://i.imgur.com/A3TrfKk.jpg',
-  'http://i.imgur.com/dlh5nY9.jpg',
-  'http://i.imgur.com/Dl7WGJJ.jpg',
-  'http://i.imgur.com/FTzerop.jpg',
-  'http://i.imgur.com/2wW9D7b.jpg',
-  'http://i.imgur.com/Q3bUiHJ.gif',
-  "http://i.imgur.com/Wgr7PDD.jpg",
-  'http://i.imgur.com/kxM3Tri.jpg',
-  'http://i.imgur.com/oln2Bvb.jpg',
-  'http://i.imgur.com/BPkUx8x.jpg',
-  'http://i.imgur.com/jxVXLjF.jpg',
-  'http://i.imgur.com/1BhVE5f.jpg'
-  ];
-  
-  var combos = [{"top":"http://i.imgur.com/Wgr7PDD.jpg","bottom":"http://i.imgur.com/kxM3Tri.jpg"},{"top":"http://i.imgur.com/gvtGp3r.jpg","bottom":"http://i.imgur.com/JHsYx38.jpg"},{"top":"http://i.imgur.com/APXnuX9.jpg","bottom":"http://i.imgur.com/tWggUi2.jpg"},{"top":"http://i.imgur.com/Sm7CLsX.jpg","bottom":"http://i.imgur.com/hwqjycB.jpg"},{"top":"http://i.imgur.com/uToSGD6.jpg","bottom":"http://i.imgur.com/MhdxcD1.jpg"},{"top":"http://i.imgur.com/cFGDHj4.jpg","bottom":"http://i.imgur.com/TfGeK3v.jpg"},{"top":"http://i.imgur.com/O3cWx3f.jpg","bottom":"http://i.imgur.com/AFDWvN7.jpg"},{"top":"http://i.imgur.com/RRZK4jz.jpg","bottom":"http://i.imgur.com/hjqzNNh.jpg"},{"top":"http://i.imgur.com/udJX6v3.jpg","bottom":"http://i.imgur.com/3GnMhSx.png"},{"top":"http://i.imgur.com/JuDTTz0.jpg","bottom":"http://i.imgur.com/aa5L9Q3.jpg"},{"top":"http://i.imgur.com/Rq548Ux.jpg","bottom":"http://i.imgur.com/0iVpzaa.jpg"},{"top":"http://i.imgur.com/beqlTTZ.jpg","bottom":"http://i.imgur.com/n70PleR.jpg"},{"top":"http://i.imgur.com/A3TrfKk.jpg","bottom":"http://i.imgur.com/dlh5nY9.jpg"},{"top":"http://i.imgur.com/Dl7WGJJ.jpg","bottom":"http://i.imgur.com/FTzerop.jpg"},{"top":"http://i.imgur.com/2wW9D7b.jpg","bottom":"http://i.imgur.com/Q3bUiHJ.gif"},{"top":"http://i.imgur.com/oln2Bvb.jpg","bottom":"http://i.imgur.com/BPkUx8x.jpg"},{"top":"http://i.imgur.com/jxVXLjF.jpg","bottom":"http://i.imgur.com/1BhVE5f.jpg"}]
+  var combos = [{"top":"http://i.imgur.com/Wgr7PDD.jpg","bottom":"http://i.imgur.com/kxM3Tri.jpg"},{"top":"http://i.imgur.com/gvtGp3r.jpg","bottom":"http://i.imgur.com/JHsYx38.jpg"},{"top":"http://i.imgur.com/APXnuX9.jpg","bottom":"http://i.imgur.com/tWggUi2.jpg"},{"top":"http://i.imgur.com/Sm7CLsX.jpg","bottom":"http://i.imgur.com/hwqjycB.jpg"},{"top":"http://i.imgur.com/uToSGD6.jpg","bottom":"http://i.imgur.com/MhdxcD1.jpg"},{"top":"http://i.imgur.com/O3cWx3f.jpg","bottom":"http://i.imgur.com/AFDWvN7.jpg"},{"top":"http://i.imgur.com/RRZK4jz.jpg","bottom":"http://i.imgur.com/hjqzNNh.jpg"},{"top":"http://i.imgur.com/udJX6v3.jpg","bottom":"http://i.imgur.com/3GnMhSx.png"},{"top":"http://i.imgur.com/JuDTTz0.jpg","bottom":"http://i.imgur.com/aa5L9Q3.jpg"},{"top":"http://i.imgur.com/Rq548Ux.jpg","bottom":"http://i.imgur.com/0iVpzaa.jpg"},{"top":"http://i.imgur.com/beqlTTZ.jpg","bottom":"http://i.imgur.com/n70PleR.jpg"},{"top":"http://i.imgur.com/A3TrfKk.jpg","bottom":"http://i.imgur.com/dlh5nY9.jpg"},{"top":"http://i.imgur.com/Dl7WGJJ.jpg","bottom":"http://i.imgur.com/FTzerop.jpg"},{"top":"http://i.imgur.com/2wW9D7b.jpg","bottom":"http://i.imgur.com/Q3bUiHJ.gif"},{"top":"http://i.imgur.com/oln2Bvb.jpg","bottom":"http://i.imgur.com/BPkUx8x.jpg"},{"top":"http://i.imgur.com/jxVXLjF.jpg","bottom":"http://i.imgur.com/1BhVE5f.jpg"}]
   overLayers(combos);
 });
