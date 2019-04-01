@@ -2,6 +2,7 @@ import p5 from 'p5'
 
 Template.food.onCreated(function() {
   //defaults
+  this.pInst =new ReactiveVar(false);
   this.song = new ReactiveVar(false);
   this.foodCount = new ReactiveVar(0);
   this.foodMax = new ReactiveVar(21); 
@@ -167,6 +168,7 @@ Template.food.onRendered(function() {
   var s = function(p) {
     p.preload = function() {
       // var songFile
+      inst.pInst.set(p);
       song = p.loadSound('/audio/glitchy/Core/TheLittleLightFades.mp3');
       inst.song.set(song)
     }
@@ -184,5 +186,16 @@ Template.food.onRendered(function() {
 });
 
 Template.food.onDestroyed(function() {
+  var inst = Template.instance()
   Meteor.clearInterval(this.foodFeeder.get());
+  if (inst.pInst.get()) {
+    var pInst = inst.pInst.get();
+    pInst.remove();
+  }
+  
+  if (inst.song.get()) {
+    var song = inst.song.get();
+    song.stop();
+    inst.song.set(false);
+  }
 }); 

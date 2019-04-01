@@ -191,18 +191,14 @@ Template.audioFreeze.onRendered(function() {
     }
     p.draw = function() {
       var song = inst.song.get();
-        if (!song.isPlaying()) {
-          console.log("PRESS PLAY")
-          song.play();
-        //  setTimeout(() => {song._playing = true}, 1);
-          song.setVolume(0.05)
-          var speed = inst.checkSpeed(song, p);
-          inst.startingRate.set(speed);
-        } else {
-          // song.setVolume(0);
-          console.log('logpay');
-          
-        }
+      if (!song.isPlaying()) {
+        console.log("PRESS PLAY")
+        song.play();
+      //  setTimeout(() => {song._playing = true}, 1);
+        song.setVolume(0.05)
+        var speed = inst.checkSpeed(song, p);
+        inst.startingRate.set(speed);
+      }
       p.background(0);
       inst.applyPlaybackRate(song, p);
       if (inst.enableDelay.get()) {
