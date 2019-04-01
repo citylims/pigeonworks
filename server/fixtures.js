@@ -29,18 +29,18 @@ if (Glitches.find().count() === 0) {
       {fileName:'SheIsYoung',fileType:'mp3'},
     ],
     visual: [
-      {fileName:'NightStreet',  fileType:'jpg'},
-      {fileName:'SkyScraper', fileType:'jpg'}
+      {fileName:'NightStreet',  fileType:'jpg'}
+      // {fileName:'SkyScraper', fileType:'jpg'}
     ],
     pairs: [
       {
         audio: {fileName:'SheIsYoung', fileType:'mp3'},
         visual: {fileName:'NightStreet', fileType:'jpg'}
-      },
-      {
-        audio: {fileName:'SheIsYoung', fileType:'mp3'},
-        visual: {fileName:'SkyScraper', fileType:'jpg'}
-      },
+      }
+      // {
+      //   audio: {fileName:'SheIsYoung', fileType:'mp3'},
+      //   visual: {fileName:'SkyScraper', fileType:'jpg'}
+      // },
     ]
   });
   Glitches.insert({
