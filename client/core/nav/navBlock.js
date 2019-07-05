@@ -21,9 +21,9 @@ Template.navBlock.events({
         var caption = $(e.currentTarget).children('.caption-block');
         t.showCaption.set(true);
         $(caption).velocity('transition.bounceUpIn', { 
-          duration: 600, 
+          duration: 300, 
           complete: () => {
-           $(caption).children('.block-title').velocity('transition.fadeIn', {duration: 500});
+           $(caption).children('.block-title').velocity('transition.fadeIn', {duration: 250});
           }
         });
       }     
@@ -38,9 +38,9 @@ Template.navBlock.events({
         var caption = $(e.currentTarget).children('.caption-block');
         t.showCaption.set(false);
         $(caption).children('.block-title').velocity('transition.fadeOut', { 
-          duration: 500, 
+          duration: 250, 
           complete: () => {
-           $(caption).velocity('transition.bounceDownOut', {duration: 600});
+           $(caption).velocity('transition.bounceDownOut', {duration: 300});
           }
         });
       }     
@@ -49,5 +49,5 @@ Template.navBlock.events({
 });
 
 Template.navBlock.onRendered(function(){
-  $(this.firstNode).velocity("transition.slideUpIn", { duration: 600 })
+  $(this.firstNode).velocity("transition.slideUpIn", { duration: 300 })
 });
