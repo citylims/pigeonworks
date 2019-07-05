@@ -175,7 +175,7 @@ Template.food.onRendered(function() {
     
     p.draw = function() {
       if (!song.isPlaying()) {
-        song.setVolume(0.05);
+        // song.setVolume(0.05);
         song.play();
       }
     }
