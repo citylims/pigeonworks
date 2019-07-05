@@ -97,6 +97,15 @@ FlowRouter.route('/overlayers', {
   }
 });
 
+FlowRouter.route('/silence', {
+  action: function(params, queryParams) {
+    BlazeLayout.render('dashLayout', { scene: "silence"});
+  },
+  triggersExit: function() {
+    exitRefresh();
+  }
+});
+
 function exitRefresh() {
   $('style').remove();
   $('canvas').remove();
