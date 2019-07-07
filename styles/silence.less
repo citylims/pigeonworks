@@ -1,5 +1,5 @@
 /*
-// https://vimeo.com/61316983
+text-shadow: 0 0 0 transparent, 0 0 10px #ff003c, 0 0 20px rgba(255, 0, 60, 0.5), 0 0 40px #ff003c, 0 0 100px #ff003c, 0 0 200px #ff003c, 0 0 300px #ff003c, 0 0 500px #ff003c, 0 0 1000px #ff003c;
 order
  All - (glow down in 2 sec, flicker 8 sec)
  dark - 1 sec
@@ -11,127 +11,108 @@ order
  violins-2 (wait 3)
 */
 
-
-
 .wrapper {
-    height: 800px;
+    position:relative;
+    height: 530px;
+    width: 480px;
+    margin:0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #000000; 
-
-
-  .neon-wrapper {
-    display:inline-flex;
-    filter: brightness(200%);
-    overflow: hidden;
-    
+    background: #000000;   
+    //make this take an color an mixin function
     .txt {
-      color: red;
+      &.glow {
+        animation: glowIn 10s infinite alternate;
+        // color: yellow !important;
+      }
+    }
+  .neon-wrapper {
+    position: absolute;
+    display:inline-flex;
+    filter: brightness(100%);
+    // overflow: hidden; //cause overlap
+    .txt {
       //for gradient
       // color: #ffffff;
       // background: #fffff
-      font-size:80px;
+      // text-shadow: 0 0 0 transparent, 0 0 2px #ff003c, 0 0 5px rgba(255, 0, 60, 0.5), 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 100px #ff003c, 0 0 150px #ff003c;
+      color: white; //default;
+      font-size: 80px;
       font-weight: bold;
       font-family: Arial;
       text-transform: uppercase;
       letter-spacing: -5px;
     }
-    
-    &.violins-1 {
+    .txt::before {
+      text-shadow: none;
       position: absolute;
-      left: 350px;
-      top: 250px;
+      mix-blend-mode: difference;
+      filter: blur(3px);
+    }
+    
+    &.violins {
+      bottom: 34%;
+      .txt::before {
+        content: 'violins';
+      }
+      &.violins-1 {
+      left: -50px;
       transform: rotate(285deg);
-      // transform(rotate(80de))
-      .txt {
-        color: red;
+        .txt {
+          color: red;
+        }
       }
-      .txt::before {
-        content: 'violins';
-        position: absolute;
-        mix-blend-mode: difference;
-        filter: blur(3px);
-      }
-    }
-    &.violins-2 {
-      position: absolute;
-      top: 250px;
-      right: 350px;
+      &.violins-2 {
+      right: -50px;
       transform: scaleX(-1) rotate(280deg);
-      .txt {
-        color: orange;
-      }
-      .txt::before {
-        content: 'violins';
-        position: absolute;
-        mix-blend-mode: difference;
-        filter: blur(3px);
+        .txt {
+          color: orange;
+        }
       }
     }
-    &.violence-1 {
-      z-index:2;
-      position: absolute;
-      top: 250px;
-      left: 400px;
-      transform: scaleX(-1) rotate(49deg);
-      .txt {
-        color: yellow;
-      }
-      .txt::before {
-        content: 'violence';
-        position: absolute;
-        mix-blend-mode: difference;
-        filter: blur(3px);
-      }
-    }
-    &.violence-2 {
-      z-index:1;
-      position: absolute;
-      top: 250px;
-      right: 400px;
-      transform: rotate(49deg);
 
-      .txt {
-        color: teal;
-      }
+    &.violence {
+      bottom: 34%;
       .txt::before {
         content: 'violence';
-        position: absolute;
-        mix-blend-mode: difference;
-        filter: blur(3px);
       }
-    }
-    &.silence-1 {
-      position: absolute;
-      bottom: 165px;
-      transform: scaleX(-1);
-      .txt {
-        color: #46C5D7;
+      &.violence-1 {
+      z-index: 2;
+      left: 0;
+      transform: scaleX(-1) rotate(49deg);
+        .txt {
+          color: yellow;
+        }
       }
-      .txt::before {
-        content: 'silence';
-        position: absolute;
-        mix-blend-mode: difference;
-        filter: blur(3px);
-      }
-    }
-    &.silence-2 {
-      position: absolute;
-      bottom: 165px;
-      transform: scaleX(-1) rotate(180deg);
-      .txt {
-        color: #1B9CE2;
-      }
-      .txt::before {
-        content: 'silence';
-        position: absolute;
-        mix-blend-mode: difference;
-        filter: blur(3px);
-      }
+      &.violence-2 {
+        z-index: 1;
+        right: 0px;
+        transform: rotate(49deg);
+        .txt {
+          color: teal;
+        }
+      }      
     }
     
-    
+    &.silence {
+      bottom: 0;
+      .txt::before {
+        content: 'silence';
+      }
+      &.silence-1 {
+        transform: scaleX(-1);
+        .txt {
+          color: #46C5D7;
+        }
+      }
+      &.silence-2 {
+        transform: scaleX(-1) rotate(180deg);
+        .txt {
+          color: #1B9CE2;
+        }
+      }
+    }  
     // .gradient{
         // background: linear-gradient(114.5793141156962deg, rgba(6, 227, 250,1) 4.927083333333334%,rgba(229, 151, 64,1) 97.84374999999999%);
         // position: absolute;
@@ -141,5 +122,53 @@ order
         // height:100%;
         // mix-blend-mode: multiply;
     // }    
+  }
+}
+
+@keyframes glowIn {
+  0% {
+    filter: brightness(0%);
+  }
+  5% {
+    filter: brightness(10%);
+  }
+  10% {
+    filter: brightness(25%);
+  }
+  15% {
+    filter: brightness(50%);
+  }
+  20% {
+    filter: brightness(75%);
+  }
+  25% {
+    filter: brightness(100%);
+  }
+  30% {
+    filter: brightness(125%);
+  }
+  35% {
+    filter: brightness(150%);
+  }
+  40% {
+    filter: brightness(175%);
+  }
+  45% {
+    filter: brightness(200%);
+  }
+  50% {
+    filter: brightness(225%);
+  }
+  55% {
+    filter: brightness(250%);
+  }
+  60% {
+    filter: brightness(275%);
+  }
+  75% {
+    filter: brightness(300%);
+  }
+  100% {
+    filter: brightness(375%);
   }
 }
