@@ -26,8 +26,8 @@ module.exports = {
     env: {
       // TODO: Change to your app's url
       // If you are using ssl, it needs to start with https://
-      ROOT_URL: 'http://app.com',
-      // MONGO_URL: 'mongodb://localhost/meteor',
+      ROOT_URL: 'http://pigeonworks.com'
+      MONGO_URL: "mongodb://citylims:kwl6mEUdfXgQpdOV@cluster0-shard-00-00-gu02w.mongodb.net:27017,cluster0-shard-00-01-gu02w.mongodb.net:27017,cluster0-shard-00-02-gu02w.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority",
     },
 
     // ssl: { // (optional)
