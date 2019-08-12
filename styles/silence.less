@@ -1,49 +1,63 @@
-/*
-text-shadow: 0 0 0 transparent, 0 0 10px #ff003c, 0 0 20px rgba(255, 0, 60, 0.5), 0 0 40px #ff003c, 0 0 100px #ff003c, 0 0 200px #ff003c, 0 0 300px #ff003c, 0 0 500px #ff003c, 0 0 1000px #ff003c;
-order
- All - (glow down in 2 sec, flicker 8 sec)
- dark - 1 sec
- silence-2 (glow in 2 sec, wait 2 sec)
- violence1 (wait 3)
- violins-1 (wait 3)
- silence-1 (wait 3)
- violence-2 (wait 3)
- violins-2 (wait 3)
-*/
+// TODO @intensity to calculate glow
+@blend: 0.7;
+@silence-1-color: #46C5D7;
+@silence-2-color: #1B9CE2;
+@violence-1-color: yellow;
+@violence-2-color: teal;
+@violins-1-color: red;
+@violins-2-color: orange;
 
-.wrapper {
-    position:relative;
-    height: 530px;
-    width: 480px;
-    margin:0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #000000;   
-    //make this take an color an mixin function
-    .txt {
-      &.glow {
-        animation: glowIn 10s infinite alternate;
-        // color: yellow !important;
-      }
-    }
+.neon-text(@color) {
+  color: @color;
+  text-shadow: 0 0 0 transparent, 0 0 1px @color, 0 0 2px rgba(255, 0, 60, 0.5), 0 0 3px @color, 0 0 5px @color, 0 0 6px @color, 20px @color;
+}
+
+.gradient-text {
+  color: #ffffff;
+  background: #fffff;
+  text-shadow: 0 0 0 transparent, 0 0 1px #ff003c, 0 0 2px rgba(255, 0, 60, 0.5), 0 0 3px #ff003c, 0 0 5px #ff003c, 0 0 6px #ff003c, 20px #ff003c;
+}
+
+.exhibit {
+  position:relative;
+  height: 530px;
+  width: 480px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;   
   .neon-wrapper {
     position: absolute;
     display:inline-flex;
     filter: brightness(100%);
     // overflow: hidden; //cause overlap
     .txt {
-      //for gradient
-      // color: #ffffff;
-      // background: #fffff
-      // text-shadow: 0 0 0 transparent, 0 0 2px #ff003c, 0 0 5px rgba(255, 0, 60, 0.5), 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 100px #ff003c, 0 0 150px #ff003c;
+      transition: opacity .3s;
+      opacity: 0;
       color: white; //default;
       font-size: 80px;
       font-weight: bold;
       font-family: Arial;
       text-transform: uppercase;
       letter-spacing: -5px;
+      &.glow-in {
+        animation: glowIn 2s;
+        animation-fill-mode: forwards;
+        opacity: @blend;
+      }
+      &.flicker {
+        animation: flicker .1s infinite;
+        opacity: @blend;
+      }
+      &.flicker-inner{
+        animation: flicker .1s infinite;
+      }
+      &.dark {
+        opacity: 0;
+      }
     }
+    
     .txt::before {
       text-shadow: none;
       position: absolute;
@@ -60,14 +74,21 @@ order
       left: -50px;
       transform: rotate(285deg);
         .txt {
-          color: red;
+          .neon-text(@violins-1-color);
+          // text-shadow: 0 0 0 transparent, 0 0 1px @violins-1-color, 0 0 2px rgba(255, 0, 60, 0.5), 0 0 3px @violins-1-color, 0 0 5px @violins-1-color, 0 0 6px @violins-1-color, 0 0 8px @violins-1-color;
+          &.g-violins-1 { //active glow
+            opacity: @blend;  
+          }
         }
       }
       &.violins-2 {
-      right: -50px;
-      transform: scaleX(-1) rotate(280deg);
+        right: -50px;
+        transform: scaleX(-1) rotate(280deg);
         .txt {
-          color: orange;
+          .neon-text(@violins-2-color);
+          &.g-violins-2 {
+            opacity: @blend;  
+          }
         }
       }
     }
@@ -78,11 +99,14 @@ order
         content: 'violence';
       }
       &.violence-1 {
-      z-index: 2;
-      left: 0;
-      transform: scaleX(-1) rotate(49deg);
+        z-index: 2;
+        left: 0;
+        transform: scaleX(-1) rotate(49deg);
         .txt {
-          color: yellow;
+          .neon-text(@violence-1-color);
+          &.g-violence-1 {
+            opacity: @blend;
+          }
         }
       }
       &.violence-2 {
@@ -90,7 +114,10 @@ order
         right: 0px;
         transform: rotate(49deg);
         .txt {
-          color: teal;
+          .neon-text(@violence-2-color);
+          &.g-violence-2 {
+            opacity: @blend;
+          }
         }
       }      
     }
@@ -103,72 +130,43 @@ order
       &.silence-1 {
         transform: scaleX(-1);
         .txt {
-          color: #46C5D7;
+          .neon-text(@silence-1-color);
+          &.g-silence-1 {
+            opacity: @blend;
+          }
         }
       }
       &.silence-2 {
         transform: scaleX(-1) rotate(180deg);
         .txt {
-          color: #1B9CE2;
+          .neon-text(@silence-2-color);
+          &.g-silence-2 {
+            opacity: @blend;
+          }
         }
       }
     }  
-    // .gradient{
-        // background: linear-gradient(114.5793141156962deg, rgba(6, 227, 250,1) 4.927083333333334%,rgba(229, 151, 64,1) 97.84374999999999%);
-        // position: absolute;
-        // top: 0;
-        // left:0;
-        // width: 100%;
-        // height:100%;
-        // mix-blend-mode: multiply;
-    // }    
+    
+    .gradient-blend{ //currently disabled
+      background: linear-gradient(114.5793141156962deg, rgba(6, 227, 250,1) 4.927083333333334%,rgba(229, 151, 64,1) 97.84374999999999%);
+      position: relative;
+      top: 0;
+      left:0;
+      width: 100%;
+      height:100%;
+      mix-blend-mode: multiply;
+    }    
   }
 }
 
 @keyframes glowIn {
-  0% {
-    filter: brightness(0%);
-  }
-  5% {
-    filter: brightness(10%);
-  }
-  10% {
-    filter: brightness(25%);
-  }
-  15% {
-    filter: brightness(50%);
-  }
-  20% {
-    filter: brightness(75%);
-  }
-  25% {
-    filter: brightness(100%);
-  }
-  30% {
-    filter: brightness(125%);
-  }
-  35% {
-    filter: brightness(150%);
-  }
-  40% {
-    filter: brightness(175%);
-  }
-  45% {
-    filter: brightness(200%);
-  }
-  50% {
-    filter: brightness(225%);
-  }
-  55% {
-    filter: brightness(250%);
-  }
-  60% {
-    filter: brightness(275%);
-  }
-  75% {
-    filter: brightness(300%);
-  }
-  100% {
-    filter: brightness(375%);
-  }
+  0% {filter: brightness(0%);}
+  70% {filter: brightness(500%);}
+  100% {filter: brightness(200%);}
+}
+
+@keyframes flicker {
+  0% {filter: brightness(400%);}
+  50% {filter: brightness(500%);}
+  100% {filter: brightness(400%);}
 }
