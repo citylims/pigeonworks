@@ -32,5 +32,8 @@ Template.headerDash.events({
   },
   'click [data-action="overlayers"]': function() {
     FlowRouter.go('/overlayers');
+  },
+  'click [data-action="silence"]': function() {
+    FlowRouter.go('/silence');
   }
 });

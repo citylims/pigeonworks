@@ -8,12 +8,15 @@ Template.sideNav.onCreated(function(){
         duration: 600,
         complete:() => { 
           this.completeAnimation.set(true);
+          $('.carrot-icon').css("position", "fixed");
         }
       })
     } else {
+      $('.carrot-icon').css("position", "absolute");
       $('.drawer').velocity({width: "2%", opacity: "0.2"}, {
         complete:() => {
           this.completeAnimation.set(false);
+          
         }
       });
     }
@@ -26,9 +29,9 @@ Template.sideNav.onCreated(function(){
       img: 'nav-blocks/CreationMyth.png'
     },
     {
-      title: 'Flight',
-      path: '/flight',
-      img: 'nav-blocks/Flight.png'
+      title: 'Glitchy',
+      path: '/glitchy',
+      img: 'nav-blocks/Glitchy.png'
     },
     {
       title: 'Pygmalion',
@@ -36,19 +39,24 @@ Template.sideNav.onCreated(function(){
       img: 'nav-blocks/Pygmalion.png'
     },
     {
-      title: 'Alien',
-      path: '/alien',
-      img: 'nav-blocks/Alien.png'
-    },
-    {
       title: 'Food',
       path: '/food',
       img: 'nav-blocks/Food.png'
     },
     {
-      title: 'Glitchy',
-      path: '/glitchy',
-      img: 'nav-blocks/Glitchy.png'
+      title: 'Silence',
+      path: '/silence',
+      img: 'nav-blocks/silence.png'
+    },
+    {
+      title: 'Flight',
+      path: '/flight',
+      img: 'nav-blocks/Flight.png'
+    },
+    {
+      title: 'Alien',
+      path: '/alien',
+      img: 'nav-blocks/Alien.png'
     },
     {
       title: 'Grid Writer',
@@ -60,16 +68,17 @@ Template.sideNav.onCreated(function(){
       path: '/audioFreeze',
       img: 'nav-blocks/AudioFreeze.png'
     },
-    {
-      title: 'Outer Verse',
-      path: '/outerverse',
-      img: 'nav-blocks/Outerverse.png'
-    },
+    // {
+    //   title: 'Outer Verse',
+    //   path: '/outerverse',
+    //   img: 'nav-blocks/Outerverse.png'
+    // },
     {
       title: 'Overlayers',
       path: '/overlayers',
       img: 'nav-blocks/Overlayers.png'
-    }
+    },
+    
   ])
 });
 
@@ -86,7 +95,7 @@ Template.sideNav.helpers({
 });
 
 Template.sideNav.events({
-  'click .drawer': function(e,t) {
+  'click [data-action="expandSideNav"]': function(e,t) {
     Session.set('expandSideNav', !Session.get('expandSideNav'));
   }
 });

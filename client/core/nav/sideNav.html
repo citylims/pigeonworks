@@ -1,6 +1,6 @@
 <template name="sideNav">
   <div id="sideNav">
-    <div class="drawer {{#if expanded}}expand{{/if}}" style="height:{{windowHeight}}px;">
+    <div data-action="expandSideNav" class="drawer {{#if expanded}}expand{{/if}}" style="height:{{windowHeight}}px;">
       <div class="carrot-icon"></div>
       {{#if expanded}}
       <div class="nav-blocks-container" style="">
